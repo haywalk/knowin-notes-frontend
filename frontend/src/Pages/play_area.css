@@ -5,7 +5,8 @@
 .stop {
     background-color: #ce0000 !important;
     border-color: #ce0000;
-    color: #fff;
+    color: #fff !important;
+    font-weight: bold !important;
 }
 
 .stop:hover {
@@ -16,7 +17,8 @@
 .pause {
     background-color: #0000ff !important;
     border-color: #0000ff;
-    color: #fff;
+    color: #fff !important;
+    font-weight: bold !important;
 }
 
 .pause:hover {
@@ -25,17 +27,17 @@
 }
 
 .progress {
-    height: 58px;
-    padding-left: 0;
+    height: 58px !important;
+    padding-left: 0 !important;
     font-weight: bold;
 }
 
 .progress-bar {
     font-size: 16px;
     top: 0;
-    height: 58px;
+    height: 58px !important;
     appearance: 'none';
-    background-color: #0a9848;
+    background-color: #0a9848 !important;
 }
 
 .black-notes {
