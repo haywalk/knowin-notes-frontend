@@ -1,4 +1,4 @@
-import { SettingsMenu } from '../Components/SettingsMenu'
+import { SettingsMenu } from '../Components/SettingsMenuComponent'
 
 export function Settings() {
     

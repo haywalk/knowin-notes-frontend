@@ -1,5 +1,4 @@
-import { Menu } from '../Components/Menu'
-import './home.css'
+import { Menu } from '../Components/MenuComponent'
 
 export function Home() {
     return (
