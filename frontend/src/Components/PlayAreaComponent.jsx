@@ -13,7 +13,7 @@ export function PlayAreaComponent() {
                         <Link to="#"><a className="d-grid py-3 btn pause" role="button">Pause</a></Link>
                     </div>
                     <div className="col-md-10 my-3 progress">
-                        <div className="progress-bar" role="progressbar" style={{width: '12%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">1:43</div>
+                        <div className="progress-bar" role="progressbar" style={{width: '25%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">1:43</div>
                     </div>
                     <div className="col-md-1 my-3">
                         <Link to="/settings"><a className="d-grid py-3 btn stop" role="button">Stop</a></Link>
@@ -22,7 +22,7 @@ export function PlayAreaComponent() {
 
                 <div className='row'>
                     <div style={{ position: 'relative' }}>
-                        <img src={lines} alt="lines" style={{left: '0', width: '100%', minWidth: '1280px', position: 'absolute', zIndex: 1 }} />
+                        <img src={lines} alt="lines" style={{borderRadius: '40px', left: '0', width: '100%', minWidth: '1280px', position: 'absolute', zIndex: 1 }} />
                         <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '15px', left: '-50px', zIndex: 2 }} />
                         {/*<img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '57px', left: '50px', zIndex: 2 }} />*/}
                         <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>

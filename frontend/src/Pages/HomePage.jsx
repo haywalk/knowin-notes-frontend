@@ -1,6 +1,6 @@
 import { Menu } from '../Components/MenuComponent'
 
-export function Home() {
+export function HomePage() {
     return (
         <>
             <Menu/>

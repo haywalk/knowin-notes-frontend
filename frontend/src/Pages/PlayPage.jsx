@@ -1,7 +1,7 @@
 import { PlayAreaComponent } from '../Components/PlayAreaComponent'
-import './play_area.css'
+import './PlayPage.css'
 
-export function PlayArea() {
+export function PlayPage() {
     return (
         <>
             <PlayAreaComponent/>

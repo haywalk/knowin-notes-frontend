@@ -1,17 +1,21 @@
 import { Route, HashRouter as Router, Routes } from 'react-router-dom'
 import './App.css'
-import { Home } from './Pages/home'
-import { Settings } from './Pages/settings'
-import { PlayArea } from './Pages/play_area'
+import { HistoryPage } from './Pages/HistoryPage'
+import { HomePage } from './Pages/HomePage'
+import { PlayPage } from './Pages/PlayPage'
+import { ReportPage } from './Pages/ReportPage'
+import { SettingsPage } from './Pages/SettingsPage'
 
 function App() {
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/settings" element={<Settings/>}/>
-        <Route path="/play_area" element={<PlayArea/>}/>
+        <Route path="/" element={<HomePage/>}/>
+        <Route path="/settings" element={<SettingsPage/>}/>
+        <Route path="/play_area" element={<PlayPage/>}/>
+        <Route path="/history" element={<HistoryPage/>}/>
+        <Route path="/report" element={<ReportPage/>}/>
       </Routes>
     </Router>
   )

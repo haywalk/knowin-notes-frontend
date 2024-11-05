@@ -1,0 +1,22 @@
+.report-content {
+    text-align: center;
+}
+
+.report-content p {
+    color: #fff;
+    text-align: center;
+    width: 300px;
+    margin: 10px auto;
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+.ok {
+    filter: opacity(60%);
+}
+
+.bad {
+    filter: opacity(20%);
+}

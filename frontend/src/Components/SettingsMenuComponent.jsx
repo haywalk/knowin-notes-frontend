@@ -13,28 +13,28 @@ export function SettingsMenu() {
                     </div>
                 </div>
                 <div className='row'>
-                    <div class="col-md-12 my-3 btn-group btn-group-toggle" data-toggle="buttons">
-                        <label class="py-3 btn btn-secondary active form">
+                    <div className="col-md-12 my-3 btn-group btn-group-toggle" data-toggle="buttons">
+                        <label className="py-3 btn btn-secondary active form">
                             <input type="radio" name="options" id="option1" autocomplete="off" defaultChecked/> Treble Clef
                         </label>
-                        <label class="py-3 btn btn-secondary form">
+                        <label className="py-3 btn btn-secondary form">
                             <input type="radio" name="options" id="option2" autocomplete="off"/> Bass Clef
                         </label>
                     </div>
                 </div>
                 <div className='row'>
                         <div className="col-md-4 my-2">
-                            <label class="py-3 btn btn-secondary active form">
+                            <label className="py-3 btn btn-secondary active form">
                                 <input type="radio" name="options2" id="option1" autocomplete="off" defaultChecked/> Single Notes
                             </label>
                         </div>
                         <div className="col-md-4 my-2">
-                            <label class="py-3 btn btn-secondary form">
-                                <input type="radio" name="options2" id="option2" autocomplete="off"/> Bass Clef
+                            <label className="py-3 btn btn-secondary form">
+                                <input type="radio" name="options2" id="option2" autocomplete="off"/> Chords
                             </label>
                         </div>
                         <div className="col-md-4 my-2">
-                            <label class="py-3 btn btn-secondary form">
+                            <label className="py-3 btn btn-secondary form">
                                 <input type="radio" name="options2" id="option2" autocomplete="off"/> More
                             </label>
                         </div>
