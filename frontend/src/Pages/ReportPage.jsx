@@ -1,12 +1,16 @@
-import { Link } from "react-router-dom"
-import Report from "../Components/Report"
-import './ReportPage.css'
+import React, { useState } from "react"
+import { Link, useParams } from "react-router-dom"
 import lines from '../assets/lines.png'
-import treble_clef from '../assets/treble_clef.png'
-import bass_clef from '../assets/bass_clef.png'
 import single_note from '../assets/single_note.png'
+import treble_clef from '../assets/treble_clef.png'
+import historyData from "../db/history-list.json"
+import './ReportPage.css'
 
 export function ReportPage() {
+    let [reports, setReports] = useState(historyData);
+    let params = useParams();
+    let id = params.id
+    let report = reports[reports.length - id - 1]
     return (
         <>
             <div className="container">
@@ -16,9 +20,14 @@ export function ReportPage() {
                     </div>
                 </div>
                 <div className='row report-content'>
-                    <div classname='col-md-12'>
-                        <Report date="2024-10-08" time="15:33" type="Time" accuracy="75%" chronometer="20:00" numNotes={20} numMistakes={5}/>
-                        <p>Response Time: 6.1 seconds per note</p>
+                    <div className='col-md-12'>
+                        <p>{report.date} {report.time}</p>
+                        <p>{report.type} based practice</p>
+                        <p>Accuracy: {report.accuracy}</p>
+                        <p>Time: {report.chronometer}</p>
+                        <p>Total Notes: {report.numNotes}</p>
+                        <p>Mistakes: {report.numMistakes}</p>
+                        <p>Response Time: {report.responseTime} seconds per note</p>
                         <p>Settings: single notes, treble clef</p>
                         <br/>
                     </div>
@@ -48,16 +57,16 @@ export function ReportPage() {
                 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 <div className='row'>
                     <div className='col-md-1 offset-md-4'>
-                        <Link to="/history"><button className="d-grid btn btn-secondary" href="#" role="button">Back</button></Link>
+                        <Link to="/history"><button className="d-grid btn btn-secondary" role="button">Back</button></Link>
                     </div>
                     <div className='col-md-1'>
-                        <Link to="/"><button className="d-grid btn btn-secondary" href="#" role="button">Home</button></Link>
+                        <Link to="/"><button className="d-grid btn btn-secondary"role="button">Home</button></Link>
                     </div>
                     <div className='col-md-1'>
-                        <Link to=""><button className="d-grid btn btn-secondary" href="#" role="button">Print</button></Link>
+                        <Link to=""><button className="d-grid btn btn-secondary"role="button">Print</button></Link>
                     </div>
                     <div className='col-md-1'>
-                        <Link to=""><button className="d-grid btn btn-secondary" href="#" role="button">Redo</button></Link>
+                        <Link to=""><button className="d-grid btn btn-secondary" role="button">Redo</button></Link>
                     </div>
                 </div>
             </div>

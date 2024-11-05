@@ -15,7 +15,7 @@ function App() {
         <Route path="/settings" element={<SettingsPage/>}/>
         <Route path="/play_area" element={<PlayPage/>}/>
         <Route path="/history" element={<HistoryPage/>}/>
-        <Route path="/report" element={<ReportPage/>}/>
+        <Route path="/report/:id" element={<ReportPage/>}/>
       </Routes>
     </Router>
   )

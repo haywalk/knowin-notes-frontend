@@ -9,7 +9,7 @@ export function SettingsMenu() {
                 <br/>
                 <div className="row">
                     <div className="col-md-12">
-                        <Link to=""><a className="d-grid py-3 my-2 btn btn-secondary" href="#" role="button">20 minutes</a></Link>
+                        <Link to=""><button className="d-grid py-3 my-2 btn btn-secondary" role="button">20 minutes</button></Link>
                     </div>
                 </div>
                 <div className='row'>
@@ -41,10 +41,10 @@ export function SettingsMenu() {
                 </div>
                 <div className='row'>
                     <div className="col-md-6 offset-md-2 my-3">
-                        <Link to="/play_area"><a className="d-grid py-3 btn btn-primary" role="button">Play</a></Link>
+                        <Link to="/play_area"><button className="d-grid py-3 btn btn-primary" role="button">Play</button></Link>
                     </div>
                     <div className="col-md-2 my-3">
-                        <Link to="/"><a className="d-grid py-3 btn btn-secondary" role="button">Back</a></Link>
+                        <Link to="/"><button className="d-grid py-3 btn btn-secondary" role="button">Back</button></Link>
                     </div>
                 </div>
             </div>

@@ -10,13 +10,13 @@ export function PlayAreaComponent() {
             <div className="container-sm">
                 <div className='row'>
                     <div className="col-md-1 my-3">
-                        <Link to="#"><a className="d-grid py-3 btn pause" role="button">Pause</a></Link>
+                        <Link to="#"><button className="d-grid py-3 btn pause" role="button">Pause</button></Link>
                     </div>
                     <div className="col-md-10 my-3 progress">
                         <div className="progress-bar" role="progressbar" style={{width: '25%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">1:43</div>
                     </div>
                     <div className="col-md-1 my-3">
-                        <Link to="/settings"><a className="d-grid py-3 btn stop" role="button">Stop</a></Link>
+                        <Link to="/settings"><button className="d-grid py-3 btn stop" role="button">Stop</button></Link>
                     </div>
                 </div>
 
@@ -144,7 +144,7 @@ export function PlayAreaComponent() {
 
                     <div className='row'>
                         <div className='col-md-4 my-3 offset-md-4'>
-                            <Link to=""><a className="py-3 btn btn-primary" role="button">Submit</a></Link>
+                            <Link to=""><button className="py-3 btn btn-primary" role="button">Submit</button></Link>
                         </div>
                     </div>
                 </div>

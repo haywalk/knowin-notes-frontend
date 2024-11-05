@@ -19,7 +19,7 @@ export function Menu() {
                 </div>
                 <div className="row">
                     <div className="col-md-8 offset-md-2">
-                        <Link to="/history"><button className="d-grid py-5 my-4 btn btn-secondary" href="#" role="button">History</button></Link>
+                        <Link to="/history"><button className="d-grid py-5 my-4 btn btn-secondary" role="button">History</button></Link>
                     </div>
                 </div>
             </div>
