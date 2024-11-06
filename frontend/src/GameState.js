@@ -1,6 +1,6 @@
 
 
-class GameState{
+export default class GameState{
     gameMode = "timed";
     gameDuration = -1;
     notesInGame = -1;
@@ -21,8 +21,8 @@ class GameState{
 
 }
 
-const gs = new GameState();
+// const gs = new GameState();
 
-const json = JSON.stringify(gs, null, 4);
+// const json = JSON.stringify(gs, null, 4);
 
-console.log(json);
+// console.log(json);
