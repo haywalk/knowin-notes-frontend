@@ -7,10 +7,11 @@ const NOTE_OFF = 0b1000;
 const OTHER = 0;
 
 const soundfiles = [
-    "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav",
-    "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav",
+    "c3.wav", "cs3.wav", "d3.wav", "ds3.wav", "e3.wav", "f3.wav",
+    "fs3.wav", "g3.wav", "gs3.wav", "a4.wav", "as4.wav", "b4.wav",
     "c4.wav", "cs4.wav", "d4.wav", "ds4.wav", "e4.wav", "f4.wav",
-    "fs4.wav", "g4.wav", "gs4.wav", "a4.wav", "as4.wav", "b4.wav"
+    "fs4.wav", "g4.wav", "gs4.wav", "a5.wav", "as5.wav", "b5.wav",
+    "c5.wav"
 ];
 
 export default class MIDIKeyboard{
