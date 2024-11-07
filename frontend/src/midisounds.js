@@ -6,7 +6,6 @@ let NOTE_ON = 0b1001;
 let NOTE_OFF = 0b1000;
 let OTHER = 0;
 
-let audioContext = new AudioContext();
 const audios = [];
 
 const soundfiles = [
@@ -95,16 +94,13 @@ function onMIDIMessage(event) {
 function onNoteOn(note){
     let offset = 49;
     console.log("NOTE_ON! (" + (note - offset) + ")");
-    // 60 is the code for middle C (c4)
     audios[note] = new Audio("src/assets/" + soundfiles[note - offset]);
-    // const source = audioContext.createMediaElementSource(audios[note]);
-    // source.connect(audioContext.destination);
     audios[note].play();
 }
 
 function onNoteOff(note){
     console.log("NOTE OFF!");
-    // SHould fade the sound of the note here
+    // Should maybe fade the sound of the note here somehow
     audios[note].pause();
     audios[note].currentTime = 0;
 }
