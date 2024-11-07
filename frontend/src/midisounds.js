@@ -24,23 +24,26 @@ export default class MIDIKeyboard{
     constructor(){
         this.#isLogging = false;
         this.#midi = null;
-        this.isEnabled = false;
+        this.#isEnabled = false;
         this.#audios = [];
         this.#noteOffset = 49;
     }
 
     tryConnect(){
-        navigator.requestMIDIAccess().then(this.#onMIDISuccess, this.#onMIDIFailure);
+        navigator.requestMIDIAccess().then(this.#onMIDISuccess.bind(this), this.#onMIDIFailure.bind(this));
     }
 
     #onMIDISuccess(midiAccess){
         // make space for audio instances (necessary?)
         for(let i = 0; i < 128; i++){
-            audios[i] = null; 
+            this.#audios[i] = null; 
+        if (i >= this.#noteOffset && i < this.#noteOffset + soundfiles.length) {
+            this.#audios[i] = new Audio("src/assets/" + soundfiles[i - this.#noteOffset]);
+        }
         }
         this.#midi = midiAccess;
         this.#isEnabled = true;
-        listInputsAndOutputs();
+        this.listInputsAndOutputs();
         this.#startListeningForMIDIMessages();
         console.log("MIDI ready!");
     }
@@ -77,12 +80,12 @@ export default class MIDIKeyboard{
     }
       
     #startListeningForMIDIMessages() {
-        midiAccess.inputs.forEach((entry) => {
-            entry.onmidimessage = onMIDIMessage;
+        this.#midi.inputs.forEach((entry) => {
+            entry.onmidimessage = this.#onMIDIMessage.bind(this);
         });
     }
     
-    onMIDIMessage(event) {
+    #onMIDIMessage(event) {
         // Status, note, velocity
         // 0x90 0x32 0x00
         var status = event.data[0];
@@ -121,8 +124,8 @@ export default class MIDIKeyboard{
     #onNoteOff(note){
         if(this.#isLogging) console.log("NOTE OFF!");
         // Should maybe fade the sound of the note here somehow
-        audios[note].pause();
-        audios[note].currentTime = 0;
+        this.#audios[note].pause();
+        this.#audios[note].currentTime = 0;
     }
 
     startLogging(){
