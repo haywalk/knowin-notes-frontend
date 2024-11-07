@@ -15,27 +15,27 @@ export function SettingsMenu() {
                 <div className='row'>
                     <div className="col-md-12 my-3 btn-group btn-group-toggle" data-toggle="buttons">
                         <label className="py-3 btn btn-secondary active form">
-                            <input type="radio" name="options" id="option1" autocomplete="off" defaultChecked/> Treble Clef
+                            <input type="radio" name="options" id="option1" autoComplete="off" defaultChecked/> Treble Clef
                         </label>
                         <label className="py-3 btn btn-secondary form">
-                            <input type="radio" name="options" id="option2" autocomplete="off"/> Bass Clef
+                            <input type="radio" name="options" id="option2" autoComplete="off"/> Bass Clef
                         </label>
                     </div>
                 </div>
                 <div className='row'>
                         <div className="col-md-4 my-2">
                             <label className="py-3 btn btn-secondary active form">
-                                <input type="radio" name="options2" id="option1" autocomplete="off" defaultChecked/> Single Notes
+                                <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/> Single Notes
                             </label>
                         </div>
                         <div className="col-md-4 my-2">
                             <label className="py-3 btn btn-secondary form">
-                                <input type="radio" name="options2" id="option2" autocomplete="off"/> Chords
+                                <input type="radio" name="options2" id="option2" autoComplete="off"/> Chords
                             </label>
                         </div>
                         <div className="col-md-4 my-2">
                             <label className="py-3 btn btn-secondary form">
-                                <input type="radio" name="options2" id="option2" autocomplete="off"/> More
+                                <input type="radio" name="options2" id="option2" autoComplete="off"/> More
                             </label>
                         </div>
                 </div>
