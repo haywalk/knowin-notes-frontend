@@ -33,26 +33,6 @@ export default class MIDIKeyboard{
         navigator.requestMIDIAccess().then(this.#onMIDISuccess.bind(this), this.#onMIDIFailure.bind(this));
     }
 
-    #onMIDISuccess(midiAccess){
-        // make space for audio instances (necessary?)
-        for(let i = 0; i < 128; i++){
-            this.#audios[i] = null; 
-        if (i >= this.#noteOffset && i < this.#noteOffset + soundfiles.length) {
-            this.#audios[i] = new Audio("src/assets/" + soundfiles[i - this.#noteOffset]);
-        }
-        }
-        this.#midi = midiAccess;
-        this.#isEnabled = true;
-        this.listInputsAndOutputs();
-        this.#startListeningForMIDIMessages();
-        console.log("MIDI ready!");
-    }
-
-    #onMIDIFailure(msg) {
-        console.error(`Failed to get MIDI access - ${msg}`);
-        this.#isEnabled = false;
-    }
-
     listInputsAndOutputs() {
         if(this.#midi === null){
             console.log("No MIDI keyboard connected!");
@@ -77,6 +57,41 @@ export default class MIDIKeyboard{
                 `Output port [type:'${output.type}'] id:'${output.id}' manufacturer:'${output.manufacturer}' name:'${output.name}' version:'${output.version}'`,
             );
         }
+    }
+
+    startLogging(){
+        this.#isLogging = true;
+    }
+
+    stopLogging(){
+        this.#isLogging = false;
+    }
+
+    get isEnabled(){
+        return this.#isEnabled;
+    }
+
+    get isLogging(){
+        return this.#isLogging;
+    }
+
+    #onMIDISuccess(midiAccess){
+        // make space for audio instances (necessary?)
+        for(let i = 0; i < 128; i++){
+            this.#audios[i] = null; 
+        if (i >= this.#noteOffset && i < this.#noteOffset + soundfiles.length) {
+            this.#audios[i] = new Audio("src/assets/" + soundfiles[i - this.#noteOffset]);
+        }
+        }
+        this.#midi = midiAccess;
+        this.#isEnabled = true;
+        this.#startListeningForMIDIMessages();
+        if(this.#isLogging) console.log("MIDI ready!");
+    }
+
+    #onMIDIFailure(msg) {
+        console.error(`Failed to get MIDI access - ${msg}`);
+        this.#isEnabled = false;
     }
       
     #startListeningForMIDIMessages() {
@@ -126,22 +141,6 @@ export default class MIDIKeyboard{
         // Should maybe fade the sound of the note here somehow
         this.#audios[note].pause();
         this.#audios[note].currentTime = 0;
-    }
-
-    startLogging(){
-        this.#isLogging = true;
-    }
-
-    stopLogging(){
-        this.#isLogging = false;
-    }
-
-    get isEnabled(){
-        return this.#isEnabled;
-    }
-
-    get isLogging(){
-        return this.#isLogging;
     }
 }
 
