@@ -7,12 +7,19 @@ let NOTE_OFF = 0b1000;
 let OTHER = 0;
 
 let audioContext = new AudioContext();
-const oscillators = [];
+const audios = [];
+
+const soundfiles = [
+    "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav",
+    "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav", "bkgd.wav",
+    "c4.wav", "cs4.wav", "d4.wav", "ds4.wav", "e4.wav", "f4.wav",
+    "fs4.wav", "g4.wav", "gs4.wav", "a4.wav", "as4.wav", "b4.wav"
+];
 
 export function initializeMIDI(){
     // Create an oscillator for each possible MIDI key
     for(let i = 0; i < 128; i++){
-        oscillators[i] = null; 
+        audios[i] = null; 
     }
     navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
 }
@@ -86,17 +93,19 @@ function onMIDIMessage(event) {
 }
 
 function onNoteOn(note){
-    console.log("NOTE_ON!");
-    var freq = 2**((note - 69) / 12) * 440;
-    oscillators[note] = audioContext.createOscillator();
-    oscillators[note].connect(audioContext.destination);
-    oscillators[note].frequency.setValueAtTime(freq, audioContext.currentTime);
-    oscillators[note].start(0);
+    let offset = 49;
+    console.log("NOTE_ON! (" + (note - offset) + ")");
+    // 60 is the code for middle C (c4)
+    audios[note] = new Audio("src/assets/" + soundfiles[note - offset]);
+    // const source = audioContext.createMediaElementSource(audios[note]);
+    // source.connect(audioContext.destination);
+    audios[note].play();
 }
 
 function onNoteOff(note){
     console.log("NOTE OFF!");
-    oscillators[note].frequency.setValueAtTime(0, audioContext.currentTime);
-    oscillators[note].stop(0.1);
+    // SHould fade the sound of the note here
+    audios[note].pause();
+    audios[note].currentTime = 0;
 }
   
