@@ -2,10 +2,8 @@ import reactLogo from '../assets/react.svg';
 import viteLogo from '/vite.svg';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import GameState from "../gamestate.js"
 
 export function Menu() {
-    const [gs, setGs] = useState(new GameState());
     return (
         <>
             <div className="container">
@@ -16,9 +14,6 @@ export function Menu() {
                     <div className="col-md-4 offset-md-2">
                         <Link to="/settings"><button className="d-grid py-5 btn btn-primary" role="button">Timed Based Practice</button></Link>
                     </div>
-                    <h1>
-                        {JSON.stringify(gs, null, 4)}
-                    </h1>
                     <div className="col-md-4">
                         <Link to="/settings"><button className="d-grid py-5 btn btn-primary" role="button">Number of Notes Based Practice</button></Link>
                     </div>

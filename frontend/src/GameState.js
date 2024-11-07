@@ -20,9 +20,3 @@ export default class GameState{
     playedNoteTimePairs = [];
 
 }
-
-// const gs = new GameState();
-
-// const json = JSON.stringify(gs, null, 4);
-
-// console.log(json);
