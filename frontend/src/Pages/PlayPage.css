@@ -26,19 +26,17 @@
     border-color: #0000cea3 !important;
 }
 
-.progress {
-    height: 58px !important;
-    padding-left: 0 !important;
-    font-weight: bold;
+.progress-bar-continer {
+    height: 58px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #406086;
 }
 
-.progress-bar {
-    font-size: 16px;
-    top: 0;
-    height: 58px !important;
-    appearance: 'none';
-    background-color: #0a9848 !important;
-}
+
 
 .black-notes {
     position: absolute;

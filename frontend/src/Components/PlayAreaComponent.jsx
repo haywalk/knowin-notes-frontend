@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import lines from '../assets/lines.png'
-import treble_clef from '../assets/treble_clef.png'
-import bass_clef from '../assets/bass_clef.png'
 import single_note from '../assets/single_note.png'
+import treble_clef from '../assets/treble_clef.png'
+import * as React from "react";
+import { ProgressBar } from "./ProgressBar"
 
-export function PlayAreaComponent() {
+export function PlayAreaComponent(props) {
+
     return (
         <>
             <div className="container-sm">
@@ -12,9 +14,11 @@ export function PlayAreaComponent() {
                     <div className="col-md-1 my-3">
                         <Link to="#"><button className="d-grid py-3 btn pause" role="button">Pause</button></Link>
                     </div>
-                    <div className="col-md-10 my-3 progress">
-                        <div className="progress-bar" role="progressbar" style={{width: '25%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">1:43</div>
+                    
+                    <div className="col-md-10 my-3">
+                        <ProgressBar/>
                     </div>
+
                     <div className="col-md-1 my-3">
                         <Link to="/settings"><button className="d-grid py-3 btn stop" role="button">Stop</button></Link>
                     </div>
