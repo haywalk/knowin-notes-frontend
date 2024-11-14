@@ -1,7 +1,7 @@
 function Report(props) {
     return (
         <>
-            <p>{props.date} {props.time}</p>
+            <p>{props.date} at {props.time}</p>
             <p>{props.type} based practice</p>
             <p>Accuracy: {props.accuracy}</p>
             <p>Time: {props.chronometer}</p>

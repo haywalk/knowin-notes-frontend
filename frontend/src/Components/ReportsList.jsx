@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 export default function ReportsList() {
     const [reports, setReports] = useState(historyData);
-    console.log(reports);
     return (
         <>
             {reports.map((item) => (

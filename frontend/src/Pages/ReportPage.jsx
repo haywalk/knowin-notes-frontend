@@ -21,7 +21,7 @@ export function ReportPage() {
                 </div>
                 <div className='row report-content'>
                     <div className='col-md-12'>
-                        <p>{report.date} {report.time}</p>
+                        <p>{report.date} at {report.time}</p>
                         <p>{report.type} based practice</p>
                         <p>Accuracy: {report.accuracy}</p>
                         <p>Time: {report.chronometer}</p>

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import Report from '../Components/Report';
-import ReportCard from '../Components/ReportCard';
 import './HistoryPage.css';
 import ReportsList from '../Components/ReportsList';
 
