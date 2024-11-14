@@ -4,6 +4,9 @@ import treble_clef from '../assets/treble_clef.png'
 import bass_clef from '../assets/bass_clef.png'
 import single_note from '../assets/single_note.png'
 
+
+// UPdate loop reference: 
+// https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
 let frameCount = 0;
 
 function updateLoop(frameTime) {
