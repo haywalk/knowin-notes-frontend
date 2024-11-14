@@ -36,8 +36,6 @@
     background-color: #406086;
 }
 
-
-
 .black-notes {
     position: absolute;
     left: -38px;
@@ -57,6 +55,10 @@
     border-color: #303030 !important;
 }
 
+.black-note input {
+    display: none;
+}
+
 .white-note {
     background-color: #fff !important;
     border-color: #fff !important;
@@ -69,6 +71,10 @@
 .white-note:hover {
     background-color: #d7d7d7 !important;
     border-color: #d7d7d7 !important;
+}
+
+.white-note input {
+    display: none;
 }
 
 .third {

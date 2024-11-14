@@ -1,0 +1,29 @@
+input {
+    width: 100%;
+    color: #fff;
+}
+  
+label {
+    border-width: 2px !important;
+    display: none;
+    width: 100%;
+    color: #fff;
+}
+
+p {
+    color: #fff;
+}
+
+.radio,
+.radio2 {
+    display: none;
+}
+
+#clef-1:checked ~ .label-1,
+#clef-2:checked ~ .label-2,
+#melody-1:checked ~ .label-3,
+#melody-2:checked ~ .label-4{
+    border-width: 2px !important;
+    border-color: rgb(30, 141, 252) !important;
+    background-color: #575E64;
+}

@@ -37,21 +37,6 @@ button {
   width: 100%;
 }
 
-input, label {
-  display: none;
-  width: 100%;
-  color: #fff;
-}
-
-label {
-  border-width: 2px !important;
-}
-
-.active {
-  border-width: 2px !important;
-  border-color: rgb(30, 141, 252) !important;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
