@@ -6,7 +6,6 @@ import { useLocation } from 'react-router-dom';
 export function SettingsMenu() {
 
     const location = useLocation();
-    const buttonType = location.state?.buttonType;
 
     const [val, setVal] = useState("20");
     const click = () => {
@@ -36,10 +35,10 @@ export function SettingsMenu() {
                     <div className="row">
                         {/*<div className="col-md-12"><Link to=""><button className="d-grid py-3 my-2 btn btn-secondary" role="button">20 minutes</button></Link><Dropdown buttonText="Dropdown Button" content={<p>Hello World!</p>}/></div>*/}
                         <div className="offset-md-4 col-md-2">
-                            {buttonType === "t" ? <p>Time in minutes:</p> : <p>Number of notes:</p>}
+                            {location.state == "n" ? <p>Number of notes:</p> : <p>Time in minutes:</p>}
                         </div>
                         <div className="col-md-1">
-                            <input type="text" name={buttonType === "t" ? "time" : "number of notes"} onClick={click} onChange={change} value={val}/>
+                            <input type="text" name={location.state == "n" ? "number of notes" : "time"} onClick={click} onChange={change} value={val}/>
                         </div>
                     </div>
 
@@ -69,7 +68,7 @@ export function SettingsMenu() {
                     </div>
                     <div className='row'>
                         <div className="col-md-6 offset-md-2 my-3">
-                            <Link to="/play_area"><button type="submit" className="d-grid py-3 btn btn-primary" role="button">Play</button></Link>
+                        <Link to="/play_area"><button type="submit" className="d-grid py-3 btn btn-primary" role="button">Play</button></Link>
                         </div>
                         <div className="col-md-2 my-3">
                             <Link to="/"><button className="d-grid py-3 btn btn-secondary" role="button">Back</button></Link>
