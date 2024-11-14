@@ -11,7 +11,7 @@ export function ReportPage() {
     let params = useParams();
     let id = params.id
     let report = reports[reports.length - id - 1]
-    let printLink = "http://localhost:8080/api/GENERATE_PDF?id="
+    let printLink = "http://localhost:8080/api/GENERATE_PDF?id=".concat(id.toString())
     return (
         <>
             <div className="container">
@@ -64,7 +64,7 @@ export function ReportPage() {
                         <Link to="/"><button className="d-grid btn btn-secondary"role="button">Home</button></Link>
                     </div>
                     <div className='col-md-1'>
-                        <Link to={printLink.concat(id.toString)}></div><button className="d-grid btn btn-secondary"role="button">Print</button></Link>
+                        <Link to={printLink}></div><button className="d-grid btn btn-secondary"role="button">Print</button></Link>
                     </div>
                     <div className='col-md-1'>
                         <Link to=""><button className="d-grid btn btn-secondary" role="button">Redo</button></Link>
