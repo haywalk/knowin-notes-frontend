@@ -69,7 +69,7 @@ export function SettingsMenu() {
                     </div>
                     <div className='row'>
                         <div className="col-md-6 offset-md-2 my-3">
-                            <button type="submit" className="d-grid py-3 btn btn-primary" role="button">Play</button>
+                            <Link to="/play_area"><button type="submit" className="d-grid py-3 btn btn-primary" role="button">Play</button></Link>
                         </div>
                         <div className="col-md-2 my-3">
                             <Link to="/"><button className="d-grid py-3 btn btn-secondary" role="button">Back</button></Link>
