@@ -9,6 +9,10 @@
     display: inline-block !important;
 }
 
+.card p {
+    color: #000 !important;
+}
+
 .history-title {
     color: #fff;
     font-weight: bold;
