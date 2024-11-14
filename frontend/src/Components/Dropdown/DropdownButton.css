@@ -1,0 +1,24 @@
+.dropdown-btn {
+    display: flex;
+    width: fit-content;
+    padding: 16px;
+    background-color: #6C757D;
+    border-radius: 6px;
+    cursor: pointer;
+    border: #6C757D 2px solid !important;
+    color: #fff;
+    width: 100%;
+    align-items: center;
+}
+
+.toggle-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+}
+
+.button-open {
+    border: rgb(30, 141, 252) 2px solid !important;
+    background-color: #575E64;
+}
