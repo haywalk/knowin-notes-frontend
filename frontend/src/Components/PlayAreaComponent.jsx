@@ -4,6 +4,27 @@ import treble_clef from '../assets/treble_clef.png'
 import bass_clef from '../assets/bass_clef.png'
 import single_note from '../assets/single_note.png'
 
+let frameCount = 0;
+
+function updateLoop(frameTime) {
+    frameCount++;
+    // Only updating every second frame to reduce the number of API calls.
+    // Runs at 30fps.
+    if (frameCount >= 2) {
+        // Send API request
+        // Determine if response is gamestate or report
+        // If gameState:
+        //   Store new gamestate (props?)
+        //   render(gameState)
+        // else:
+        //   navigate to report page and stop updating
+        console.log("Updating!");
+        frameCount = 0;
+    }
+    requestAnimationFrame(updateLoop);
+}
+updateLoop();
+
 export function PlayAreaComponent() {
     return (
         <>
