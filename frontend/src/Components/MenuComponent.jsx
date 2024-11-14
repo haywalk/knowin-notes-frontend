@@ -11,10 +11,10 @@ export function Menu() {
                 <br/>
                 <div className="row">
                     <div className="col-md-4 offset-md-2">
-                        <Link to="/settings"><button className="d-grid py-5 btn btn-primary" role="button">Timed Based Practice</button></Link>
+                        <Link to={{ pathname: "/settings", state: { buttonType: "t" } }}><button className="d-grid py-5 btn btn-primary" role="button">Timed Based Practice</button></Link>
                     </div>
                     <div className="col-md-4">
-                        <Link to="/settings"><button className="d-grid py-5 btn btn-primary" role="button">Number of Notes Based Practice</button></Link>
+                        <Link to={{ pathname: "/settings", state: { buttonType: "n" } }}><button className="d-grid py-5 btn btn-primary" role="button">Number of Notes Based Practice</button></Link>
                     </div>
                 </div>
                 <div className="row">
