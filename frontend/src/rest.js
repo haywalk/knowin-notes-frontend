@@ -21,7 +21,35 @@ export function getHistory() {
 
     axios.get(url)
         .then(response => {
-            // Parse out the history JSON and return it.
+            // Parse the history JSON and return it.
+            console.log(response.data);
+            // return JSON.parse(response.data);
+        })
+        .catch(error => {
+            console.log(`Error: ${error.response.status}`);
+        });
+}
+
+export function getReport(id) {
+    const url = `http://localhost:8088/api/id=` + id.toString();
+
+    axios.get(url)
+        .then(response => {
+            // Parse the report JSON and return it.
+            console.log(response.data);
+            // return JSON.parse(response.data);
+        })
+        .catch(error => {
+            console.log(`Error: ${error.response.status}`);
+        });
+}
+
+export function getPDF(id) {
+    const url = `http://localhost:8088/api/GENERATE_PDF/id=` + id.toString();
+
+    axios.get(url)
+        .then(response => {
+            // Should be a byte stream for a pdf
             console.log(response.data);
             // return JSON.parse(response.data);
         })
