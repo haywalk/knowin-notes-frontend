@@ -63,7 +63,7 @@ export function ReportPage() {
                         <Link to="/"><button className="d-grid btn btn-secondary"role="button">Home</button></Link>
                     </div>
                     <div className='col-md-1'>
-                        <Link to=""><button className="d-grid btn btn-secondary"role="button">Print</button></Link>
+                        <Link to="http://localhost:8080/api/GENERATE_PDF?id="${id.toString()}><button className="d-grid btn btn-secondary"role="button">Print</button></Link>
                     </div>
                     <div className='col-md-1'>
                         <Link to=""><button className="d-grid btn btn-secondary" role="button">Redo</button></Link>
