@@ -1,11 +1,11 @@
 
 
 export default class GameState{
-    gameMode = "timed";
-    gameDuration = 2; //minutes
+    gameMode = "";
+    gameDuration = -1; //minutes
     notesInGame = -1;
     timePerNote = -1;
-    clef = "treble"
+    clef = ""
     noteTypes = ["single"];
 
     // Time related variables
