@@ -8,15 +8,17 @@ import GameState from '../GameState';
 export function SettingsMenu() {
     const navigate = useNavigate();
     const location = useLocation();
-    const gameState = new GameState();
+    let gameState = new GameState();
 
+    /*
     const onClickPlay = () => {
         let gameState = new GameState();
         // Create game state
         navigate('/play_area', { state: { gameState: gameState } });
     }
+    */
 
-    const [val, setVal] = useState("20");
+    const [val, setVal] = useState("2");
     const click = () => {
         setVal("");
     }
@@ -28,10 +30,18 @@ export function SettingsMenu() {
         event.preventDefault();
         let form = event.target;
         let formData = new FormData(form);
-        let formDataObj = Object.fromEntries(formData.entries());
-        let formJSON = JSON.stringify(formDataObj);
 
-        console.log(formJSON);
+        gameState.gameMode = formData.get("gameMode");
+        if (formData.get("gameMode") === "timed") {
+            gameState.gameDuration = formData.get("gameDuration");
+        }
+        else {
+            gameState.notesInGame = formData.get("notesInGame");
+        }
+        gameState.clef = formData.get("clef");
+
+        // Create game state
+        navigate('/play_area', { state: { gameState: gameState } });
     }
 
     return (
@@ -47,28 +57,29 @@ export function SettingsMenu() {
                             {location.state == "n" ? <p>Number of notes:</p> : <p>Time in minutes:</p>}
                         </div>
                         <div className="col-md-1">
-                            <input type="text" name={location.state == "n" ? "number of notes" : "time"} onClick={click} onChange={change} value={val}/>
+                            <input type="hidden" name="gameMode" value={location.state == "n" ? "notes" : "timed"}/>
+                            <input type="text" name={location.state == "n" ? "notesInGame" : "gameDuration"} onClick={click} onChange={change} value={val}/>
                         </div>
                     </div>
 
                     <div className='row'>
                         <div className="col-md-6 my-3">
-                            <input type="radio" id="clef-1" name="clef" value="Treble Clef" className="radio" defaultChecked/>
+                            <input type="radio" id="clef-1" name="clef" value="treble" className="radio" defaultChecked/>
                             <label className="py-3 btn btn-secondary label label-1" htmlFor="clef-1">Treble Clef</label>
                         </div>
                         <div className="col-md-6 my-3">
-                            <input type="radio" id="clef-2" name="clef" value="Bass Clef" className="radio"/>
+                            <input type="radio" id="clef-2" name="clef" value="bass" className="radio"/>
                             <label className="py-3 btn btn-secondary label label-2" htmlFor="clef-2">Bass Clef</label>
                         </div>
                     </div>
 
                     <div className='row'>
                         <div className="col-md-4 my-2">
-                            <input type="radio" id="melody-1" name="melody" value="Single Notes" className="radio" defaultChecked/>
+                            <input type="radio" id="melody-1" name="melody" value="single" className="radio" defaultChecked/>
                             <label className="py-3 btn btn-secondary label label-3" htmlFor="melody-1">Single Notes</label>
                         </div>
                         <div className="col-md-4 my-2">
-                            <input type="radio" id="melody-2" name="melody" value="Melodies" className="radio"/>
+                            <input type="radio" id="melody-2" name="melody" value="melodies" className="radio"/>
                             <label className="py-3 btn btn-secondary label label-4" htmlFor="melody-2">Melodies</label>
                         </div>
                         <div className="col-md-4 my-2">
@@ -77,7 +88,7 @@ export function SettingsMenu() {
                     </div>
                     <div className='row'>
                         <div className="col-md-6 offset-md-2 my-3">
-                        <button onClick={onClickPlay} type="submit" className="d-grid py-3 btn btn-primary" role="button">Play</button>
+                        <button /*onClick={onClickPlay}*/ type="submit" className="d-grid py-3 btn btn-primary" role="button">Play</button>
                         </div>
                         <div className="col-md-2 my-3">
                             <Link to="/"><button className="d-grid py-3 btn btn-secondary" role="button">Back</button></Link>
