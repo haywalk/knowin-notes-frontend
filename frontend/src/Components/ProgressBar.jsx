@@ -1,7 +1,7 @@
-    import React, { useEffect, useState } from 'react'
-import './ProgressBar.css'
+import React, { useEffect, useState } from 'react';
+import './ProgressBar.css';
 
-export const ProgressBar = () => {
+export function ProgressBar({gameState}) {
     const [progress, setProgress] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);

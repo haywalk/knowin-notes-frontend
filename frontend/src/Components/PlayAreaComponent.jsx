@@ -73,7 +73,7 @@ export function PlayAreaComponent({gameState}) {
                     </div>
                     
                     <div className="col-md-10 my-3">
-                        <ProgressBar/>
+                        <ProgressBar gameState={_gameState}/>
                     </div>
 
                     <div className="col-md-1 my-3">
