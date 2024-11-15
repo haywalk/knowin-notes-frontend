@@ -1,8 +1,17 @@
 import reactLogo from '../assets/react.svg';
 import viteLogo from '/vite.svg';
 import { Link } from 'react-router-dom';
+import { getHistory } from '../rest.js';
 
 export function Menu() {
+    const handleHistoryClick = () => {
+        getHistory().then(() => {
+            window.location.href = '/#/history';
+        }).catch(error => {
+            console.error('Error fetching history:', error);
+        });
+    };
+
     return (
         <>
             <div className="container">
@@ -19,11 +28,10 @@ export function Menu() {
                 </div>
                 <div className="row">
                     <div className="col-md-8 offset-md-2">
-                        <Link to="/history"><button className="d-grid py-5 my-4 btn btn-secondary" role="button">History</button></Link>
+                        <button onClick={handleHistoryClick} className="d-grid py-5 my-4 btn btn-secondary" role="button">History</button>
                     </div>
                 </div>
             </div>
-
         </>
     )
 }
