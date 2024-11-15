@@ -11,6 +11,8 @@ export function SettingsMenu() {
     const gameState = new GameState();
 
     const onClickPlay = () => {
+        let gameState = new GameState();
+        // Create game state
         navigate('/play_area', { state: { gameState: gameState } });
     }
 

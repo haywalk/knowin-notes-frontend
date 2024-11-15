@@ -9,14 +9,14 @@ import { useState, useEffect } from 'react';
 import { updateGameState } from '../rest';
 
 const updateEveryNFrames = 3;
-let _gameState = null;
+const _gameState = new GameState();
 
 export function PlayAreaComponent({gameState}) {
     // Update loop reference: 
     // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
 
     function startGame(){
-        _gameState = gameState;
+        // _gameState = gameState;
         console.log(_gameState);
         console.log("Game starting!");
         updateLoop();
@@ -37,7 +37,7 @@ export function PlayAreaComponent({gameState}) {
         //     // Assume a state is returned and update UI
         //     let json = tmp.substring("STATE".length);
         //     _gameState = JSON.parse(json);
-        //     // Update UI as needed
+        //     //Update UI as needed
         // }
         // else{
         //     // Assume a report is returned
