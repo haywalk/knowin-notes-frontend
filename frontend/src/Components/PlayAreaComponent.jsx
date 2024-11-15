@@ -11,7 +11,6 @@ import { ProgressBar } from "./ProgressBar"
 import './PlayAreaComponent.css'
 
 const updateEveryNFrames = 3;
-const _gameState = new GameState();
 
 const notes_dict_bass = {
     "c3":  [65, false],
@@ -46,6 +45,7 @@ const notes_dict_treble = {
 };
 
 export function PlayAreaComponent({gameState}) {
+    const _gameState = gameState;
 
     const currNote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
     const isSharp = currNote.length === 3;
