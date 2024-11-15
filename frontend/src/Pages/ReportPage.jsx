@@ -64,7 +64,7 @@ export function ReportPage() {
                         <Link to="/"><button className="d-grid btn btn-secondary"role="button">Home</button></Link>
                     </div>
                     <div className='col-md-1'>
-                        <Link to={printLink}></div><button className="d-grid btn btn-secondary"role="button">Print</button></Link>
+                        <Link to={printLink}><button className="d-grid btn btn-secondary"role="button">Print</button></Link>
                     </div>
                     <div className='col-md-1'>
                         <Link to=""><button className="d-grid btn btn-secondary" role="button">Redo</button></Link>
