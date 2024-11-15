@@ -1,6 +1,6 @@
 import axios from 'axios';
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 export function updateGameState(gamestate) {
     var b64 = btoa(JSON.stringify(gamestate));
@@ -12,17 +12,7 @@ export function updateGameState(gamestate) {
             // Parse out the report if a report is returned
             let str = atob(response.data);
             console.log(str);
-
-            if(str[0] == 'S' || str[0] == 's'){
-                // Assume a state is returned
-                let json = str.substring("STATE".length);
-                return JSON.parse(json);
-            }
-            else{
-                // Assume a report is returned
-                let json = str.substring("REPORT".length);
-                return JSON.parse(json);
-            }
+            return str;
         })
         .catch(error => {
             console.log(`Error: ${error.response.status}`);

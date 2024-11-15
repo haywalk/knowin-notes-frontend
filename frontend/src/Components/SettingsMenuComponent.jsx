@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom'
 import './SettingsMenuComponent.css'
 import { useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import GameState from '../GameState';
+
 
 export function SettingsMenu() {
-
+    const navigate = useNavigate();
     const location = useLocation();
+    const gameState = new GameState();
+
+    const onClickPlay = () => {
+        navigate('/play_area', { state: { gameState: gameState } });
+    }
 
     const [val, setVal] = useState("20");
     const click = () => {
@@ -68,7 +75,7 @@ export function SettingsMenu() {
                     </div>
                     <div className='row'>
                         <div className="col-md-6 offset-md-2 my-3">
-                        <Link to="/play_area"><button type="submit" className="d-grid py-3 btn btn-primary" role="button">Play</button></Link>
+                        <button onClick={onClickPlay} type="submit" className="d-grid py-3 btn btn-primary" role="button">Play</button>
                         </div>
                         <div className="col-md-2 my-3">
                             <Link to="/"><button className="d-grid py-3 btn btn-secondary" role="button">Back</button></Link>

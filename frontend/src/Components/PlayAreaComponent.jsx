@@ -4,31 +4,66 @@ import single_note from '../assets/single_note.png'
 import treble_clef from '../assets/treble_clef.png'
 import * as React from "react";
 import { ProgressBar } from "./ProgressBar"
+import GameState from '../GameState';
+import { useState, useEffect } from 'react';
+import { updateGameState } from '../rest';
 
-// UPdate loop reference: 
-// https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
-let frameCount = 0;
+const updateEveryNFrames = 3;
+let _gameState = null;
 
-function updateLoop(frameTime) {
-    frameCount++;
-    // Only updating every second frame to reduce the number of API calls.
-    // Runs at 30fps.
-    if (frameCount >= 2) {
-        // Send API request
-        // Determine if response is gamestate or report
-        // If gameState:
-        //   Store new gamestate (props?)
-        //   render(gameState)
-        // else:
-        //   navigate to report page and stop updating
-        console.log("Updating!");
-        frameCount = 0;
+export function PlayAreaComponent({gameState}) {
+    // Update loop reference: 
+    // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
+
+    function startGame(){
+        _gameState = gameState;
+        console.log(_gameState);
+        console.log("Game starting!");
+        updateLoop();
     }
-    requestAnimationFrame(updateLoop);
-}
-updateLoop();
 
-export function PlayAreaComponent() {
+    function updateLoop() {
+        // Not updating every frame to reduce the number of API calls.
+        // Runs at 30fps.        
+        setFrameCount(frameCount => frameCount + 1);
+        requestAnimationFrame(updateLoop);
+    }
+
+    function render(){
+        // Send API request
+        // let tmp = updateGameState(gameState);
+        // // Check if the game is still going
+        // if(tmp[0] == 'S' || tmp[0] == 's'){
+        //     // Assume a state is returned and update UI
+        //     let json = tmp.substring("STATE".length);
+        //     _gameState = JSON.parse(json);
+        //     // Update UI as needed
+        // }
+        // else{
+        //     // Assume a report is returned
+        //     let json = tmp.substring("REPORT".length);
+        //     // QUIT GAME, pass along the report JSON to next page
+        // }
+        console.log("rendering...");
+    }
+    
+    const [frameCount, setFrameCount] = useState(2);
+    // Called once on initial render and once whenever setFrameCount is called
+    useEffect(() => {
+        if(frameCount % updateEveryNFrames != 0) return;
+        render();
+    }, [frameCount]);
+
+    // Prevents startGame being called twice (strange bug...)
+    let hasStarted = false; 
+    // Called once on initial render
+    useEffect(() => {
+        if (!hasStarted) {
+            startGame();
+            hasStarted = true;
+        }
+    }, []);
+
     return (
         <>
             <div className="container-sm">
