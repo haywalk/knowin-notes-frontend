@@ -1,8 +1,10 @@
 import axios from 'axios';
+const fs = require('fs');
+const path = require('path');
 
 export function updateGameState(gamestate) {
     var b64 = btoa(JSON.stringify(gamestate));
-    const url = `http://localhost:8088/api/GET_STATE?old=${b64}`;
+    const url = `http://localhost:8080/api/GET_STATE?old=${b64}`;
 
     axios.get(url)
         .then(response => {
@@ -17,21 +19,27 @@ export function updateGameState(gamestate) {
 }
 
 export function getHistory() {
-    const url = `http://localhost:8088/api/LIST_REPORTS`;
+    const url = `http://localhost:8080/api/LIST_REPORTS`;
 
     axios.get(url)
         .then(response => {
-            // Parse the history JSON and return it.
-            console.log(response.data);
-            // return JSON.parse(response.data);
+            // Save the history json
+            const historyFilePath = path.join(__dirname, 'db', 'history-list.json');
+            fs.writeFile(historyFilePath, JSON.stringify(response.data, null, 2), (err) => {
+                if (err) {
+                    console.error('Error writing to history-list.json:', err);
+                } else {
+                    console.log('History successfully written to history-list.json');
+                }
+            });
         })
         .catch(error => {
-            console.log(`Error: ${error.response.status}`);
+            console.log(`Error: ${error.status}`);
         });
 }
 
 export function getReport(id) {
-    const url = `http://localhost:8088/api/id=` + id.toString();
+    const url = `http://localhost:8080/api/id=` + id.toString();
 
     axios.get(url)
         .then(response => {
@@ -45,7 +53,7 @@ export function getReport(id) {
 }
 
 export function getPDF(id) {
-    const url = `http://localhost:8088/api/GENERATE_PDF/id=` + id.toString();
+    const url = `http://localhost:8080/api/GENERATE_PDF/id=` + id.toString();
 
     axios.get(url)
         .then(response => {
