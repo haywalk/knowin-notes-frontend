@@ -10,8 +10,19 @@ export function updateGameState(gamestate) {
         .then(response => {
             // Parse out the game state if a gamestate is returned
             // Parse out the report if a report is returned
-            console.log(response.data);
-            console.log(atob(response.data));
+            let str = atob(response.data);
+            console.log(str);
+
+            if(str[0] == 'S' || str[0] == 's'){
+                // Assume a state is returned
+                let json = str.substring("STATE".length);
+                return JSON.parse(json);
+            }
+            else{
+                // Assume a report is returned
+                let json = str.substring("REPORT".length);
+                return JSON.parse(json);
+            }
         })
         .catch(error => {
             console.log(`Error: ${error.response.status}`);
@@ -43,15 +54,15 @@ export function getReport(id) {
 
     axios.get(url)
         .then(response => {
-            // Parse the report JSON and return it.
             console.log(response.data);
-            // return JSON.parse(response.data);
+            return response.data; // Just a JSON of the Report
         })
         .catch(error => {
             console.log(`Error: ${error.response.status}`);
         });
 }
 
+// Is this unneeded now?
 export function getPDF(id) {
     const url = `http://localhost:8080/api/GENERATE_PDF/id=` + id.toString();
 
