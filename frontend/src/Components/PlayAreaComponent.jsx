@@ -5,8 +5,30 @@ import treble_clef from '../assets/treble_clef.png'
 import * as React from "react";
 import { ProgressBar } from "./ProgressBar"
 
-export function PlayAreaComponent(props) {
+// UPdate loop reference: 
+// https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
+let frameCount = 0;
 
+function updateLoop(frameTime) {
+    frameCount++;
+    // Only updating every second frame to reduce the number of API calls.
+    // Runs at 30fps.
+    if (frameCount >= 2) {
+        // Send API request
+        // Determine if response is gamestate or report
+        // If gameState:
+        //   Store new gamestate (props?)
+        //   render(gameState)
+        // else:
+        //   navigate to report page and stop updating
+        console.log("Updating!");
+        frameCount = 0;
+    }
+    requestAnimationFrame(updateLoop);
+}
+updateLoop();
+
+export function PlayAreaComponent() {
     return (
         <>
             <div className="container-sm">
