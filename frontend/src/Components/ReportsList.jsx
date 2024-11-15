@@ -1,12 +1,28 @@
-import React, {useState} from "react"
-// Components
-import historyData from "../db/history-list.json"
+import React, {useState, useEffect} from "react"
 // Data
 import Report from "./Report";
 import { Link } from "react-router-dom";
+import { getHistory } from "../rest";
 
 export default function ReportsList() {
-    const [reports, setReports] = useState(historyData);
+
+    const [loading, setLoading] = useState(true);
+    const [reports, setReports] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            if(!loading) return;
+            const history = await getHistory();
+            setReports(history);
+            setLoading(false);
+        }
+        fetchData();
+    }, []);
+
+    if (loading) {
+        return <><h1>Loading...</h1></>;
+    }
+
     return (
         <>
             {reports.map((item) => (
