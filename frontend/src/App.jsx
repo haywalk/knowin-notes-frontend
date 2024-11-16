@@ -8,17 +8,17 @@ import { SettingsPage } from './Pages/SettingsPage'
 
 function App() {
 
-  return (
+return (
     <Router>
-      <Routes>
-        <Route path="/" element={<HomePage/>}/>
-        <Route path="/settings" element={<SettingsPage/>}/>
-        <Route path="/play_area" element={<PlayPage/>}/>
-        <Route path="/history" element={<HistoryPage/>}/>
-        <Route path="/report/:id" element={<ReportPage/>}/>
-      </Routes>
+        <Routes>
+            <Route path="/" element={<HomePage/>}/>
+            <Route path="/settings" element={<SettingsPage/>}/>
+            <Route path="/play_area" element={<PlayPage/>}/>
+            <Route path="/history" element={<HistoryPage/>}/>
+            <Route path="/report/:id" element={<ReportPage/>}/>
+        </Routes>
     </Router>
-  )
+)
 }
 
 export default App
