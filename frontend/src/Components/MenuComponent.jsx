@@ -1,16 +1,14 @@
 import reactLogo from '../assets/react.svg';
 import viteLogo from '/vite.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getHistory } from '../rest.js';
 
 export function Menu() {
+    const navigate = new useNavigate();
+
     const handleHistoryClick = () => {
-        getHistory().then(() => {
-            window.location.href = '/#/history';
-        }).catch(error => {
-            console.error('Error fetching history:', error);
-        });
-    };
+        navigate('/history');
+    }
 
     return (
         <>

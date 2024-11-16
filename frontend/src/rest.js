@@ -1,6 +1,4 @@
 import axios from 'axios';
-const fs = require('fs');
-const path = require('path');
 
 export function updateGameState(gamestate) {
     var b64 = btoa(JSON.stringify(gamestate));
@@ -12,17 +10,7 @@ export function updateGameState(gamestate) {
             // Parse out the report if a report is returned
             let str = atob(response.data);
             console.log(str);
-
-            if(str[0] == 'S' || str[0] == 's'){
-                // Assume a state is returned
-                let json = str.substring("STATE".length);
-                return JSON.parse(json);
-            }
-            else{
-                // Assume a report is returned
-                let json = str.substring("REPORT".length);
-                return JSON.parse(json);
-            }
+            return str;
         })
         .catch(error => {
             console.log(`Error: ${error.response.status}`);
@@ -32,20 +20,17 @@ export function updateGameState(gamestate) {
 export function getHistory() {
     const url = `http://localhost:8080/api/LIST_REPORTS`;
 
-    axios.get(url)
+    return axios.get(url)
         .then(response => {
             // Save the history json
-            const historyFilePath = path.join(__dirname, 'db', 'history-list.json');
-            fs.writeFile(historyFilePath, JSON.stringify(response.data, null, 2), (err) => {
-                if (err) {
-                    console.error('Error writing to history-list.json:', err);
-                } else {
-                    console.log('History successfully written to history-list.json');
-                }
-            });
+            try {
+                return response.data;
+            } catch (err) {
+                console.error('Error writing to localStorage:', err);
+            }
         })
         .catch(error => {
-            console.log(`Error: ${error.status}`);
+            console.log(`Error: ${error}`);
         });
 }
 
