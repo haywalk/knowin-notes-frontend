@@ -1,17 +1,33 @@
-import React, { useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { Link, useLocation, useParams } from "react-router-dom"
 import lines from '../assets/lines.png'
 import single_note from '../assets/single_note.png'
 import treble_clef from '../assets/treble_clef.png'
-import historyData from "../db/history-list.json"
 import './ReportPage.css'
+import { getReport } from "../rest"
 
 export function ReportPage() {
-    let [reports, setReports] = useState(historyData);
-    let params = useParams();
-    let id = params.id
-    let report = reports[reports.length - id - 1]
-    let printLink = "http://localhost:8080/api/GENERATE_PDF?id=".concat(id.toString())
+    const params = useParams();
+    let id = params.id;
+
+    const [loading, setLoading] = useState(true);
+    const [report, setReport] = useState(null);
+
+    useEffect(() => {
+        async function fetchData() {
+            if(!loading) return;
+            const rp = await getReport(id);
+            setReport(rp);
+            setLoading(false);
+        }
+        fetchData();
+    }, []);
+
+    if (loading) {
+        return <><h1>Loading...</h1></>;
+    }
+
+    let printLink = `http://localhost:8080/api/GENERATE_PDF?id=${id}`;
     return (
         <>
             <div className="container">
