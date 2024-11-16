@@ -9,7 +9,7 @@ export default class GameState{
     noteTypes = ["single"];
 
     // Time related variables
-    gameStartTime = Date.now();
+    gameStartTime = null;
     currentTime = Date.now();
 
     // Notes and a timestamp of when they were displayed
