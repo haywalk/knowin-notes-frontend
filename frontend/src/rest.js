@@ -4,16 +4,13 @@ export function updateGameState(gamestate) {
     var b64 = btoa(JSON.stringify(gamestate));
     const url = `http://localhost:8080/api/GET_STATE?old=${b64}`;
 
-    axios.get(url)
+    return axios.get(url)
         .then(response => {
-            // Parse out the game state if a gamestate is returned
-            // Parse out the report if a report is returned
-            let str = atob(response.data);
-            console.log(str);
+            let str = response.data;
             return str;
         })
         .catch(error => {
-            console.log(`Error: ${error.response.status}`);
+            console.log(`Error: ${error}`);
         });
 }
 

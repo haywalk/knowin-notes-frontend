@@ -80,9 +80,9 @@ export default class MIDIKeyboard{
         // make space for audio instances (necessary?)
         for(let i = 0; i < 128; i++){
             this.#audios[i] = null; 
-        if (i >= this.#noteOffset && i < this.#noteOffset + soundfiles.length) {
-            this.#audios[i] = new Audio("src/assets/" + soundfiles[i - this.#noteOffset]);
-        }
+            if (i >= this.#noteOffset && i < this.#noteOffset + soundfiles.length) {
+                this.#audios[i] = new Audio("src/assets/" + soundfiles[i - this.#noteOffset]);
+            }
         }
         this.#midi = midiAccess;
         this.#isEnabled = true;

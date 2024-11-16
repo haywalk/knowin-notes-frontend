@@ -9,6 +9,8 @@ import sharp from '../assets/sharp.png'
 import GameState from '../GameState'
 import { ProgressBar } from "./ProgressBar"
 import './PlayAreaComponent.css'
+import { updateGameState } from "../rest"
+import MIDIKeyboard from "../midikeyboard"
 
 const updateEveryNFrames = 3;
 
@@ -44,6 +46,7 @@ const notes_dict_treble = {
     "c5":  [16, true]
 };
 
+let keyboard = null;
 let currNote = `c4`;
 let isSharp = true;
 let noteTop = 0;
@@ -58,6 +61,8 @@ export function PlayAreaComponent({gameState}) {
     function startGame(){
         console.log(gameState);
         // inital render
+        keyboard = new MIDIKeyboard();
+        keyboard.tryConnect();
         render();
         updateLoop();
     }
@@ -72,6 +77,7 @@ export function PlayAreaComponent({gameState}) {
     function render(){
         placeNotes();
         // light up Keyboard UI
+        // Change note colour if correct/incorrect?
         console.log("rendering...");
     }
 
@@ -102,21 +108,22 @@ export function PlayAreaComponent({gameState}) {
     useEffect(() => {
         if(frameCount % updateEveryNFrames != 0) return;
         // request a new game state
-        // Send API request
-        // // Check if the game is still going
-        // else{
-        //     // Assume a report is returned
-        //     let json = tmp.substring("REPORT".length);
-        //     // QUIT GAME, pass along the report JSON to next page
-        // }
-        // if(tmp[0] == 'S' || tmp[0] == 's'){
-        //     // Assume a state is returned and update UI
-        //     let json = tmp.substring("STATE".length);
-        //     _gameState = JSON.parse(json);
-        //     //Update UI as needed
-        // }
-        // call render once the game state is received
-        setRenderToggle(!renderToggle);
+        async function fetchData(){
+            let response = await updateGameState(gameState);
+            console.log(`RESPONSE: ${response}`);
+            // Check if game is over
+            if(response[0] === 'R' || response[0] === 'r'){
+                // GAME IS OVER!!
+                return;
+            }
+    
+            // game the new gameState
+            gameState = JSON.parse(response.substring("STATE".length));
+            console.log(`UPDATED: ${gameState}`);
+            // call render once the game state is received
+            setRenderToggle(!renderToggle);
+        }
+        fetchData();
     }, [frameCount]);
 
     useEffect(() => {

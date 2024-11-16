@@ -6,7 +6,7 @@ export function ProgressBar({gameState}) {
 
     const [timeLeft, setTimeLeft] = useState(() => {
         const totalSeconds = gameState.gameDuration * 60;
-        const timeElapsedSeconds = (Date.now() - gameState.gameStartTime) / 1000;
+        const timeElapsedSeconds = (gameState.currentTime - gameState.gameStartTime) / 1000;
         return totalSeconds - timeElapsedSeconds;
     });
 

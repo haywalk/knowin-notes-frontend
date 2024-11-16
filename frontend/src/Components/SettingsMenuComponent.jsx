@@ -33,7 +33,7 @@ export function SettingsMenu() {
 
         gameState.gameMode = formData.get("gameMode");
         if (formData.get("gameMode") === "timed") {
-            gameState.gameDuration = formData.get("gameDuration");
+            gameState.gameDuration = Number(formData.get("gameDuration"));
         }
         else {
             gameState.notesInGame = formData.get("notesInGame");
