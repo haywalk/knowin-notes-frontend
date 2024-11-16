@@ -44,35 +44,21 @@ const notes_dict_treble = {
     "c5":  [16, true]
 };
 
+let currNote = `c4`;
+let isSharp = true;
+let noteTop = 0;
+let isRotated = false;
+let isTreble = true;
+let sharpTop = 85;
+
 export function PlayAreaComponent({gameState}) {
-    const _gameState = gameState;
-
-    const currNote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
-    const isSharp = currNote.length === 3;
-    let noteTop = 0;
-    let isRotated = false;
-    const isTreble = (_gameState.clef == "treble");
-    if (isTreble) {
-        isRotated = notes_dict_treble[currNote][1];
-        noteTop = notes_dict_treble[currNote][0];
-    }
-    else {
-        isRotated = notes_dict_bass[currNote][1];
-        noteTop = notes_dict_bass[currNote][0];
-    }
-
-    let sharpTop = noteTop + 85;
-    if (isRotated) {
-        noteTop += 93;
-    }
-
     // Update loop reference: 
     // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
 
     function startGame(){
-        // _gameState = gameState;
-        console.log(_gameState);
-        console.log("Game starting!");
+        console.log(gameState);
+        // inital render
+        render();
         updateLoop();
     }
 
@@ -84,29 +70,58 @@ export function PlayAreaComponent({gameState}) {
     }
 
     function render(){
+        placeNotes();
+        // light up Keyboard UI
+        console.log("rendering...");
+    }
+
+    function placeNotes(){
+        currNote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
+        isSharp = currNote.length === 3;
+        noteTop = 0;
+        isRotated = false;
+        isTreble = (gameState.clef == "treble");
+        if (isTreble) {
+            isRotated = notes_dict_treble[currNote][1];
+            noteTop = notes_dict_treble[currNote][0];
+        }
+        else {
+            isRotated = notes_dict_bass[currNote][1];
+            noteTop = notes_dict_bass[currNote][0];
+        }
+
+        sharpTop = noteTop + 85;
+        if (isRotated) {
+            noteTop += 93;
+        }
+    }
+    
+    const [frameCount, setFrameCount] = useState(2);
+    const [renderToggle, setRenderToggle] = useState(false);
+    // Called once on initial render and once whenever setFrameCount is called
+    useEffect(() => {
+        if(frameCount % updateEveryNFrames != 0) return;
+        // request a new game state
         // Send API request
-        // let tmp = updateGameState(gameState);
         // // Check if the game is still going
+        // else{
+        //     // Assume a report is returned
+        //     let json = tmp.substring("REPORT".length);
+        //     // QUIT GAME, pass along the report JSON to next page
+        // }
         // if(tmp[0] == 'S' || tmp[0] == 's'){
         //     // Assume a state is returned and update UI
         //     let json = tmp.substring("STATE".length);
         //     _gameState = JSON.parse(json);
         //     //Update UI as needed
         // }
-        // else{
-        //     // Assume a report is returned
-        //     let json = tmp.substring("REPORT".length);
-        //     // QUIT GAME, pass along the report JSON to next page
-        // }
-        console.log("rendering...");
-    }
-    
-    const [frameCount, setFrameCount] = useState(2);
-    // Called once on initial render and once whenever setFrameCount is called
-    useEffect(() => {
-        if(frameCount % updateEveryNFrames != 0) return;
-        render();
+        // call render once the game state is received
+        setRenderToggle(!renderToggle);
     }, [frameCount]);
+
+    useEffect(() => {
+        render();
+    }, [renderToggle]);
 
     // Prevents startGame being called twice (strange bug...)
     let hasStarted = false; 
@@ -127,7 +142,7 @@ export function PlayAreaComponent({gameState}) {
                     </div>
                     
                     <div className="col-md-10 my-3">
-                        <ProgressBar gameState={_gameState}/>
+                        <ProgressBar gameState={gameState}/>
                     </div>
 
                     <div className="col-md-1 my-3">
