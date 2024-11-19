@@ -1,30 +1,35 @@
-import { Link } from 'react-router-dom'
-import './SettingsMenuComponent.css'
-import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import GameState from '../GameState';
+import Dropdown from './Dropdown/Dropdown.jsx';
+import TimeBasedDropdown from './Dropdown/TimeBasedDropdown.jsx';
+import NoteBasedDropdown from './Dropdown/NoteBasedDropdown.jsx';
+import './SettingsMenuComponent.css';
 
 
 export function SettingsMenu() {
     const navigate = useNavigate();
     const location = useLocation();
+
     let gameState = new GameState();
 
-    /*
-    const onClickPlay = () => {
-        let gameState = new GameState();
-        // Create game state
-        navigate('/play_area', { state: { gameState: gameState } });
+    const[duration, setDuration] = useState(2);
+    function chooseDuration(dur) {
+        setDuration(dur);
     }
-    */
 
-    const [val, setVal] = useState("2");
-    const click = () => {
-        setVal("");
+    const[numberNotes, setNumberNotes] = useState(25);
+    function chooseNumberNotes(dur) {
+        setNumberNotes(dur);
     }
-    const change = event => {
-        setVal(event.target.value);
+
+    const[isTimeBased, setIsTimeBased] = useState(true);
+    function chooseIsTimeBased(isTimed) {
+        setIsTimeBased(isTimed);
+        setDuration(2);
+        setNumberNotes(25);
     }
+
 
     const handleForm = (event) => {
         event.preventDefault();
@@ -32,7 +37,7 @@ export function SettingsMenu() {
         let formData = new FormData(form);
 
         gameState.gameMode = formData.get("gameMode");
-        if (formData.get("gameMode") === "timed") {
+        if (gameState.gameMode === "timed") {
             gameState.gameDuration = formData.get("gameDuration");
         }
         else {
@@ -47,52 +52,66 @@ export function SettingsMenu() {
 
     return (
         <>
+            <br/><br/>
             <div className="container-sm">
-                <br/>
                 <h1 className="text-center">Settings</h1>
                 <br/>
                 <form onSubmit={handleForm}>
-                    <div className="row">
-                        {/*<div className="col-md-12"><Link to=""><button className="d-grid py-3 my-2 btn btn-secondary" role="button">20 minutes</button></Link><Dropdown buttonText="Dropdown Button" content={<p>Hello World!</p>}/></div>*/}
-                        <div className="offset-md-4 col-md-2">
-                            {location.state == "n" ? <p>Number of notes:</p> : <p>Time in minutes:</p>}
+                    <div className='row selection'>
+                        <div className="col-md-6">
+                            <input type="radio" id="mode-1" name="gameMode" onClick={() => chooseIsTimeBased(true)} value="timed" className="radio" defaultChecked/>
+                            <label className="py-3 btn btn-secondary label label-1" htmlFor="mode-1">Time-Based Practice</label>
                         </div>
-                        <div className="col-md-1">
-                            <input type="hidden" name="gameMode" value={location.state == "n" ? "notes" : "timed"}/>
-                            <input type="text" name={location.state == "n" ? "notesInGame" : "gameDuration"} onClick={click} onChange={change} value={val}/>
+                        <div className="col-md-6">
+                            <input type="radio" id="mode-2" name="gameMode" onClick={() => chooseIsTimeBased(false)} value="notes" className="radio"/>
+                            <label className="py-3 btn btn-secondary label label-2" htmlFor="mode-2">Note-Based Practice</label>
                         </div>
                     </div>
 
-                    <div className='row'>
-                        <div className="col-md-6 my-3">
+                    <div className="row selection">
+                        <div className="col-md-12">
+                            {isTimeBased ?
+                            <Dropdown isTimeBased={isTimeBased} buttonText={duration + " min"} content={
+                                    <TimeBasedDropdown chooseDuration={chooseDuration}/>
+                                }
+                            /> 
+                            :
+                            <Dropdown isTimeBased={isTimeBased} buttonText={numberNotes + " notes"} content={
+                                    <NoteBasedDropdown chooseNumberNotes={chooseNumberNotes}/>
+                                }
+                            />
+                            }
+                        </div>
+                    </div>
+                    
+                    <div className='row selection'>
+                        <div className="col-md-6">
                             <input type="radio" id="clef-1" name="clef" value="treble" className="radio" defaultChecked/>
-                            <label className="py-3 btn btn-secondary label label-1" htmlFor="clef-1">Treble Clef</label>
+                            <label className="py-3 btn btn-secondary label label-3" htmlFor="clef-1">Treble Clef</label>
                         </div>
-                        <div className="col-md-6 my-3">
+                        <div className="col-md-6">
                             <input type="radio" id="clef-2" name="clef" value="bass" className="radio"/>
-                            <label className="py-3 btn btn-secondary label label-2" htmlFor="clef-2">Bass Clef</label>
+                            <label className="py-3 btn btn-secondary label label-4" htmlFor="clef-2">Bass Clef</label>
                         </div>
                     </div>
 
-                    <div className='row'>
-                        <div className="col-md-4 my-2">
+                    <div className='row selection'>
+                        <div className="col-md-6">
                             <input type="radio" id="melody-1" name="melody" value="single" className="radio" defaultChecked/>
-                            <label className="py-3 btn btn-secondary label label-3" htmlFor="melody-1">Single Notes</label>
+                            <label className="py-3 btn btn-secondary label label-5" htmlFor="melody-1">Single Notes</label>
                         </div>
-                        <div className="col-md-4 my-2">
+                        <div className="col-md-6">
                             <input type="radio" id="melody-2" name="melody" value="melodies" className="radio"/>
-                            <label className="py-3 btn btn-secondary label label-4" htmlFor="melody-2">Melodies</label>
-                        </div>
-                        <div className="col-md-4 my-2">
-                            <label className="py-3 btn btn-secondary label label-5" >More</label>
+                            <label className="py-3 btn btn-secondary label label-6" htmlFor="melody-2">Melodies</label>
                         </div>
                     </div>
+                    
                     <div className='row'>
-                        <div className="col-md-6 offset-md-2 my-3">
-                        <button /*onClick={onClickPlay}*/ type="submit" className="d-grid py-3 btn btn-primary" role="button">Play</button>
+                        <div className="col-md-2 offset-md-3 my-3">
+                            <Link to="/"><button className="d-grid py-3 btn btn-primary2" role="button">Back</button></Link>
                         </div>
-                        <div className="col-md-2 my-3">
-                            <Link to="/"><button className="d-grid py-3 btn btn-secondary" role="button">Back</button></Link>
+                        <div className="col-md-4 my-3">
+                            <button /*onClick={onClickPlay}*/ type="submit" className="d-grid py-3 btn btn-primary" role="button">Play</button>
                         </div>
                     </div>
                 </form>
