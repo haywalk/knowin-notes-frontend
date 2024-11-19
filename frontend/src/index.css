@@ -21,10 +21,10 @@ a {
 body {
   margin: 0;
   place-items: center;
-  background-color: #242424 !important;
+  background-color: #192228 !important;
   min-width: 320px;
   min-height: 100vh;
-  box-shadow: inset 0 0 75px #000;
+  box-shadow: inset 0 0 75px #011212;
 }
 
 h1 {
@@ -46,6 +46,55 @@ button {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #036666;
   }
+}
+
+.btn-primary {
+  background-color: #1e8dfc !important;
+  border-color: #1e8dfc !important;
+  color: #fff !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  box-shadow: 0 5px 25px #010c17 !important;
+  border-width: 3px !important;
+}
+
+.btn-primary:hover {
+  background-color: transparent !important;
+  box-shadow: 0 0 5px #010c17;
+}
+
+.menu-option {
+  font-size: 28px !important;
+}
+
+.btn-primary2 {
+  background-color: #D13447 !important;
+  border-color: #D13447 !important;
+  color: #fff !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  box-shadow: 0 5px 25px #450d14 !important;
+  border-width: 3px !important;
+}
+
+.btn-primary2:hover {
+  background-color: transparent !important;
+  box-shadow: 0 0 5px #450d14;
+}
+
+.btn-secondary {
+  background-color: #414c50 !important;
+  border-color: #414c50 !important;
+  color: #fff !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  box-shadow: 0 2px 15px #171b1d;
+}
+
+.btn-secondary:hover {
+  background-color: transparent !important;
+  border-color: #414c50 !important;
+  box-shadow: 0 0 5px #171b1d91;
 }

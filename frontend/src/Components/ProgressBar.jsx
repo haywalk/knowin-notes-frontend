@@ -24,14 +24,14 @@ export function ProgressBar({gameState}) {
     const seconds = Math.floor(timeLeft % 60);
 
     const getColor = () => {
-        if (progress < 90) {
-            return "#00aa00";
+        if (progress < 80) {
+            return "#04AE37";
         }
-        else if (progress < 95) {
-            return "#FFA500";
+        else if (progress < 90) {
+            return "#DFE13E";
         }
         else {
-            return "#ff0000";
+            return "#D13447";
         }
     }
 
