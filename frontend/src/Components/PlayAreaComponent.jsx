@@ -9,6 +9,7 @@ import sharp from '../assets/sharp.png'
 import GameState from '../GameState'
 import { ProgressBar } from "./ProgressBar"
 import './PlayAreaComponent.css'
+import { FaPause, FaStop } from "react-icons/fa";
 
 const updateEveryNFrames = 3;
 
@@ -120,10 +121,10 @@ export function PlayAreaComponent({gameState}) {
 
     return (
         <>
-            <div className="container-sm">
+            <div className="container">
                 <div className='row'>
                     <div className="col-md-1 my-3">
-                        <Link to="#"><button className="d-grid py-3 btn pause" role="button">Pause</button></Link>
+                        <Link to="#"><button className="d-grid py-3 btn btn-primary" role="button"><FaPause className="pause"/></button></Link>
                     </div>
                     
                     <div className="col-md-10 my-3">
@@ -131,7 +132,7 @@ export function PlayAreaComponent({gameState}) {
                     </div>
 
                     <div className="col-md-1 my-3">
-                        <Link to="/settings"><button className="d-grid py-3 btn stop" role="button">Stop</button></Link>
+                        <Link to="/settings"><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
                     </div>
                 </div>
 

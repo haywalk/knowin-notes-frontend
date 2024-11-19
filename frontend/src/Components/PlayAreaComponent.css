@@ -1,3 +1,11 @@
 .rotate {
     transform: rotate(180deg);
 }
+
+.pause {
+    margin: auto;
+}
+
+.stop {
+    margin: auto;
+}
