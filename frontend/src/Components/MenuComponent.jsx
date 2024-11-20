@@ -12,21 +12,18 @@ export function Menu() {
 
     return (
         <>
+            <br/><br/><br/><br/><br/><br/><br/><br/>
             <div className="container">
-                <br/>
                 <h1 className="text-center">Knowin' Notes</h1>
                 <br/>
                 <div className="row">
-                    <div className="col-md-4 offset-md-2">
-                        <Link to="/settings" state="t"><button className="d-grid py-5 btn btn-primary" role="button">Timed Based Practice</button></Link>
-                    </div>
-                    <div className="col-md-4">
-                        <Link to="/settings" state="n"><button className="d-grid py-5 btn btn-primary" role="button">Number of Notes Based Practice</button></Link>
+                    <div className="col-md-6 offset-md-3" style={{paddingLeft: 40}}>
+                        <Link to="/settings" state="t"><button className="d-grid py-5 btn btn-primary menu-option" role="button">Start</button></Link>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-8 offset-md-2">
-                        <button onClick={handleHistoryClick} className="d-grid py-5 my-4 btn btn-secondary" role="button">History</button>
+                    <div className="col-md-6 offset-md-3" style={{paddingLeft: 40}}>
+                        <button onClick={handleHistoryClick} className="d-grid py-5 my-4 btn btn-primary menu-option" role="button">History</button>
                     </div>
                 </div>
             </div>

@@ -2,30 +2,6 @@
     font-weight: bold;
 }
 
-.stop {
-    background-color: #ce0000 !important;
-    border-color: #ce0000;
-    color: #fff !important;
-    font-weight: bold !important;
-}
-
-.stop:hover {
-    background-color: #ce0000a3 !important;
-    border-color: #ce0000a3 !important;
-}
-
-.pause {
-    background-color: #0000ff !important;
-    border-color: #0000ff;
-    color: #fff !important;
-    font-weight: bold !important;
-}
-
-.pause:hover {
-    background-color: #0000cea3 !important;
-    border-color: #0000cea3 !important;
-}
-
 .progress-bar-continer {
     height: 58px;
     width: 100%;

@@ -19,11 +19,31 @@ p {
     display: none;
 }
 
-#clef-1:checked ~ .label-1,
-#clef-2:checked ~ .label-2,
-#melody-1:checked ~ .label-3,
-#melody-2:checked ~ .label-4{
+#mode-1:checked ~ .label-1,
+#mode-2:checked ~ .label-2,
+#clef-1:checked ~ .label-3,
+#clef-2:checked ~ .label-4,
+#melody-1:checked ~ .label-5,
+#melody-2:checked ~ .label-6,
+#time-1:checked ~ .label-7,
+#time-2:checked ~ .label-8,
+#time-3:checked ~ .label-9,
+#time-4:checked ~ .label-10,
+#notes-1:checked ~ .label-11,
+#notes-2:checked ~ .label-12,
+#notes-3:checked ~ .label-13,
+#notes-4:checked ~ .label-14{
     border-width: 2px !important;
-    border-color: rgb(30, 141, 252) !important;
-    background-color: #575E64;
+    border-color: #1e8dfc !important;
+}
+
+.container-sm {
+    width: 60% !important;
+}
+
+.selection {
+    background-color: #2d383c;
+    padding: 14px 0;
+    margin: 20px 0;
+    border-radius: 16px;
 }
