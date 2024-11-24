@@ -47,8 +47,17 @@ const notes_dict_treble = {
     "c5":  [16, true]
 };
 
+var hasGameState = false;
+var isNoteAvailable = false;
+var _gameState;
+
 export function PlayAreaComponent({gameState}) {
-    let _gameState = gameState;
+    
+    if(!hasGameState) {
+        _gameState = gameState;
+        hasGameState = true;
+    }
+
     // default values
     let currNote = "";
     let isSharp = false;
@@ -93,6 +102,7 @@ export function PlayAreaComponent({gameState}) {
                     // Assume a state is returned and update UI
                     let json = tmp.substring("STATE".length);
                     _gameState = JSON.parse(json);
+                    _gameState.currentTime = Date.now();
                     // console.log(_gameState);
                     //Update UI as needed
                 }
@@ -108,6 +118,8 @@ export function PlayAreaComponent({gameState}) {
     }
 
     function place_note(){
+        isNoteAvailable = _gameState.targetNoteTimePairs.length != 0;
+        if(!isNoteAvailable) return;
         currNote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
         isSharp = currNote.length === 3;
         noteTop = 0;
@@ -156,7 +168,7 @@ export function PlayAreaComponent({gameState}) {
                     </div>
 
                     <div className="col-md-1 my-3">
-                        <Link to="/settings"><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
+                        <Link to="/settings" onClick={() => {hasGameState = false}}><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
                     </div>
                 </div>
 
@@ -168,7 +180,7 @@ export function PlayAreaComponent({gameState}) {
                         <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
 
                             {isSharp && (<img src={sharp} width='70px' alt='sharp' style={{ position: 'absolute', top: sharpTop, left: '25px', zIndex: 3 }} />)}
-                            <img src={single_note} width='70px' alt='c3' style={{ position: 'absolute', top: noteTop, left: '95px', zIndex: 3 }} className={`${isRotated ? "rotate" : ""}`}/>
+                            {isNoteAvailable && (<img src={single_note} width='70px' alt='c3' style={{ position: 'absolute', top: noteTop, left: '95px', zIndex: 3 }} className={`${isRotated ? "rotate" : ""}`}/>)}
 
                         </div>
                     </div>

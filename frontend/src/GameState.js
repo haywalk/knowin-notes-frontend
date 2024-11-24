@@ -13,7 +13,7 @@ export default class GameState{
     currentTime = Date.now();
 
     // Notes and a timestamp of when they were displayed
-    targetNoteTimePairs = [["c4", Date.now()]];
+    targetNoteTimePairs = [];
     // The number of notes required play the single note, the chord, etc.
     targetNumNotes = 1; 
     // Keys pressed/released and the times that they were pressed/released 
