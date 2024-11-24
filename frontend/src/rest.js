@@ -8,7 +8,7 @@ export function updateGameState(gamestate) {
         .then(response => {
             // Parse out the game state if a gamestate is returned
             // Parse out the report if a report is returned
-            let str = atob(response.data);
+            let str = response.data;
             console.log(str);
             return str;
         })

@@ -5,7 +5,7 @@ export default class GameState{
     gameDuration = -1; //minutes
     notesInGame = -1;
     timePerNote = -1;
-    clef = ""
+    clef = "treble"
     noteTypes = ["single"];
 
     // Time related variables

@@ -44,6 +44,7 @@ export function SettingsMenu() {
             gameState.notesInGame = formData.get("notesInGame");
         }
         gameState.clef = formData.get("clef");
+        gameState.currentTime = Date.now();
         gameState.gameStartTime = Date.now();
 
         // Create game state

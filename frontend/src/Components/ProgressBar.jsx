@@ -3,25 +3,30 @@ import './ProgressBar.css';
 import GameState from '../GameState';
 
 export function ProgressBar({gameState}) {
-
-    const [timeLeft, setTimeLeft] = useState(() => {
-        const totalSeconds = gameState.gameDuration * 60;
-        const timeElapsedSeconds = (Date.now() - gameState.gameStartTime) / 1000;
-        return totalSeconds - timeElapsedSeconds;
-    });
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTimeLeft((prevTimeLeft) => Math.max(prevTimeLeft - 1, 0));
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
-
+    const _gameState = gameState;
     const totalSeconds = gameState.gameDuration * 60;
+    const timeElapsedSeconds = (gameState.currentTime - gameState.gameStartTime) / 1000;
+    const timeLeft = totalSeconds - timeElapsedSeconds;
     const progress = 100 - (100 * parseFloat(timeLeft) / parseFloat(totalSeconds));
+
     const minutes = Math.floor((timeLeft / 60) % 60);
     const seconds = Math.floor(timeLeft % 60);
+
+    // const [timeLeft, setTimeLeft] = useState(() => {
+    //     console.log(`current time ${gameState.currentTime}`);
+    //     console.log(`start time ${gameState.gameStartTime}`);
+    //     const totalSeconds = gameState.gameDuration * 60;
+    //     const timeElapsedSeconds = (gameState.currentTime - gameState.gameStartTime) / 1000;
+    //     return totalSeconds - timeElapsedSeconds;
+    // });
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setTimeLeft((prevTimeLeft) => Math.max(prevTimeLeft - 1, 0));
+    //     }, 1000);
+
+    //     return () => clearInterval(interval);
+    // }, []);
 
     const getColor = () => {
         if (progress < 80) {
