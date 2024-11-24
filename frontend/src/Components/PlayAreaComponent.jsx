@@ -13,7 +13,7 @@ import './PlayAreaComponent.css'
 import { FaPause, FaStop } from "react-icons/fa";
 import axios from 'axios';
 
-const updateEveryNFrames = 3;
+const updateEveryNFrames = 4;
 
 const notes_dict_bass = {
     "c3":  [65, false],
@@ -103,6 +103,8 @@ export function PlayAreaComponent({gameState}) {
                     let json = tmp.substring("STATE".length);
                     _gameState = JSON.parse(json);
                     _gameState.currentTime = Date.now();
+                    let anote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
+                    _gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
                     // console.log(_gameState);
                     //Update UI as needed
                 }
@@ -138,7 +140,7 @@ export function PlayAreaComponent({gameState}) {
         }
     }
     
-    const [frameCount, setFrameCount] = useState(2);
+    const [frameCount, setFrameCount] = useState(updateEveryNFrames - 1);
     // Called once on initial render and once whenever setFrameCount is called
     useEffect(() => {
         if(frameCount % updateEveryNFrames != 0) return;
