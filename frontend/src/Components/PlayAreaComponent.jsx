@@ -48,25 +48,6 @@ const notes_dict_treble = {
 export function PlayAreaComponent({gameState}) {
     const _gameState = gameState;
 
-    const currNote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
-    const isSharp = currNote.length === 3;
-    let noteTop = 0;
-    let isRotated = false;
-    const isTreble = (_gameState.clef == "treble");
-    if (isTreble) {
-        isRotated = notes_dict_treble[currNote][1];
-        noteTop = notes_dict_treble[currNote][0];
-    }
-    else {
-        isRotated = notes_dict_bass[currNote][1];
-        noteTop = notes_dict_bass[currNote][0];
-    }
-
-    let sharpTop = noteTop + 85;
-    if (isRotated) {
-        noteTop += 93;
-    }
-
     // Update loop reference: 
     // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
 
@@ -100,6 +81,27 @@ export function PlayAreaComponent({gameState}) {
         //     // QUIT GAME, pass along the report JSON to next page
         // }
         console.log("rendering...");
+    }
+
+    function place_note(){
+        const currNote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
+        const isSharp = currNote.length === 3;
+        let noteTop = 0;
+        let isRotated = false;
+        const isTreble = (_gameState.clef == "treble");
+        if (isTreble) {
+            isRotated = notes_dict_treble[currNote][1];
+            noteTop = notes_dict_treble[currNote][0];
+        }
+        else {
+            isRotated = notes_dict_bass[currNote][1];
+            noteTop = notes_dict_bass[currNote][0];
+        }
+
+        let sharpTop = noteTop + 85;
+        if (isRotated) {
+            noteTop += 93;
+        }
     }
     
     const [frameCount, setFrameCount] = useState(2);
