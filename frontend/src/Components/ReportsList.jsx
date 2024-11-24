@@ -25,7 +25,7 @@ export default function ReportsList() {
 
     return (
         <>
-            {reports.map((item) => (
+            {reports.slice(0).reverse().map((item) => (
                     <Link key={item.id} to={`/report/${item.id}`}>
                     <Report key={item.id} 
                             id={item.id}
