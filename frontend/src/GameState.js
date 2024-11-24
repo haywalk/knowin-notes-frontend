@@ -16,7 +16,8 @@ export default class GameState{
     targetNoteTimePairs = [["c4", Date.now()]];
     // The number of notes required play the single note, the chord, etc.
     targetNumNotes = 1; 
-    // Keys pressed/released and the times that they were pressed/released
+    // Keys pressed/released and the times that they were pressed/released 
+    // [[(str)note, (long)time_played, (char){c (correct), i(incorrect), u(undecided)}]]
     playedNoteTimePairs = [];
 
 }
