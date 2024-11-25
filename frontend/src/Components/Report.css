@@ -54,3 +54,8 @@
 .icons .notes-icon {
     color: #1e8dfc;
 }
+
+.accuracy {
+    padding: 3px;
+    border-radius: 5px;
+}

@@ -16,11 +16,13 @@ export function ReportPage() {
     const [report, setReport] = useState(null);
 
     const getColor = () => {
-        if (report.accuracy < 50) {
+        const accuracy_str = report.accuracy.substring(0, report.accuracy.length-1);
+        const accuracy_int = parseInt(accuracy_str);
+        if (accuracy_int < 50) {
             return "#D13447";
         }
-        else if (report.accuracy < 90) {
-            return "#DFE13E";
+        else if (accuracy_int < 90) {
+            return "#EC8E00";
         }
         else {
             return "#04AE37";
