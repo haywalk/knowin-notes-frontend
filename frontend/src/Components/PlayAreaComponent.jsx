@@ -143,6 +143,8 @@ export function PlayAreaComponent({gameState}) {
 
                     console.log(_report);
 
+                    hasGameState = false;
+                    sentZeroTime = false;
                     setGameIsOver(true);
                 }
             })
@@ -202,7 +204,10 @@ export function PlayAreaComponent({gameState}) {
                     </div>
 
                     <div className="col-md-1 my-3">
-                        <Link to="/settings" onClick={() => {hasGameState = false}}><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
+                        <Link to="/settings" onClick={() => {
+                            hasGameState = false;
+                            sentZeroTime = false;
+                            }}><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
                     </div>
                 </div>
 
