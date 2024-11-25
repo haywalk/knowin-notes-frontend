@@ -9,8 +9,8 @@ export function ProgressBar({gameState}) {
     const timeLeft = totalSeconds - timeElapsedSeconds;
     const progress = 100 - (100 * parseFloat(timeLeft) / parseFloat(totalSeconds));
 
-    const minutes = Math.floor((timeLeft / 60) % 60);
-    const seconds = Math.floor(timeLeft % 60);
+    const minutes = Math.max(Math.floor((timeLeft / 60) % 60), 0);
+    const seconds = Math.max(Math.floor(timeLeft % 60), 0);
 
     // const [timeLeft, setTimeLeft] = useState(() => {
     //     console.log(`current time ${gameState.currentTime}`);
