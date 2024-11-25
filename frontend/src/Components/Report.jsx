@@ -5,11 +5,13 @@ import { BsMusicNoteList } from "react-icons/bs";
 function Report(props) {
 
     const getColor = () => {
-        if (props.accuracy < 50) {
+        const accuracy_str = props.accuracy.substring(0, props.accuracy.length-1);
+        const accuracy_int = parseInt(accuracy_str);
+        if (accuracy_int < 50) {
             return "#D13447";
         }
-        else if (props.accuracy < 90) {
-            return "#DFE13E";
+        else if (accuracy_int < 90) {
+            return "#EC8E00";
         }
         else {
             return "#04AE37";
@@ -26,7 +28,7 @@ function Report(props) {
                 <div className={(props.type == "timed" || props.type == "Time") ? "timed" : "notes"}>
                     <p className='gameMode'>{props.type} based practice</p>
                 </div>
-                <p style={{color: getColor()}}>{props.accuracy} accuracy</p>
+                <p><span className='accuracy' style={{color: getColor()}}>{props.accuracy}</span> accuracy</p>
                 <p>{props.numNotes - props.numMistakes} / {props.numNotes} correct notes</p>
                 <p>Time: {props.chronometer}</p>
             </div>

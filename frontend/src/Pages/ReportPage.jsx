@@ -16,15 +16,25 @@ export function ReportPage() {
     const [report, setReport] = useState(null);
 
     const getColor = () => {
-        if (report.accuracy < 50) {
+        const accuracy_str = report.accuracy.substring(0, report.accuracy.length-1);
+        const accuracy_int = parseInt(accuracy_str);
+        if (accuracy_int < 50) {
             return "#D13447";
         }
-        else if (report.accuracy < 90) {
-            return "#DFE13E";
+        else if (accuracy_int < 90) {
+            return "#EC8E00";
         }
         else {
             return "#04AE37";
         }
+    }
+
+    const timePerNoteCalculator = () => {
+        const time = report.chronometer.split(":");
+        const minutes = parseInt(time[0]);
+        const seconds = parseInt(time[1]);
+        const totalSeconds = minutes * 60 + seconds
+        return totalSeconds / report.numNotes;
     }
 
     useEffect(() => {
@@ -98,8 +108,8 @@ export function ReportPage() {
                 <div className="row">
                     <div className='col-md-6 my-2'>
                         <div className="square report-content">
-                            <h2>{report.responseTime}</h2>
-                            <h3>Time per Note</h3>
+                            <h2></h2>
+                            <h3>{timePerNoteCalculator()}s/note</h3>
                         </div>
                     </div>
                     <div className='col-md-6 my-2'>
@@ -119,14 +129,14 @@ export function ReportPage() {
                             <img src={single_note} className="good" width='70px' alt="single note" style={{ position: 'absolute', top: '159px', left: '-200px', zIndex: 3 }} />
                             <img src={single_note} className="ok" width='70px' alt="single note" style={{ position: 'absolute', top: '111px', left: '-130px', zIndex: 3 }} />
                             <img src={single_note} className="good" width='70px' alt="single note" style={{ position: 'absolute', top: '63px', left: '-60px', zIndex: 3 }} />
-                            <img src={single_note} className="good" width='70px' alt="single note" style={{ position: 'absolute', top: '15px', left: '10px', zIndex: 3 }} />
+                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '107px', left: '10px', zIndex: 3 }} />
                             <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '59px', left: '80px', zIndex: 3 }} />
                             <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '11px', left: '150px', zIndex: 3 }} />
 
 
                             <img src={single_note} className="ok" width='70px' alt="single note" style={{ position: 'absolute', top: '136px', left: '180px', zIndex: 3 }} />
                             <img src={single_note} className="bad" width='70px' alt="single note" style={{ position: 'absolute', top: '88px', left: '250px', zIndex: 3 }} />
-                            <img src={single_note} className="ok" width='70px' alt="single note" style={{ position: 'absolute', top: '40px', left: '320px', zIndex: 3 }} />
+                            <img src={single_note} className="ok rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '132px', left: '320px', zIndex: 3 }} />
                             <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '84px', left: '390px', zIndex: 3 }} />
                             <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '36px', left: '460px', zIndex: 3 }} />
                         </div>
