@@ -36,6 +36,8 @@ export function getHistory() {
 
 export function getReport(id) {
     const url = `http://localhost:8080/api/GET_REPORT?id=${id}`;
+    
+    console.log(`getReport request: ${url}`);
 
     return axios.get(url)
         .then(response => {
@@ -50,6 +52,8 @@ export function getReport(id) {
 // Is this unneeded now?
 export function getPDF(id) {
     const url = `http://localhost:8080/api/GENERATE_PDF/id=${id}`;
+
+    console.log(`getPDF request: ${url}`);
 
     axios.get(url)
         .then(response => {
