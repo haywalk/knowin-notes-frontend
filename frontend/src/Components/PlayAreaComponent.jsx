@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useEffect, useState } from 'react'
-import { createRoutesFromChildren, Link } from 'react-router-dom'
+import { createRoutesFromChildren, Link, useNavigate } from 'react-router-dom'
 import lines from '../assets/lines.png'
 import single_note from '../assets/single_note.png'
 import treble_clef from '../assets/treble_clef.png'
@@ -49,13 +49,37 @@ const notes_dict_treble = {
 
 var hasGameState = false;
 var isNoteAvailable = false;
+var sentZeroTime = false;
 var _gameState;
+var _report;
 
 export function PlayAreaComponent({gameState}) {
     
+    const [gameIsOver, setGameIsOver] = useState(false);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(!gameIsOver) return;
+        setGameIsOver(false);
+        navigate(`/report/${_report.id}`, { 
+            state: {
+                key: _report.id,
+                id: _report.id,
+                date: _report.date,
+                time: _report.time,
+                type: _report.type,
+                accuracy: _report.accuracy,
+                chronometer: _report.chronometer,
+                numNotes: _report.numNotes,
+                numMistakes: _report.numMistakes
+            }
+        });
+    }, [gameIsOver]);
+
     if(!hasGameState) {
         _gameState = gameState;
         hasGameState = true;
+        sentZeroTime = false;
+        setGameIsOver(false);
     }
 
     // default values
@@ -88,9 +112,12 @@ export function PlayAreaComponent({gameState}) {
     }
 
     function makeAPICall(){
+        if(gameIsOver || sentZeroTime) return;
         console.log("making api call...");
         var b64 = btoa(JSON.stringify(_gameState));
         const url = `http://localhost:8080/api/GET_STATE?old=${b64}`;
+
+        sentZeroTime = (_gameState.currentTime - _gameState.gaemStartTime) <= 0;
 
         axios.get(url)
             .then(response => {
@@ -103,15 +130,20 @@ export function PlayAreaComponent({gameState}) {
                     let json = tmp.substring("STATE".length);
                     _gameState = JSON.parse(json);
                     _gameState.currentTime = Date.now();
-                    let anote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
-                    _gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
-                    // console.log(_gameState);
-                    //Update UI as needed
+
+                    // Stress testing the play area
+                    // let anote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
+                    // _gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
                 }
                 else{
                     // Assume a report is returned
-                    let json = tmp.substring("REPORT".length);
                     // QUIT GAME, pass along the report JSON to next page
+                    let json = tmp.substring("REPORT".length);
+                    _report = JSON.parse(json);
+
+                    console.log(_report);
+
+                    setGameIsOver(true);
                 }
             })
             .catch(error => {
