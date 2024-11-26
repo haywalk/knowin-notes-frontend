@@ -71,3 +71,7 @@
 .bad {
     filter: invert(28%) sepia(28%) saturate(5945%) hue-rotate(334deg) brightness(87%) contrast(87%);
 }
+
+.navigation-options {
+    margin-top: 350px;
+}

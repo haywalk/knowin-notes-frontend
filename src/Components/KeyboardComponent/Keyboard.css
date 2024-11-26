@@ -1,0 +1,53 @@
+
+.black-notes {
+    position: absolute;
+    left: -38px;
+}
+
+.black-note {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    box-shadow: 0px 3px 10px #fff;
+    width: 50px;
+    height: 120px;
+    margin: 0 2px;
+}
+
+.black-note:hover {
+    background-color: #303030 !important;
+    border-color: #303030 !important;
+}
+
+.black-note input {
+    display: none;
+}
+
+.white-note {
+    background-color: #fff !important;
+    border-color: #fff !important;
+    box-shadow: 0px 3px 10px #000;
+    width: 50px;
+    height: 200px;
+    margin: 0 2px;
+}
+
+.white-note:hover {
+    background-color: #d7d7d7 !important;
+    border-color: #d7d7d7 !important;
+}
+
+.white-note input {
+    display: none;
+}
+
+.third {
+    margin-left: 56px !important;
+}
+
+.sixth {
+    margin-left: 56px !important;
+}
+
+.eighth {
+    margin-left: 56px !important;
+}

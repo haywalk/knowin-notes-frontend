@@ -1,6 +1,9 @@
-
-
-export default class GameState{
+/**
+ * Game state object
+ * 
+ * @author Sawyer Stanley, Hayden Walker
+ */
+class GameState{
     gameMode = "";
     gameDuration = -1; //minutes
     notesInGame = -1;
@@ -20,3 +23,5 @@ export default class GameState{
     playedNoteTimePairs = [];
 
 }
+
+export default GameState;
