@@ -49,6 +49,8 @@
 }
 
 .lines {
+    padding: 30px 0;
+    background-color: #fff;
     border-radius: 40px;
     left: 0;
     width: 1256px;
@@ -73,5 +75,10 @@
 }
 
 .navigation-options {
-    margin-top: 350px;
+    margin-top: 410px;
+}
+
+.note-name {
+    color: #000;
+    font-weight: bold;
 }

@@ -2,9 +2,46 @@ import React, { useEffect, useState } from "react"
 import { BsMusicNoteList } from "react-icons/bs" // Import number of notes based icon
 import { PiTimerBold } from "react-icons/pi" // Import time based icon
 import { Link, useParams } from "react-router-dom" // Import for navigation
-import { lines, single_note, treble_clef } from '../../assets/img/img_import.js' // Import components
+import { lines, single_note, sharp, treble_clef, bass_clef, single_line } from '../../assets/img/img_import.js' // Import components
 import { getReport } from "../../rest.js"
 import './Report.css' // Import CSS for styling
+
+// Constants
+
+// Available notes for bass clef 
+// "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
+const notes_dict_bass = {
+    "c3":  ["C3", 217, 110, false, 'good', true],
+    "cs3": ["C#3", 217, 240, false, 'ok', true],
+    "d3":  ["D3", 188, -320, false, 'good', false],
+    "ds3": ["D#3", 188, -190, false, 'ok', false],
+    "e3":  ["E3", 165, 320, false, 'good', false],
+    "f3":  ["F3", 140, -110, false, 'good', false],
+    "fs3": ["F#3", 140, 20, false, 'good', false],
+    "g3":  ["G3", 117, 400, false, 'good', false],
+    "gs3": ["G#3", 117, 530, false, 'ok', false],
+    "a4":  ["A4", 92, 100, false, 'ok', false],
+    "as4": ["A#4", 92, 230, false, 'bad', false],
+    "b4":  ["B4", 161, 610, true, 'good', false],
+    "c4":  ["C4", 137, 310, true, 'good', false]
+};
+
+// Available notes for treble clef ("note": [y coordinate in pixels, isRotated boolean])
+const notes_dict_treble = {
+    "c4":  [188, false],
+    "cs4": [188, false],
+    "d4":  [163, false],
+    "ds4": [163, false],
+    "e4":  [139, false],
+    "f4":  [114, false],
+    "fs4": [114, false],
+    "g4":  [90, false],
+    "gs4": [90, false],
+    "a5":  [65, false],
+    "as5": [65, false],
+    "b5":  [41, true],
+    "c5":  [16, true]
+};
 
 /**
  * The report page
@@ -170,23 +207,78 @@ function Report() {
                 <div className='row'>
                     {/* Display accuracy for each note */}
                     <div style={{ position: 'relative' }}>
+                        {/* Sheet music lines */}
                         <img className="lines" src={lines} alt="lines"/>
-                        <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '15px', left: '-50px', zIndex: 2 }} />
-                        {/*<img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '57px', left: '50px', zIndex: 2 }} />*/}
+                        {/* Treble clef */}
+                        <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '45px', left: '-50px', zIndex: 2 }} />
+                        {/*  <img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '87px', left: '50px', zIndex: 2 }} /> */}
                         <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
-                            <img src={single_note} className="good" width='70px' alt="single note" style={{ position: 'absolute', top: '159px', left: '-200px', zIndex: 3 }} />
-                            <img src={single_note} className="ok" width='70px' alt="single note" style={{ position: 'absolute', top: '111px', left: '-130px', zIndex: 3 }} />
-                            <img src={single_note} className="good" width='70px' alt="single note" style={{ position: 'absolute', top: '63px', left: '-60px', zIndex: 3 }} />
-                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '107px', left: '10px', zIndex: 3 }} />
-                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '59px', left: '80px', zIndex: 3 }} />
-                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '11px', left: '150px', zIndex: 3 }} />
+                            {Object.entries(notes_dict_bass).map(([note, [label, top, left, isRotated, accuracy, extraLine]]) =>
+                                <>
+                                    {/* Extra line if outside music sheet */}
+                                    {extraLine && (
+                                        <img 
+                                            src={single_line} 
+                                            width='100px' 
+                                            alt='sharp' 
+                                            style={{ 
+                                                position: 'absolute', 
+                                                top: top + 70, 
+                                                left: left - 15, 
+                                                zIndex: 3 
+                                            }} 
+                                        />
+                                    )}
 
+                                    {/* Sharp symbol */}
+                                    {note.length === 3 && (
+                                        <img 
+                                            src={sharp} 
+                                            width='70px' 
+                                            alt='sharp' 
+                                            className={accuracy} 
+                                            style={{ 
+                                                position: 'absolute', 
+                                                top: top + 85, 
+                                                left: left - 55, 
+                                                zIndex: 3 
+                                            }} 
+                                        />
+                                    )}
 
-                            <img src={single_note} className="ok" width='70px' alt="single note" style={{ position: 'absolute', top: '136px', left: '180px', zIndex: 3 }} />
-                            <img src={single_note} className="bad" width='70px' alt="single note" style={{ position: 'absolute', top: '88px', left: '250px', zIndex: 3 }} />
-                            <img src={single_note} className="ok rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '132px', left: '320px', zIndex: 3 }} />
-                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '84px', left: '390px', zIndex: 3 }} />
-                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '36px', left: '460px', zIndex: 3 }} />
+                                    {/* Note */}
+                                    <img 
+                                        key={note} 
+                                        src={single_note} 
+                                        alt={`note ${note}`}
+                                        className={accuracy} 
+                                        width='70px' 
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: top, 
+                                            left: left, 
+                                            transform: isRotated ? 'rotate(180deg)' : 'none',
+                                            zIndex: 3 
+                                        }} 
+                                    />
+
+                                    {/* Note label */}
+                                    <p 
+                                        className='note-name' 
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: isRotated ? top - 10 : top + 82, 
+                                            left: isRotated ? left + 37 : left + 41,
+                                            zIndex: 3,
+                                            transform: 'translate(-50%, -50%)',
+                                            textAlign: 'center',
+                                            display: 'inline-block'
+                                        }} 
+                                    >
+                                        {`${label}`}
+                                    </p>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
