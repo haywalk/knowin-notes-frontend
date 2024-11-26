@@ -1,5 +1,5 @@
 import React from 'react'
-import {FaChevronDown, FaChevronUp} from "../../../node_modules/react-icons/fa"
+import { FaChevronDown, FaChevronUp } from "react-icons/fa"
 import "./DropdownButton.css"
 
 const DropdownButton = ({children, open, toggle}) => {

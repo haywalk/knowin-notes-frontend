@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react"
 // Data
-import Report from "./Report";
 import { Link } from "react-router-dom";
-import { getHistory } from "../rest";
+import { getHistory } from "../../rest";
+import Report from "../ReportComponent/Report.jsx";
 
 export default function ReportsList() {
 

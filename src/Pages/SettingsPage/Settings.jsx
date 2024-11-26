@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import GameState from '../GameState';
-import Dropdown from './Dropdown/Dropdown.jsx';
-import TimeBasedDropdown from './Dropdown/TimeBasedDropdown.jsx';
-import NoteBasedDropdown from './Dropdown/NoteBasedDropdown.jsx';
-import './SettingsMenuComponent.css';
+import GameState from '../../GameState.js';
+import { Dropdown, TimeBasedDropdown, NoteBasedDropdown } from '../../Components/component_import.js';
+import './Settings.css';
 
 
-export function SettingsMenu() {
+function Settings() {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -45,6 +43,7 @@ export function SettingsMenu() {
         }
         gameState.clef = formData.get("clef");
         gameState.gameStartTime = Date.now();
+        console.log(gameState)
 
         // Create game state
         navigate('/play_area', { state: { gameState: gameState } });
@@ -119,3 +118,5 @@ export function SettingsMenu() {
         </>
     )
 }
+
+export default Settings;

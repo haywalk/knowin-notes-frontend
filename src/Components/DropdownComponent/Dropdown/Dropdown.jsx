@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
-import DropdownButton from './DropdownButton'
-import DropdownContent from './DropdownContent'
-import "./Dropdown.css"
-import { PiTimerBold } from "react-icons/pi";
+import React, { useEffect, useRef, useState } from 'react';
 import { BsMusicNoteList } from "react-icons/bs";
+import { PiTimerBold } from "react-icons/pi";
+import DropdownButton from '../DropdownButton/DropdownButton';
+import DropdownContent from '../DropdownContent/DropdownContent';
+import "./Dropdown.css";
 
 const Dropdown = ({isTimeBased, buttonText, content}) => {
     const[open, setOpen] = useState(false);

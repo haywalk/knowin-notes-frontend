@@ -64,3 +64,15 @@
 .eighth {
     margin-left: 56px !important;
 }
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+.pause {
+    margin: auto;
+}
+
+.stop {
+    margin: auto;
+}

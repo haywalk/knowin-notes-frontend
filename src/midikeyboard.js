@@ -81,7 +81,7 @@ export default class MIDIKeyboard{
         for(let i = 0; i < 128; i++){
             this.#audios[i] = null; 
         if (i >= this.#noteOffset && i < this.#noteOffset + soundfiles.length) {
-            this.#audios[i] = new Audio("src/assets/" + soundfiles[i - this.#noteOffset]);
+            this.#audios[i] = new Audio("src/assets/audio/" + soundfiles[i - this.#noteOffset]);
         }
         }
         this.#midi = midiAccess;
@@ -133,7 +133,7 @@ export default class MIDIKeyboard{
     
     #onNoteOn(note){
         if(this.#isLogging) console.log("NOTE_ON! (" + (note - this.#noteOffset) + ")");
-        this.#audios[note] = new Audio("src/assets/" + soundfiles[note - this.#noteOffset]);
+        this.#audios[note] = new Audio("src/assets/audio/" + soundfiles[note - this.#noteOffset]);
         this.#audios[note].play();
     }
     

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './ProgressBar.css';
-import GameState from '../GameState';
 
 export function ProgressBar({gameState}) {
 
@@ -50,3 +49,5 @@ export function ProgressBar({gameState}) {
         </div>
     )
 }
+
+export default ProgressBar;

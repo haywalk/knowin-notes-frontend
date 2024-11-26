@@ -1,14 +1,12 @@
+import { useLocation } from 'react-router-dom';
+import './PlayArea.css';
+
 import * as React from "react"
 import { useEffect, useState } from 'react'
 import { createRoutesFromChildren, Link } from 'react-router-dom'
-import lines from '../assets/lines.png'
-import single_note from '../assets/single_note.png'
-import treble_clef from '../assets/treble_clef.png'
-import bass_clef from '../assets/bass_clef.png'
-import sharp from '../assets/sharp.png'
-import GameState from '../GameState'
-import { ProgressBar } from "./ProgressBar"
-import './PlayAreaComponent.css'
+import {single_note, lines, treble_clef, bass_clef} from '../../assets/img/img_import.js'
+import GameState from '../../GameState'
+import { ProgressBar } from "../../Components/component_import.js"
 import { FaPause, FaStop } from "react-icons/fa";
 
 const updateEveryNFrames = 3;
@@ -45,14 +43,15 @@ const notes_dict_treble = {
     "c5":  [16, true]
 };
 
-export function PlayAreaComponent({gameState}) {
-    const _gameState = gameState;
+function PlayArea() {
+    const location = useLocation();
+    const gameState = location.state?.gameState;
 
-    const currNote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
+    const currNote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
     const isSharp = currNote.length === 3;
     let noteTop = 0;
     let isRotated = false;
-    const isTreble = (_gameState.clef == "treble");
+    const isTreble = (gameState.clef == "treble");
     if (isTreble) {
         isRotated = notes_dict_treble[currNote][1];
         noteTop = notes_dict_treble[currNote][0];
@@ -71,8 +70,8 @@ export function PlayAreaComponent({gameState}) {
     // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
 
     function startGame(){
-        // _gameState = gameState;
-        console.log(_gameState);
+        // gameState = gameState;
+        console.log(gameState);
         console.log("Game starting!");
         updateLoop();
     }
@@ -91,7 +90,7 @@ export function PlayAreaComponent({gameState}) {
         // if(tmp[0] == 'S' || tmp[0] == 's'){
         //     // Assume a state is returned and update UI
         //     let json = tmp.substring("STATE".length);
-        //     _gameState = JSON.parse(json);
+        //     gameState = JSON.parse(json);
         //     //Update UI as needed
         // }
         // else{
@@ -120,7 +119,7 @@ export function PlayAreaComponent({gameState}) {
     }, []);
 
     return (
-        <>
+        <>  
             <div className="container">
                 <div className='row'>
                     <div className="col-md-1 my-3">
@@ -128,7 +127,7 @@ export function PlayAreaComponent({gameState}) {
                     </div>
                     
                     <div className="col-md-10 my-3">
-                        <ProgressBar gameState={_gameState}/>
+                        <ProgressBar gameState={gameState}/>
                     </div>
 
                     <div className="col-md-1 my-3">
@@ -271,3 +270,5 @@ export function PlayAreaComponent({gameState}) {
         </>
     )
 }
+
+export default PlayArea;
