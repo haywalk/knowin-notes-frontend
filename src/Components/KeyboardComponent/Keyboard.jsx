@@ -16,43 +16,43 @@ const Keyboard = () => {
             <div className='row'>
                 <div style={{ position: 'relative' }}>
                     <div className="black-notes col-md-12">
-                        <label className="black-note first  btn btn-secondary form">
+                        <label className="black-note first btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="black-note second  btn btn-secondary form">
+                        <label className="black-note second btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="black-note third  btn btn-secondary form">
+                        <label className="black-note third btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="black-note fourth  btn btn-secondary form">
+                        <label className="black-note fourth btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="black-note fifth  btn btn-secondary form">
+                        <label className="black-note fifth btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="black-note sixth  btn btn-secondar form">
+                        <label className="black-note sixth btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="black-note seventh  btn btn-secondary form">
+                        <label className="black-note seventh btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="black-note eighth  btn btn-secondary form">
+                        <label className="black-note eighth btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="black-note nineth  btn btn-secondary form">
+                        <label className="black-note nineth  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="black-note tenth  btn btn-secondary form">
+                        <label className="black-note tenth  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
                     </div>
@@ -61,63 +61,63 @@ const Keyboard = () => {
                 {/* White keys */}
                 <div className='row'>
                     <div className="col-md-12">
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
 
-                        <label className="white-note  btn btn-primary form">
+                        <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" defaultChecked/>
                         </label>
                     </div>
