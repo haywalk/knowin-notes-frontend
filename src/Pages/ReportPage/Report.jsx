@@ -11,36 +11,37 @@ import './Report.css' // Import CSS for styling
 // Available notes for bass clef 
 // "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
 const notes_dict_bass = {
-    "c3":  ["C3", 217, 110, false, 'good', true],
-    "cs3": ["C#3", 217, 240, false, 'ok', true],
-    "d3":  ["D3", 188, -320, false, 'good', false],
-    "ds3": ["D#3", 188, -190, false, 'ok', false],
-    "e3":  ["E3", 165, 320, false, 'good', false],
-    "f3":  ["F3", 140, -110, false, 'good', false],
-    "fs3": ["F#3", 140, 20, false, 'good', false],
-    "g3":  ["G3", 117, 400, false, 'good', false],
-    "gs3": ["G#3", 117, 530, false, 'ok', false],
-    "a4":  ["A4", 92, 100, false, 'ok', false],
-    "as4": ["A#4", 92, 230, false, 'bad', false],
-    "b4":  ["B4", 161, 610, true, 'good', false],
-    "c4":  ["C4", 137, 310, true, 'good', false]
+    "c3":  ["C3",   92,  140, false, 'good', false],
+    "cs3": ["C#3",  92,  270, false,   'ok', false],
+    "d3":  ["D3",  161, -290,  true, 'good', false],
+    "ds3": ["D#3", 161, -160,  true, 'good', false],
+    "e3":  ["E3",  137,  350,  true,   'ok', false],
+    "f3":  ["F3",  113,  -80,  true,  'bad', false],
+    "fs3": ["F#3", 113,   50,  true,   'ok', false],
+    "g3":  ["G3",   89,  430,  true, 'good', false],
+    "gs3": ["G#3",  89,  560,  true, 'good', false],
+    "a4":  ["A4",   65,  130,  true, 'good', false],
+    "as4": ["A#4",  65,  260,  true,   'ok', false],
+    "b4":  ["B4",   41,  640,  true, 'good', false],
+    "c4":  ["C#4",  17,  340,  true,   'ok',  true]
 };
 
-// Available notes for treble clef ("note": [y coordinate in pixels, isRotated boolean])
+// Available notes for treble clef 
+// "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
 const notes_dict_treble = {
-    "c4":  [188, false],
-    "cs4": [188, false],
-    "d4":  [163, false],
-    "ds4": [163, false],
-    "e4":  [139, false],
-    "f4":  [114, false],
-    "fs4": [114, false],
-    "g4":  [90, false],
-    "gs4": [90, false],
-    "a5":  [65, false],
-    "as5": [65, false],
-    "b5":  [41, true],
-    "c5":  [16, true]
+    "c4":  ["C4",  217,  110, false, 'good',  true],
+    "cs4": ["C#4", 217,  240, false,   'ok',  true],
+    "d4":  ["D4",  188, -320, false, 'good', false],
+    "ds4": ["D#4", 188, -190, false,   'ok', false],
+    "e4":  ["E4",  165,  320, false, 'good', false],
+    "f4":  ["F4",  140, -110, false, 'good', false],
+    "fs4": ["F#4", 140,   20, false, 'good', false],
+    "g4":  ["G4",  117,  400, false, 'good', false],
+    "gs4": ["G#4", 117,  530, false,   'ok', false],
+    "a5":  ["A5",  92,   100, false,   'ok', false],
+    "as5": ["A#5", 92,   230, false,  'bad', false],
+    "b5":  ["B5",  161,  610,  true, 'good', false],
+    "c5":  ["C5",  137,  310,  true, 'good', false]
 };
 
 /**
@@ -57,6 +58,14 @@ function Report() {
     let id = params.id;
     const [loading, setLoading] = useState(true);
     const [report, setReport] = useState(null);
+
+    // The clef
+    const isTreble = false;
+    // Replace with following when backend keeps up
+    //const isTreble = (report.clef == "treble");
+
+    // Get the appropriate dictionary
+    const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
 
     // Determine colour of the accuracy
     const getColour = () => {
@@ -210,11 +219,11 @@ function Report() {
                         {/* Sheet music lines */}
                         <img className="lines" src={lines} alt="lines"/>
                         {/* Treble clef */}
-                        <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '45px', left: '-50px', zIndex: 2 }} />
-                        {/*  <img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '87px', left: '50px', zIndex: 2 }} /> */}
+                        {isTreble && <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '45px', left: '-50px', zIndex: 2 }} />}
+                        {!isTreble && <img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '87px', left: '50px', zIndex: 2 }} />}
                         <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
-                            {Object.entries(notes_dict_bass).map(([note, [label, top, left, isRotated, accuracy, extraLine]]) =>
-                                <>
+                            {Object.entries(notes_dict).map(([note, [label, top, left, isRotated, accuracy, extraLine]]) => 
+                                <div key={note}>
                                     {/* Extra line if outside music sheet */}
                                     {extraLine && (
                                         <img 
@@ -223,7 +232,7 @@ function Report() {
                                             alt='sharp' 
                                             style={{ 
                                                 position: 'absolute', 
-                                                top: top + 70, 
+                                                top: top + (isRotated ? -24 : 70), 
                                                 left: left - 15, 
                                                 zIndex: 3 
                                             }} 
@@ -239,8 +248,8 @@ function Report() {
                                             className={accuracy} 
                                             style={{ 
                                                 position: 'absolute', 
-                                                top: top + 85, 
-                                                left: left - 55, 
+                                                top: top + (isRotated ? -10 : 85), 
+                                                left: left - 60, 
                                                 zIndex: 3 
                                             }} 
                                         />
@@ -248,7 +257,6 @@ function Report() {
 
                                     {/* Note */}
                                     <img 
-                                        key={note} 
                                         src={single_note} 
                                         alt={`note ${note}`}
                                         className={accuracy} 
@@ -277,7 +285,7 @@ function Report() {
                                     >
                                         {`${label}`}
                                     </p>
-                                </>
+                                </div>
                             )}
                         </div>
                     </div>

@@ -67,8 +67,7 @@ function ReportCard(props) {
 
                 {/* Correct over Total Notes */}
                 <p>
-                    {props.numNotes - props.numMistakes} / {props.numNotes}
-                     correct notes
+                    {props.numNotes - props.numMistakes} / {props.numNotes} correct notes
                 </p>
 
                 {/* Duration of practice */}
