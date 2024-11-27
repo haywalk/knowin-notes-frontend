@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BsMusicNoteList } from "react-icons/bs"; // Import icon for number of notes based
+import { BsMusicNoteList } from "react-icons/bs"; // Import icon for note-based
 import { PiTimerBold } from "react-icons/pi"; // Import icon for time-based
 import { DropdownButton, DropdownContent } from '../dropdown_import'; // Import dropdown components
 import "./Dropdown.css"; // Import CSS for styling
@@ -51,16 +51,16 @@ const Dropdown = ({isTimeBased, buttonText, content}) => {
             <div className="dropdown" ref={dropdownRef}>
                 {/* Dropdown Button */}
                 <DropdownButton toggle={toggleDropdown} open={open}>
-                    {/* The icon displayed to the left of time or number of notes */}
+                    {/* The icon displayed to the left of time or note */}
                     {isTimeBased ? <PiTimerBold className='timer-icon'/> : <BsMusicNoteList className='notes-icon'/>}
                     
-                    {/* The text for either time or number of notes */}
+                    {/* The text for either time or note */}
                     {buttonText}
                 </DropdownButton>
 
                 {/* Dropdown Content (hidden when closed) */}
                 <DropdownContent open={open}>
-                    {/* Either time or number of notes based dropdown */}
+                    {/* Either time-based or note-based dropdown */}
                     {content}
                 </DropdownContent>
             </div>

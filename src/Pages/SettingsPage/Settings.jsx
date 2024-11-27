@@ -56,7 +56,7 @@ function Settings() {
             gameState.gameDuration = formData.get("gameDuration"); // Get duration if time based
         }
         else {
-            gameState.notesInGame = formData.get("notesInGame"); // Get number of notes if number of notes based
+            gameState.notesInGame = formData.get("notesInGame"); // Get number of notes if note-based
         }
         gameState.clef = formData.get("clef"); // Get the clef
         gameState.gameStartTime = Date.now(); // Get the current date
@@ -83,7 +83,7 @@ function Settings() {
                             <label className="py-3 btn btn-secondary label label-1" htmlFor="mode-1">Time-Based Practice</label>
                         </div>
                         <div className="col-md-6">
-                            {/* Number of notes based practice */}
+                            {/* Note-based practice */}
                             <input type="radio" id="mode-2" name="gameMode" onClick={() => chooseIsTimeBased(false)} value="notes" className="radio"/>
                             <label className="py-3 btn btn-secondary label label-2" htmlFor="mode-2">Note-Based Practice</label>
                         </div>
