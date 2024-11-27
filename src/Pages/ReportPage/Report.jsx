@@ -235,9 +235,12 @@ function Report() {
                     <div style={{ position: 'relative' }}>
                         {/* Sheet music lines */}
                         <img className="lines" src={lines} alt="lines"/>
+                        
                         {/* Treble clef */}
                         {isTreble && <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '45px', left: '-50px', zIndex: 2 }} />}
+                        {/* Treble clef */}
                         {!isTreble && <img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '87px', left: '50px', zIndex: 2 }} />}
+                        
                         <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
                             {Object.entries(notes_dict).map(([note, [label, top, left, isRotated, accuracy, extraLine]]) => 
                                 <div key={note}>

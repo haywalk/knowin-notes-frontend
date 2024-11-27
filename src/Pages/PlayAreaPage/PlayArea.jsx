@@ -3,47 +3,54 @@ import * as React from "react"
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom' // Import for navigation
 import { ProgressBar, Keyboard } from "../../Components/component_import.js" // Import components
-import {single_note, lines, treble_clef, bass_clef} from '../../assets/img/img_import.js' // Import images
+import {single_note, lines, treble_clef, sharp, bass_clef, single_line} from '../../assets/img/img_import.js' // Import images
 import { FaPause, FaStop } from "react-icons/fa"; // Import icons
 import './PlayArea.css'; // Import CSS for styling
 
 /* Constants */
 
+
+
+
+
+
 // Update every other N frames
 const updateEveryNFrames = 3; 
 
-// Available notes for bass clef ("note": [y coordinate in pixels, isRotated boolean])
+// Available notes for bass clef 
+// "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
 const notes_dict_bass = {
-    "c3":  [65, false],
-    "cs3": [65, false],
-    "d3":  [41, true],
-    "ds3": [41, true],
-    "e3":  [16, true],
-    "f3":  [-8, true],
-    "fs3": [-8, true],
-    "g3":  [-33, true],
-    "gs3": [-33, true],
-    "a4":  [-57, true],
-    "as4": [-57, true],
-    "b4":  [-82, true],
-    "c4":  [-106, true]
+    "c3":  ["C3",   92, 50, false, 'unplayed', false],
+    "cs3": ["C#3",  92, 50, false, 'unplayed', false],
+    "d3":  ["D3",  161, 50,  true, 'unplayed', false],
+    "ds3": ["D#3", 161, 50,  true, 'unplayed', false],
+    "e3":  ["E3",  137, 50,  true, 'unplayed', false],
+    "f3":  ["F3",  113, 50,  true, 'unplayed', false],
+    "fs3": ["F#3", 113, 50,  true, 'unplayed', false],
+    "g3":  ["G3",   89, 50,  true, 'unplayed', false],
+    "gs3": ["G#3",  89, 50,  true, 'unplayed', false],
+    "a4":  ["A4",   65, 50,  true, 'unplayed', false],
+    "as4": ["A#4",  65, 50,  true, 'unplayed', false],
+    "b4":  ["B4",   41, 50,  true, 'unplayed', false],
+    "c4":  ["C#4",  17, 50,  true, 'unplayed',  true]
 };
 
-// Available notes for treble clef ("note": [y coordinate in pixels, isRotated boolean])
+// Available notes for treble clef 
+// "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
 const notes_dict_treble = {
-    "c4":  [188, false],
-    "cs4": [188, false],
-    "d4":  [163, false],
-    "ds4": [163, false],
-    "e4":  [139, false],
-    "f4":  [114, false],
-    "fs4": [114, false],
-    "g4":  [90, false],
-    "gs4": [90, false],
-    "a5":  [65, false],
-    "as5": [65, false],
-    "b5":  [41, true],
-    "c5":  [16, true]
+    "c4":  ["C4",  217,  110, false, 'unplayed',  true],
+    "cs4": ["C#4", 217,  240, false, 'unplayed',  true],
+    "d4":  ["D4",  188, -320, false, 'unplayed', false],
+    "ds4": ["D#4", 188, -190, false, 'unplayed', false],
+    "e4":  ["E4",  165,  320, false, 'unplayed', false],
+    "f4":  ["F4",  140, -110, false, 'unplayed', false],
+    "fs4": ["F#4", 140,   20, false, 'unplayed', false],
+    "g4":  ["G4",  117,  400, false, 'unplayed', false],
+    "gs4": ["G#4", 117,  530, false, 'unplayed', false],
+    "a5":  ["A5",  92,   100, false, 'unplayed', false],
+    "as5": ["A#5", 92,   230, false, 'unplayed', false],
+    "b5":  ["B5",  161,  610,  true, 'unplayed', false],
+    "c5":  ["C5",  137,  310,  true, 'unplayed', false]
 };
 
 /**
@@ -59,31 +66,14 @@ function PlayArea() {
     const location = useLocation();
     // Current state of the game
     const gameState = location.state?.gameState;
+    // The playing style in session
+    const single = gameState.noteType == 'single';
     // Current note string to be diplayed
-    const currNote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
-    // Is the note sharp boolean
-    const isSharp = currNote.length === 3;
-    // Margin top of the note
-    let noteTop = 0;
-    // Is the note rotated boolean
-    let isRotated = false;
+    const currNotes = gameState.targetNoteTimePairs.slice(gameState.targetNoteTimePairs.length-1-(single ? 0 : 2), gameState.targetNoteTimePairs.length);
     // The clef
     const isTreble = (gameState.clef == "treble");
-    // Get the appropriate dictionary for clef
-    if (isTreble) {
-        isRotated = notes_dict_treble[currNote][1];
-        noteTop = notes_dict_treble[currNote][0];
-    }
-    else {
-        isRotated = notes_dict_bass[currNote][1];
-        noteTop = notes_dict_bass[currNote][0];
-    }
-    // Sharp symbol top margin 
-    let sharpTop = noteTop + 85;
-    // If note is rotated, add to the top margin of sharp
-    if (isRotated) {
-        noteTop += 93;
-    }
+    // The appropriate note dictionary to work with
+    const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
 
     // Update loop reference: 
     // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
@@ -163,27 +153,89 @@ function PlayArea() {
                 <div className='row'>
                     <div style={{ position: 'relative' }}>
                         {/* Music sheet lines */}
-                        <img src={lines} alt="lines" style={{borderRadius: '40px', left: '0', width: '100%', minWidth: '1280px', position: 'absolute', zIndex: 1 }} />
+                        <img className="play-lines" src={lines} alt="lines" />
 
                         {/* Treble clef */}
-                        {isTreble && <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '15px', left: '-50px', zIndex: 2 }} />}
-                        
+                        {isTreble && <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '45px', left: '-50px', zIndex: 2 }} />}
                         {/* Bass clef */}
-                        {!isTreble && <img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '57px', left: '50px', zIndex: 2 }} />}
+                        {!isTreble && <img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '37px', left: '50px', zIndex: 2 }} />}
 
+                        {/*  "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine] */}
                         {/* Note displayed */}
                         <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
-                            {/* Sharp symbol */}
-                            {isSharp && (<img src={sharp} width='70px' alt='sharp' style={{ position: 'absolute', top: sharpTop, left: '25px', zIndex: 3 }} />)}
+                            {currNotes.map((noteInfo) =>
+                                <div key={noteInfo[0]}>
+                                    {/* Extra line if outside music sheet */}
+                                    {notes_dict[noteInfo[0]][5] && (
+                                        <img 
+                                            src={single_line} 
+                                            width='100px' 
+                                            alt='sharp' 
+                                            style={{ 
+                                                position: 'absolute', 
+                                                top: notes_dict[noteInfo[0]][1] + (notes_dict[noteInfo[0]][3] ? -24 : 70), 
+                                                left: notes_dict[noteInfo[0]][2] - 15, 
+                                                zIndex: 3 
+                                            }} 
+                                        />
+                                    )}
 
-                            {/* Note */}
-                            <img src={single_note} width='70px' alt='c3' style={{ position: 'absolute', top: noteTop, left: '95px', zIndex: 3 }} className={`${isRotated ? "rotate" : ""}`}/>
+                                    {/* Sharp symbol */}
+                                    {noteInfo[0].length === 3 && (
+                                        <img 
+                                            src={sharp} 
+                                            width='70px' 
+                                            alt='sharp' 
+                                            className={notes_dict[noteInfo[0]][4]} 
+                                            style={{ 
+                                                position: 'absolute', 
+                                                top: notes_dict[noteInfo[0]][2] + (notes_dict[noteInfo[0]][3] ? -9 : 85), 
+                                                left: notes_dict[noteInfo[0]][2] - 60, 
+                                                zIndex: 3 
+                                            }} 
+                                        />
+                                    )}
+
+                                    {/* Note */}
+                                    <img 
+                                        src={single_note} 
+                                        alt={`note ${noteInfo[0]}`}
+                                        className={notes_dict[noteInfo[0]][4]} 
+                                        width='70px' 
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: notes_dict[noteInfo[0]][1], 
+                                            left: notes_dict[noteInfo[0]][2], 
+                                            transform: notes_dict[noteInfo[0]][3] ? 'rotate(180deg)' : 'none',
+                                            zIndex: 3 
+                                        }} 
+                                    />
+
+                                    {/* Note label */}
+                                    <p 
+                                        className='note-name' 
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: notes_dict[noteInfo[0]][3] ? notes_dict[noteInfo[0]][1] - 10 : notes_dict[noteInfo[0]][1] + 82, 
+                                            left: notes_dict[noteInfo[0]][3] ? notes_dict[noteInfo[0]][2] + 37 : notes_dict[noteInfo[0]][2] + 41,
+                                            zIndex: 3,
+                                            transform: 'translate(-50%, -50%)',
+                                            textAlign: 'center',
+                                            display: 'inline-block'
+                                        }} 
+                                    >
+                                        {`${notes_dict[noteInfo[0]][0]}`}
+                                    </p>
+                                </div>
+                                )
+                            }
                         </div>
                     </div>
                 </div>
 
                 {/* Keyboard displayed on screen */}
                 <div className='keyboard'>
+                    <p style={{paddingBottom: 10}}>[Hint: use {isTreble ? 'right' : 'left'} hand.]</p>
                     <Keyboard/>
                 </div>
             </div>
