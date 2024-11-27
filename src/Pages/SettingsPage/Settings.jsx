@@ -59,6 +59,7 @@ function Settings() {
             gameState.notesInGame = formData.get("notesInGame"); // Get number of notes if note-based
         }
         gameState.clef = formData.get("clef"); // Get the clef
+        gameState.currentTime = Date.now(); // Get the current date
         gameState.gameStartTime = Date.now(); // Get the current date
         gameState.noteType = formData.get("note-type"); // Get the note type
 
