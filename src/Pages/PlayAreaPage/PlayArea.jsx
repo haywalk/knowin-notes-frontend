@@ -58,7 +58,7 @@ const notes_dict_treble = {
 var hasGameState = false;
 var isNoteAvailable = false;
 var sentZeroTime = false;
-var _gameState;
+var gameState;
 var _report;
 
 /**
@@ -70,19 +70,6 @@ var _report;
  */
 function PlayArea() {
     /* State of the play area */
-    // Location for navigation
-    const location = useLocation();
-    // Current state of the game
-    const gameState = location.state?.gameState;
-    // The playing style in session
-    const single = gameState.noteType == 'single';
-    // Current note string to be diplayed
-    const currNotes = gameState.targetNoteTimePairs.slice(gameState.targetNoteTimePairs.length-1-(single ? 0 : 2), gameState.targetNoteTimePairs.length);
-    // The clef
-    const isTreble = (gameState.clef == "treble");
-    // The appropriate note dictionary to work with
-    const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
-    isNoteAvailable = _gameState.targetNoteTimePairs.length != 0;
 
     const [gameIsOver, setGameIsOver] = useState(false);
     const navigate = useNavigate();
@@ -107,12 +94,24 @@ function PlayArea() {
         });
     }, [gameIsOver]);
 
+    // Location for navigation
+    const location = useLocation();
     if(!hasGameState) {
-        _gameState = gameState;
+        gameState = location.state?.gameState;
         hasGameState = true;
         sentZeroTime = false;
         setGameIsOver(false);
     }
+    
+    // The playing style in session
+    const single = gameState.noteType == 'single';
+    // Current note string to be diplayed
+    const currNotes = gameState.targetNoteTimePairs.slice(gameState.targetNoteTimePairs.length-1-(single ? 0 : 2), gameState.targetNoteTimePairs.length);
+    // The clef
+    const isTreble = (gameState.clef == "treble");
+    // The appropriate note dictionary to work with
+    const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
+    isNoteAvailable = gameState.targetNoteTimePairs.length != 0;
 
      // default values
      let currNote = "";
@@ -141,10 +140,10 @@ function PlayArea() {
     function makeAPICall(){
         if(gameIsOver || sentZeroTime) return;
         console.log("making api call...");
-        var b64 = btoa(JSON.stringify(_gameState));
+        var b64 = btoa(JSON.stringify(gameState));
         const url = `http://localhost:8080/api/GET_STATE?old=${b64}`;
 
-        sentZeroTime = (_gameState.currentTime - _gameState.gaemStartTime) <= 0;
+        sentZeroTime = (gameState.currentTime - gameState.gaemStartTime) <= 0;
 
         axios.get(url)
             .then(response => {
@@ -155,12 +154,12 @@ function PlayArea() {
                 if(tmp[0] == 'S' || tmp[0] == 's'){
                     // Assume a state is returned and update UI
                     let json = tmp.substring("STATE".length);
-                    _gameState = JSON.parse(json);
-                    _gameState.currentTime = Date.now();
+                    gameState = JSON.parse(json);
+                    gameState.currentTime = Date.now();
 
                     // Stress testing the play area
-                    // let anote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
-                    // _gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
+                    let anote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
+                    gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
                 }
                 else{
                     // Assume a report is returned
