@@ -20,37 +20,37 @@ const updateEveryNFrames = 3;
 // Available notes for bass clef 
 // "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
 const notes_dict_bass = {
-    "c3":  ["C3",   92, 50, false, 'unplayed', false],
-    "cs3": ["C#3",  92, 50, false, 'unplayed', false],
-    "d3":  ["D3",  161, 50,  true, 'unplayed', false],
-    "ds3": ["D#3", 161, 50,  true, 'unplayed', false],
-    "e3":  ["E3",  137, 50,  true, 'unplayed', false],
-    "f3":  ["F3",  113, 50,  true, 'unplayed', false],
-    "fs3": ["F#3", 113, 50,  true, 'unplayed', false],
-    "g3":  ["G3",   89, 50,  true, 'unplayed', false],
-    "gs3": ["G#3",  89, 50,  true, 'unplayed', false],
-    "a4":  ["A4",   65, 50,  true, 'unplayed', false],
-    "as4": ["A#4",  65, 50,  true, 'unplayed', false],
-    "b4":  ["B4",   41, 50,  true, 'unplayed', false],
-    "c4":  ["C#4",  17, 50,  true, 'unplayed',  true]
+    "c3":  ["C3",   92, 50, false, '', false],
+    "cs3": ["C#3",  92, 50, false, '', false],
+    "d3":  ["D3",  161, 50,  true, '', false],
+    "ds3": ["D#3", 161, 50,  true, '', false],
+    "e3":  ["E3",  137, 50,  true, '', false],
+    "f3":  ["F3",  113, 50,  true, '', false],
+    "fs3": ["F#3", 113, 50,  true, '', false],
+    "g3":  ["G3",   89, 50,  true, '', false],
+    "gs3": ["G#3",  89, 50,  true, '', false],
+    "a4":  ["A4",   65, 50,  true, '', false],
+    "as4": ["A#4",  65, 50,  true, '', false],
+    "b4":  ["B4",   41, 50,  true, '', false],
+    "c4":  ["C#4",  17, 50,  true, '',  true]
 };
 
 // Available notes for treble clef 
 // "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
 const notes_dict_treble = {
-    "c4":  ["C4",  217,  110, false, 'unplayed',  true],
-    "cs4": ["C#4", 217,  240, false, 'unplayed',  true],
-    "d4":  ["D4",  188, -320, false, 'unplayed', false],
-    "ds4": ["D#4", 188, -190, false, 'unplayed', false],
-    "e4":  ["E4",  165,  320, false, 'unplayed', false],
-    "f4":  ["F4",  140, -110, false, 'unplayed', false],
-    "fs4": ["F#4", 140,   20, false, 'unplayed', false],
-    "g4":  ["G4",  117,  400, false, 'unplayed', false],
-    "gs4": ["G#4", 117,  530, false, 'unplayed', false],
-    "a5":  ["A5",  92,   100, false, 'unplayed', false],
-    "as5": ["A#5", 92,   230, false, 'unplayed', false],
-    "b5":  ["B5",  161,  610,  true, 'unplayed', false],
-    "c5":  ["C5",  137,  310,  true, 'unplayed', false]
+    "c4":  ["C4",  217,  110, false, '',  true],
+    "cs4": ["C#4", 217,  240, false, '',  true],
+    "d4":  ["D4",  188, -320, false, '', false],
+    "ds4": ["D#4", 188, -190, false, '', false],
+    "e4":  ["E4",  165,  320, false, '', false],
+    "f4":  ["F4",  140, -110, false, '', false],
+    "fs4": ["F#4", 140,   20, false, '', false],
+    "g4":  ["G4",  117,  400, false, '', false],
+    "gs4": ["G#4", 117,  530, false, '', false],
+    "a5":  ["A5",  92,   100, false, '', false],
+    "as5": ["A#5", 92,   230, false, '', false],
+    "b5":  ["B5",  161,  610,  true, '', false],
+    "c5":  ["C5",  137,  310,  true, '', false]
 };
 
 /**
