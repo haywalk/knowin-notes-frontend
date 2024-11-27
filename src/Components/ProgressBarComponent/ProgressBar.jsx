@@ -16,35 +16,11 @@ function ProgressBar({gameState}) {
 
     // Calculate total duration of the game in seconds
     const totalSeconds = gameState.gameDuration * 60;
-
-    // Time remaining of the game
-    const [timeLeft, setTimeLeft] = useState(() => {
-        // Calculate time elapsed since the game started in seconds
-        const timeElapsedSeconds = (Date.now() - gameState.gameStartTime) / 1000;
-
-        // Return the time left
-        return totalSeconds - timeElapsedSeconds;
-    });
-
-    useEffect(() => {
-        // Set up interval to decrement the time left by 1 every second
-        const interval = setInterval(() => {
-            // Ensure time left never goes below 0
-            setTimeLeft((prevTimeLeft) => Math.max(prevTimeLeft - 1, 0));
-        }, 1000); // Update every 100 milliseconds (1 second)
-
-        // Cleanup interval when done
-        return () => clearInterval(interval);
-    }, []);
-
-    // Calculate progress in percentage of the bar
+    const timeElapsedSeconds = (gameState.currentTime - gameState.gameStartTime) / 1000;
+    const timeLeft = totalSeconds - timeElapsedSeconds;
     const progress = 100 - (100 * parseFloat(timeLeft) / parseFloat(totalSeconds));
-
-    // Calculate minutes remaining
-    const minutes = Math.floor((timeLeft / 60) % 60);
-
-    // Calculate seconds remaining
-    const seconds = Math.floor(timeLeft % 60);
+    const minutes = Math.max(Math.floor((timeLeft / 60) % 60), 0);
+    const seconds = Math.max(Math.floor(timeLeft % 60), 0);
 
     // Determine the colour of the progress bar
     const getColour = () => {
