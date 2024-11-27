@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as React from "react"
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom' // Import for navigation
@@ -6,6 +6,8 @@ import { ProgressBar, Keyboard } from "../../Components/component_import.js" // 
 import {single_note, lines, treble_clef, sharp, bass_clef, single_line} from '../../assets/img/img_import.js' // Import images
 import { FaPause, FaStop } from "react-icons/fa"; // Import icons
 import './PlayArea.css'; // Import CSS for styling
+import { updateGameState } from '../../rest.js'; // Import API call
+import axios from 'axios'; // Import axios for API calls
 
 /* Constants */
 
@@ -15,7 +17,7 @@ import './PlayArea.css'; // Import CSS for styling
 
 
 // Update every other N frames
-const updateEveryNFrames = 3; 
+const updateEveryNFrames = 4; 
 
 // Available notes for bass clef 
 // "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
@@ -53,6 +55,12 @@ const notes_dict_treble = {
     "c5":  ["C5",  137,  310,  true, '', false]
 };
 
+var hasGameState = false;
+var isNoteAvailable = false;
+var sentZeroTime = false;
+var _gameState;
+var _report;
+
 /**
  * The play area page
  * 
@@ -74,6 +82,44 @@ function PlayArea() {
     const isTreble = (gameState.clef == "treble");
     // The appropriate note dictionary to work with
     const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
+    isNoteAvailable = _gameState.targetNoteTimePairs.length != 0;
+
+    const [gameIsOver, setGameIsOver] = useState(false);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(!gameIsOver) return;
+        setGameIsOver(false);
+        navigate(`/report/${_report.id}`, { 
+            state: {
+                key: _report.id,
+                id: _report.id,
+                date: _report.date,
+                time: _report.time,
+                type: _report.type,
+                clef: _report.clef,
+                accuracy: _report.accuracy,
+                noteAccuracy: _report.noteAccuracy,
+                noteType: _report.noteType,
+                chronometer: _report.chronometer,
+                numNotes: _report.numNotes,
+                numMistakes: _report.numMistakes
+            }
+        });
+    }, [gameIsOver]);
+
+    if(!hasGameState) {
+        _gameState = gameState;
+        hasGameState = true;
+        sentZeroTime = false;
+        setGameIsOver(false);
+    }
+
+     // default values
+     let currNote = "";
+     let isSharp = false;
+     let noteTop = 0;
+     let sharpTop = 0;
+     let isRotated = false;
 
     // Update loop reference: 
     // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
@@ -92,29 +138,53 @@ function PlayArea() {
         requestAnimationFrame(updateLoop);
     }
 
-    function render(){
-        // Send API request
-        // let tmp = updateGameState(gameState);
-        // // Check if the game is still going
-        // if(tmp[0] == 'S' || tmp[0] == 's'){
-        //     // Assume a state is returned and update UI
-        //     let json = tmp.substring("STATE".length);
-        //     gameState = JSON.parse(json);
-        //     //Update UI as needed
-        // }
-        // else{
-        //     // Assume a report is returned
-        //     let json = tmp.substring("REPORT".length);
-        //     // QUIT GAME, pass along the report JSON to next page
-        // }
-        console.log("rendering...");
+    function makeAPICall(){
+        if(gameIsOver || sentZeroTime) return;
+        console.log("making api call...");
+        var b64 = btoa(JSON.stringify(_gameState));
+        const url = `http://localhost:8080/api/GET_STATE?old=${b64}`;
+
+        sentZeroTime = (_gameState.currentTime - _gameState.gaemStartTime) <= 0;
+
+        axios.get(url)
+            .then(response => {
+                // Parse out the game state if a gamestate is returned
+                // Parse out the report if a report is returned
+                let tmp = response.data;
+                // Check if the game is still going
+                if(tmp[0] == 'S' || tmp[0] == 's'){
+                    // Assume a state is returned and update UI
+                    let json = tmp.substring("STATE".length);
+                    _gameState = JSON.parse(json);
+                    _gameState.currentTime = Date.now();
+
+                    // Stress testing the play area
+                    // let anote = _gameState.targetNoteTimePairs[_gameState.targetNoteTimePairs.length-1][0];
+                    // _gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
+                }
+                else{
+                    // Assume a report is returned
+                    // QUIT GAME, pass along the report JSON to next page
+                    let json = tmp.substring("REPORT".length);
+                    _report = JSON.parse(json);
+
+                    console.log(_report);
+
+                    hasGameState = false;
+                    sentZeroTime = false;
+                    setGameIsOver(true);
+                }
+            })
+            .catch(error => {
+                console.log(`Error: ${error}`);
+            });
     }
     
-    const [frameCount, setFrameCount] = useState(2);
+    const [frameCount, setFrameCount] = useState(updateEveryNFrames - 1);
     // Called once on initial render and once whenever setFrameCount is called
     useEffect(() => {
         if(frameCount % updateEveryNFrames != 0) return;
-        render();
+        makeAPICall();
     }, [frameCount]);
 
     // Prevents startGame being called twice (strange bug...)
@@ -145,7 +215,10 @@ function PlayArea() {
 
                     {/* Stop button */}
                     <div className="col-md-1 my-3">
-                        <Link to="/settings"><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
+                        <Link to="/settings" onClick={() => {
+                            hasGameState = false;
+                            sentZeroTime = false;
+                            }}><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
                     </div>
                 </div>
 
@@ -162,7 +235,7 @@ function PlayArea() {
 
                         {/*  "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine] */}
                         {/* Note displayed */}
-                        <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
+                        {isNoteAvailable && <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
                             {currNotes.map((noteInfo) =>
                                 <div key={noteInfo[0]}>
                                     {/* Extra line if outside music sheet */}
@@ -229,7 +302,7 @@ function PlayArea() {
                                 </div>
                                 )
                             }
-                        </div>
+                        </div>}
                     </div>
                 </div>
 
