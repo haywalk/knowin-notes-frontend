@@ -1,7 +1,7 @@
 import React from 'react'
 
 /**
- * Number of notes based dropdown content
+ * Note-based dropdown content
  * 
  * @author Anthony Arseneau
  * 

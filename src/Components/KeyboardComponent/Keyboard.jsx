@@ -1,5 +1,5 @@
-import React from 'react'
-import './Keyboard.css' // Import CSS for styling
+import React from 'react';
+import './Keyboard.css'; // Import CSS for styling
 
 /**
  * The digital keyboard on screen
@@ -134,4 +134,4 @@ const Keyboard = () => {
     )
 }
 
-export default Keyboard
+export default Keyboard;

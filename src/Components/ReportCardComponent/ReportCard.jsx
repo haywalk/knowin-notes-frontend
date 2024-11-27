@@ -1,5 +1,5 @@
 import { PiTimerBold } from "react-icons/pi"; // Import icon for time based
-import { BsMusicNoteList } from "react-icons/bs"; // Import icon for number of notes based
+import { BsMusicNoteList } from "react-icons/bs"; // Import icon for note-based
 import './ReportCard.css' // Import CSS for styling
 
 /**
@@ -54,7 +54,7 @@ function ReportCard(props) {
 
                 {/* Type of practice */}
                 <div className={(props.type == "timed" || props.type == "Time") ? "timed" : "notes"}>
-                    <p className='gameMode'>{props.type} based practice</p>
+                    <p className='gameMode'>{props.type}-based practice</p>
                 </div>
 
                 {/* The accuracy of session */}
@@ -67,8 +67,7 @@ function ReportCard(props) {
 
                 {/* Correct over Total Notes */}
                 <p>
-                    {props.numNotes - props.numMistakes} / {props.numNotes}
-                     correct notes
+                    {props.numNotes - props.numMistakes} / {props.numNotes} correct notes
                 </p>
 
                 {/* Duration of practice */}

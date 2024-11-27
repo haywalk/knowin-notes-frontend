@@ -9,7 +9,7 @@ class GameState{
     notesInGame = -1;
     timePerNote = -1;
     clef = ""
-    noteTypes = ["single"];
+    noteType = "";
 
     // Time related variables
     gameStartTime = null;
@@ -22,6 +22,7 @@ class GameState{
     // Keys pressed/released and the times that they were pressed/released
     playedNoteTimePairs = [];
 
+    noteAccuracy = {}
 }
 
 export default GameState;

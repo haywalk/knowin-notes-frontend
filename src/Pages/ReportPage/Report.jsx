@@ -1,10 +1,48 @@
-import React, { useEffect, useState } from "react"
-import { BsMusicNoteList } from "react-icons/bs" // Import number of notes based icon
-import { PiTimerBold } from "react-icons/pi" // Import time based icon
-import { Link, useParams } from "react-router-dom" // Import for navigation
-import { lines, single_note, treble_clef } from '../../assets/img/img_import.js' // Import components
-import { getReport } from "../../rest.js"
-import './Report.css' // Import CSS for styling
+import React, { useEffect, useState } from "react";
+import { BsMusicNoteList } from "react-icons/bs"; // Import number of notes based icon
+import { PiTimerBold } from "react-icons/pi"; // Import time based icon
+import { Link, useParams } from "react-router-dom"; // Import for navigation
+import { bass_clef, lines, sharp, single_line, single_note, treble_clef } from '../../assets/img/img_import.js'; // Import components
+import { getReport } from "../../rest.js";
+import './Report.css'; // Import CSS for styling
+
+// Constants
+
+// Available notes for bass clef 
+// "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
+const notes_dict_bass = {
+    "c3":  ["C3",   92,  140, false, 'unplayed', false],
+    "cs3": ["C#3",  92,  270, false, 'unplayed', false],
+    "d3":  ["D3",  161, -290,  true, 'unplayed', false],
+    "ds3": ["D#3", 161, -160,  true, 'unplayed', false],
+    "e3":  ["E3",  137,  350,  true, 'unplayed', false],
+    "f3":  ["F3",  113,  -80,  true, 'unplayed', false],
+    "fs3": ["F#3", 113,   50,  true, 'unplayed', false],
+    "g3":  ["G3",   89,  430,  true, 'unplayed', false],
+    "gs3": ["G#3",  89,  560,  true, 'unplayed', false],
+    "a4":  ["A4",   65,  130,  true, 'unplayed', false],
+    "as4": ["A#4",  65,  260,  true, 'unplayed', false],
+    "b4":  ["B4",   41,  640,  true, 'unplayed', false],
+    "c4":  ["C#4",  17,  340,  true, 'unplayed',  true]
+};
+
+// Available notes for treble clef 
+// "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
+const notes_dict_treble = {
+    "c4":  ["C4",  217,  110, false, 'unplayed',  true],
+    "cs4": ["C#4", 217,  240, false, 'unplayed',  true],
+    "d4":  ["D4",  188, -320, false, 'unplayed', false],
+    "ds4": ["D#4", 188, -190, false, 'unplayed', false],
+    "e4":  ["E4",  165,  320, false, 'unplayed', false],
+    "f4":  ["F4",  140, -110, false, 'unplayed', false],
+    "fs4": ["F#4", 140,   20, false, 'unplayed', false],
+    "g4":  ["G4",  117,  400, false, 'unplayed', false],
+    "gs4": ["G#4", 117,  530, false, 'unplayed', false],
+    "a5":  ["A5",  92,   100, false, 'unplayed', false],
+    "as5": ["A#5", 92,   230, false, 'unplayed', false],
+    "b5":  ["B5",  161,  610,  true, 'unplayed', false],
+    "c5":  ["C5",  137,  310,  true, 'unplayed', false]
+};
 
 /**
  * The report page
@@ -25,7 +63,7 @@ function Report() {
     const getColour = () => {
         // Get substring to extract "XX" from "XX%"
         const accuracy_str = report.accuracy.substring(0, report.accuracy.length-1);
-        
+
         // Parse string to integer
         const accuracy_int = parseInt(accuracy_str);
 
@@ -53,6 +91,22 @@ function Report() {
         return totalSeconds / report.numNotes;
     }
 
+    // Function to set the accuracy for notes
+    const setNoteAccuracy = (note) => {
+        // Get the accuracy of the note from the report
+        const currNoteAccuracy = report.noteAccuracy[note]
+        // Check if it was ever played in the session
+        if (currNoteAccuracy[1] == 0) notes_dict[note][4] = 'unplayed';
+        else {
+            // Calculate the accuracy in percentage
+            let single_note_accuracy = currNoteAccuracy[0] / currNoteAccuracy[1] * 100;
+            // Set the appropriate accuracy tag
+            if (single_note_accuracy < 50) notes_dict[note][4] = 'bad';
+            else if (single_note_accuracy < 90) notes_dict[note][4] = 'ok';
+            else notes_dict[note][4] = 'good';
+        }
+    }
+
     useEffect(() => {
         // Fetch the data from backend
         async function fetchData() {
@@ -74,6 +128,15 @@ function Report() {
 
     // The report printing link to access the API along the ID
     let printLink = `http://localhost:8080/api/GENERATE_PDF?id=${id}`;
+
+    // The clef used in session
+    const isTreble = report.clef == 'treble';
+
+    // The appropriate note dictionary to work with
+    const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
+
+    // The playing style in session
+    const single = report.noteType == 'single';
 
     // Display the report
     return (
@@ -104,7 +167,7 @@ function Report() {
                             </h2>
                             {/* Practice type text */}
                             <h3 className={(report.type == "timed" || report.type == "Time") ? "timed-text" : "notes-text"}>
-                                {report.type} based practice
+                                {report.type}-Based Practice
                             </h3>
                         </div>
                     </div>
@@ -129,7 +192,7 @@ function Report() {
                         <div className="square report-content">
                             {/* Total notes in session */}
                             <h2>{report.numNotes}</h2>
-                            <h3>TOTAL NOTES</h3>
+                            <h3>TOTAL {single ? 'NOTES' : 'CHORDS'}</h3>
                         </div>
                     </div>
                     <div className='col-md-3 my-3'>
@@ -152,15 +215,15 @@ function Report() {
                     <div className='col-md-6 my-2'>
                         <div className="square report-content">
                             {/* Time spent per note */}
-                            <h2></h2>
-                            <h3>{timePerNoteCalculator()}s/note</h3>
+                            <h2>{timePerNoteCalculator()}s/{single ? 'note' : 'chord'}</h2>
+                            <h3>Speed</h3>
                         </div>
                     </div>
                     <div className='col-md-6 my-2'>
                         <div className="square report-content">
                             {/* Extra settings information */}
-                            <h2></h2>
-                            <h3>single notes, treble clef</h3>
+                            <h2>{single ? 'Single Notes' : 'Chords'}</h2>
+                            <h3>Playing Style</h3>
                         </div>
                     </div>
                 </div>
@@ -170,23 +233,82 @@ function Report() {
                 <div className='row'>
                     {/* Display accuracy for each note */}
                     <div style={{ position: 'relative' }}>
+                        {/* Sheet music lines */}
                         <img className="lines" src={lines} alt="lines"/>
-                        <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '15px', left: '-50px', zIndex: 2 }} />
-                        {/*<img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '57px', left: '50px', zIndex: 2 }} />*/}
+                        
+                        {/* Treble clef */}
+                        {isTreble && <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '45px', left: '-50px', zIndex: 2 }} />}
+                        {/* Treble clef */}
+                        {!isTreble && <img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '87px', left: '50px', zIndex: 2 }} />}
+                        
                         <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
-                            <img src={single_note} className="good" width='70px' alt="single note" style={{ position: 'absolute', top: '159px', left: '-200px', zIndex: 3 }} />
-                            <img src={single_note} className="ok" width='70px' alt="single note" style={{ position: 'absolute', top: '111px', left: '-130px', zIndex: 3 }} />
-                            <img src={single_note} className="good" width='70px' alt="single note" style={{ position: 'absolute', top: '63px', left: '-60px', zIndex: 3 }} />
-                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '107px', left: '10px', zIndex: 3 }} />
-                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '59px', left: '80px', zIndex: 3 }} />
-                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '11px', left: '150px', zIndex: 3 }} />
+                            {Object.entries(notes_dict).map(([note, [label, top, left, isRotated, accuracy, extraLine]]) => 
+                                <div key={note}>
+                                    {/* Set the accuracy for the current note */}
+                                    {setNoteAccuracy(note)}
+                                    {/* Extra line if outside music sheet */}
+                                    {extraLine && (
+                                        <img 
+                                            src={single_line} 
+                                            width='100px' 
+                                            alt='sharp' 
+                                            style={{ 
+                                                position: 'absolute', 
+                                                top: top + (isRotated ? -24 : 70), 
+                                                left: left - 15, 
+                                                zIndex: 3 
+                                            }} 
+                                        />
+                                    )}
 
+                                    {/* Sharp symbol */}
+                                    {note.length === 3 && (
+                                        <img 
+                                            src={sharp} 
+                                            width='70px' 
+                                            alt='sharp' 
+                                            className={accuracy} 
+                                            style={{ 
+                                                position: 'absolute', 
+                                                top: top + (isRotated ? -9 : 85), 
+                                                left: left - 60, 
+                                                zIndex: 3 
+                                            }} 
+                                        />
+                                    )}
 
-                            <img src={single_note} className="ok" width='70px' alt="single note" style={{ position: 'absolute', top: '136px', left: '180px', zIndex: 3 }} />
-                            <img src={single_note} className="bad" width='70px' alt="single note" style={{ position: 'absolute', top: '88px', left: '250px', zIndex: 3 }} />
-                            <img src={single_note} className="ok rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '132px', left: '320px', zIndex: 3 }} />
-                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '84px', left: '390px', zIndex: 3 }} />
-                            <img src={single_note} className="good rotate" width='70px' alt="single note" style={{ position: 'absolute', top: '36px', left: '460px', zIndex: 3 }} />
+                                    {/* Note */}
+                                    <img 
+                                        src={single_note} 
+                                        alt={`note ${note}`}
+                                        className={accuracy} 
+                                        width='70px' 
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: top, 
+                                            left: left, 
+                                            transform: isRotated ? 'rotate(180deg)' : 'none',
+                                            zIndex: 3 
+                                        }} 
+                                    />
+
+                                    {/* Note label */}
+                                    <p 
+                                        className='note-name' 
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: isRotated ? top - 10 : top + 82, 
+                                            left: isRotated ? left + 37 : left + 41,
+                                            zIndex: 3,
+                                            transform: 'translate(-50%, -50%)',
+                                            textAlign: 'center',
+                                            display: 'inline-block'
+                                        }} 
+                                    >
+                                        {`${label}`}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

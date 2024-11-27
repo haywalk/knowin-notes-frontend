@@ -49,6 +49,8 @@
 }
 
 .lines {
+    padding: 30px 0;
+    background-color: #fff;
     border-radius: 40px;
     left: 0;
     width: 1256px;
@@ -72,6 +74,15 @@
     filter: invert(28%) sepia(28%) saturate(5945%) hue-rotate(334deg) brightness(87%) contrast(87%);
 }
 
+.unplayed {
+    filter: opacity(50%);
+}
+
 .navigation-options {
-    margin-top: 350px;
+    margin-top: 410px;
+}
+
+.note-name {
+    color: #000;
+    font-weight: bold;
 }

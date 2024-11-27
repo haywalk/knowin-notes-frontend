@@ -39,7 +39,7 @@ export function getReport(id) {
 
     return axios.get(url)
         .then(response => {
-            console.log(response.data);
+            //console.log(response.data);
             return response.data; // Just a JSON of the Report
         })
         .catch(error => {

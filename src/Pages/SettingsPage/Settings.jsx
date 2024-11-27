@@ -56,10 +56,11 @@ function Settings() {
             gameState.gameDuration = formData.get("gameDuration"); // Get duration if time based
         }
         else {
-            gameState.notesInGame = formData.get("notesInGame"); // Get number of notes if number of notes based
+            gameState.notesInGame = formData.get("notesInGame"); // Get number of notes if note-based
         }
         gameState.clef = formData.get("clef"); // Get the clef
         gameState.gameStartTime = Date.now(); // Get the current date
+        gameState.noteType = formData.get("note-type"); // Get the note type
 
         // Navigate and create game state
         navigate('/play_area', { state: { gameState: gameState } });
@@ -83,7 +84,7 @@ function Settings() {
                             <label className="py-3 btn btn-secondary label label-1" htmlFor="mode-1">Time-Based Practice</label>
                         </div>
                         <div className="col-md-6">
-                            {/* Number of notes based practice */}
+                            {/* Note-based practice */}
                             <input type="radio" id="mode-2" name="gameMode" onClick={() => chooseIsTimeBased(false)} value="notes" className="radio"/>
                             <label className="py-3 btn btn-secondary label label-2" htmlFor="mode-2">Note-Based Practice</label>
                         </div>
@@ -120,17 +121,17 @@ function Settings() {
                         </div>
                     </div>
 
-                    {/* Melody selection */}
+                    {/* Note type selection */}
                     <div className='row selection'>
                         <div className="col-md-6">
                             {/* Single notes */}
-                            <input type="radio" id="melody-1" name="melody" value="single" className="radio" defaultChecked/>
-                            <label className="py-3 btn btn-secondary label label-5" htmlFor="melody-1">Single Notes</label>
+                            <input type="radio" id="note-type-1" name="note-type" value="single" className="radio" defaultChecked/>
+                            <label className="py-3 btn btn-secondary label label-5" htmlFor="note-type-1">Single Notes</label>
                         </div>
                         <div className="col-md-6">
                             {/* Chords */}
-                            <input type="radio" id="melody-2" name="melody" value="melodies" className="radio"/>
-                            <label className="py-3 btn btn-secondary label label-6" htmlFor="melody-2">Chords</label>
+                            <input type="radio" id="note-type-2" name="note-type" value="chord" className="radio"/>
+                            <label className="py-3 btn btn-secondary label label-6" htmlFor="note-type-2">Chords</label>
                         </div>
                     </div>
                     
