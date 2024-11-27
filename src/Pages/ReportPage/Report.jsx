@@ -1,47 +1,47 @@
-import React, { useEffect, useState } from "react"
-import { BsMusicNoteList } from "react-icons/bs" // Import number of notes based icon
-import { PiTimerBold } from "react-icons/pi" // Import time based icon
-import { Link, useParams } from "react-router-dom" // Import for navigation
-import { lines, single_note, sharp, treble_clef, bass_clef, single_line } from '../../assets/img/img_import.js' // Import components
-import { getReport } from "../../rest.js"
-import './Report.css' // Import CSS for styling
+import React, { useEffect, useState } from "react";
+import { BsMusicNoteList } from "react-icons/bs"; // Import number of notes based icon
+import { PiTimerBold } from "react-icons/pi"; // Import time based icon
+import { Link, useParams } from "react-router-dom"; // Import for navigation
+import { bass_clef, lines, sharp, single_line, single_note, treble_clef } from '../../assets/img/img_import.js'; // Import components
+import { getReport } from "../../rest.js";
+import './Report.css'; // Import CSS for styling
 
 // Constants
 
 // Available notes for bass clef 
 // "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
 const notes_dict_bass = {
-    "c3":  ["C3",   92,  140, false, 'good', false],
-    "cs3": ["C#3",  92,  270, false,   'ok', false],
-    "d3":  ["D3",  161, -290,  true, 'good', false],
-    "ds3": ["D#3", 161, -160,  true, 'good', false],
-    "e3":  ["E3",  137,  350,  true,   'ok', false],
-    "f3":  ["F3",  113,  -80,  true,  'bad', false],
-    "fs3": ["F#3", 113,   50,  true,   'ok', false],
-    "g3":  ["G3",   89,  430,  true, 'good', false],
-    "gs3": ["G#3",  89,  560,  true, 'good', false],
-    "a4":  ["A4",   65,  130,  true, 'good', false],
-    "as4": ["A#4",  65,  260,  true,   'ok', false],
-    "b4":  ["B4",   41,  640,  true, 'good', false],
-    "c4":  ["C#4",  17,  340,  true,   'ok',  true]
+    "c3":  ["C3",   92,  140, false, 'unplayed', false],
+    "cs3": ["C#3",  92,  270, false, 'unplayed', false],
+    "d3":  ["D3",  161, -290,  true, 'unplayed', false],
+    "ds3": ["D#3", 161, -160,  true, 'unplayed', false],
+    "e3":  ["E3",  137,  350,  true, 'unplayed', false],
+    "f3":  ["F3",  113,  -80,  true, 'unplayed', false],
+    "fs3": ["F#3", 113,   50,  true, 'unplayed', false],
+    "g3":  ["G3",   89,  430,  true, 'unplayed', false],
+    "gs3": ["G#3",  89,  560,  true, 'unplayed', false],
+    "a4":  ["A4",   65,  130,  true, 'unplayed', false],
+    "as4": ["A#4",  65,  260,  true, 'unplayed', false],
+    "b4":  ["B4",   41,  640,  true, 'unplayed', false],
+    "c4":  ["C#4",  17,  340,  true, 'unplayed',  true]
 };
 
 // Available notes for treble clef 
 // "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
 const notes_dict_treble = {
-    "c4":  ["C4",  217,  110, false, 'good',  true],
-    "cs4": ["C#4", 217,  240, false,   'ok',  true],
-    "d4":  ["D4",  188, -320, false, 'good', false],
-    "ds4": ["D#4", 188, -190, false,   'ok', false],
-    "e4":  ["E4",  165,  320, false, 'good', false],
-    "f4":  ["F4",  140, -110, false, 'good', false],
-    "fs4": ["F#4", 140,   20, false, 'good', false],
-    "g4":  ["G4",  117,  400, false, 'good', false],
-    "gs4": ["G#4", 117,  530, false,   'ok', false],
-    "a5":  ["A5",  92,   100, false,   'ok', false],
-    "as5": ["A#5", 92,   230, false,  'bad', false],
-    "b5":  ["B5",  161,  610,  true, 'good', false],
-    "c5":  ["C5",  137,  310,  true, 'good', false]
+    "c4":  ["C4",  217,  110, false, 'unplayed',  true],
+    "cs4": ["C#4", 217,  240, false, 'unplayed',  true],
+    "d4":  ["D4",  188, -320, false, 'unplayed', false],
+    "ds4": ["D#4", 188, -190, false, 'unplayed', false],
+    "e4":  ["E4",  165,  320, false, 'unplayed', false],
+    "f4":  ["F4",  140, -110, false, 'unplayed', false],
+    "fs4": ["F#4", 140,   20, false, 'unplayed', false],
+    "g4":  ["G4",  117,  400, false, 'unplayed', false],
+    "gs4": ["G#4", 117,  530, false, 'unplayed', false],
+    "a5":  ["A5",  92,   100, false, 'unplayed', false],
+    "as5": ["A#5", 92,   230, false, 'unplayed', false],
+    "b5":  ["B5",  161,  610,  true, 'unplayed', false],
+    "c5":  ["C5",  137,  310,  true, 'unplayed', false]
 };
 
 /**
@@ -59,23 +59,11 @@ function Report() {
     const [loading, setLoading] = useState(true);
     const [report, setReport] = useState(null);
 
-    /* Temporary settings */
-    // The clef
-    const isTreble = false;
-    // Replace with following when backend keeps up
-    //const isTreble = (report.clef == "treble");
-    // melody
-    const single = false;
-
-
-    // Get the appropriate dictionary
-    const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
-
     // Determine colour of the accuracy
     const getColour = () => {
         // Get substring to extract "XX" from "XX%"
         const accuracy_str = report.accuracy.substring(0, report.accuracy.length-1);
-        
+
         // Parse string to integer
         const accuracy_int = parseInt(accuracy_str);
 
@@ -103,6 +91,22 @@ function Report() {
         return totalSeconds / report.numNotes;
     }
 
+    // Function to set the accuracy for notes
+    const setNoteAccuracy = (note) => {
+        // Get the accuracy of the note from the report
+        const currNoteAccuracy = report.noteAccuracy[note]
+        // Check if it was ever played in the session
+        if (currNoteAccuracy[1] == 0) notes_dict[note][4] = 'unplayed';
+        else {
+            // Calculate the accuracy in percentage
+            let single_note_accuracy = currNoteAccuracy[0] / currNoteAccuracy[1] * 100;
+            // Set the appropriate accuracy tag
+            if (single_note_accuracy < 50) notes_dict[note][4] = 'bad';
+            else if (single_note_accuracy < 90) notes_dict[note][4] = 'ok';
+            else notes_dict[note][4] = 'good';
+        }
+    }
+
     useEffect(() => {
         // Fetch the data from backend
         async function fetchData() {
@@ -124,6 +128,15 @@ function Report() {
 
     // The report printing link to access the API along the ID
     let printLink = `http://localhost:8080/api/GENERATE_PDF?id=${id}`;
+
+    // The clef used in session
+    const isTreble = report.clef == 'treble';
+
+    // The appropriate note dictionary to work with
+    const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
+
+    // The playing style in session
+    const single = report.noteType == 'single';
 
     // Display the report
     return (
@@ -228,6 +241,8 @@ function Report() {
                         <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
                             {Object.entries(notes_dict).map(([note, [label, top, left, isRotated, accuracy, extraLine]]) => 
                                 <div key={note}>
+                                    {/* Set the accuracy for the current note */}
+                                    {setNoteAccuracy(note)}
                                     {/* Extra line if outside music sheet */}
                                     {extraLine && (
                                         <img 

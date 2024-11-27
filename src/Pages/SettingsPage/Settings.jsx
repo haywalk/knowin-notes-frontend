@@ -60,6 +60,7 @@ function Settings() {
         }
         gameState.clef = formData.get("clef"); // Get the clef
         gameState.gameStartTime = Date.now(); // Get the current date
+        gameState.noteType = formData.get("note-type"); // Get the note type
 
         // Navigate and create game state
         navigate('/play_area', { state: { gameState: gameState } });
@@ -120,17 +121,17 @@ function Settings() {
                         </div>
                     </div>
 
-                    {/* Melody selection */}
+                    {/* Note type selection */}
                     <div className='row selection'>
                         <div className="col-md-6">
                             {/* Single notes */}
-                            <input type="radio" id="melody-1" name="melody" value="single" className="radio" defaultChecked/>
-                            <label className="py-3 btn btn-secondary label label-5" htmlFor="melody-1">Single Notes</label>
+                            <input type="radio" id="note-type-1" name="note-type" value="single" className="radio" defaultChecked/>
+                            <label className="py-3 btn btn-secondary label label-5" htmlFor="note-type-1">Single Notes</label>
                         </div>
                         <div className="col-md-6">
                             {/* Chords */}
-                            <input type="radio" id="melody-2" name="melody" value="melodies" className="radio"/>
-                            <label className="py-3 btn btn-secondary label label-6" htmlFor="melody-2">Chords</label>
+                            <input type="radio" id="note-type-2" name="note-type" value="chord" className="radio"/>
+                            <label className="py-3 btn btn-secondary label label-6" htmlFor="note-type-2">Chords</label>
                         </div>
                     </div>
                     
