@@ -59,10 +59,14 @@ function Report() {
     const [loading, setLoading] = useState(true);
     const [report, setReport] = useState(null);
 
+    /* Temporary settings */
     // The clef
     const isTreble = false;
     // Replace with following when backend keeps up
     //const isTreble = (report.clef == "treble");
+    // melody
+    const single = false;
+
 
     // Get the appropriate dictionary
     const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
@@ -150,7 +154,7 @@ function Report() {
                             </h2>
                             {/* Practice type text */}
                             <h3 className={(report.type == "timed" || report.type == "Time") ? "timed-text" : "notes-text"}>
-                                {report.type} based practice
+                                {report.type}-Based Practice
                             </h3>
                         </div>
                     </div>
@@ -175,7 +179,7 @@ function Report() {
                         <div className="square report-content">
                             {/* Total notes in session */}
                             <h2>{report.numNotes}</h2>
-                            <h3>TOTAL NOTES</h3>
+                            <h3>TOTAL {single ? 'NOTES' : 'CHORDS'}</h3>
                         </div>
                     </div>
                     <div className='col-md-3 my-3'>
@@ -198,15 +202,15 @@ function Report() {
                     <div className='col-md-6 my-2'>
                         <div className="square report-content">
                             {/* Time spent per note */}
-                            <h2></h2>
-                            <h3>{timePerNoteCalculator()}s/note</h3>
+                            <h2>{timePerNoteCalculator()}s/{single ? 'note' : 'chord'}</h2>
+                            <h3>Speed</h3>
                         </div>
                     </div>
                     <div className='col-md-6 my-2'>
                         <div className="square report-content">
                             {/* Extra settings information */}
-                            <h2></h2>
-                            <h3>single notes, treble clef</h3>
+                            <h2>{single ? 'Single Notes' : 'Chords'}</h2>
+                            <h3>Playing Style</h3>
                         </div>
                     </div>
                 </div>
@@ -248,7 +252,7 @@ function Report() {
                                             className={accuracy} 
                                             style={{ 
                                                 position: 'absolute', 
-                                                top: top + (isRotated ? -10 : 85), 
+                                                top: top + (isRotated ? -9 : 85), 
                                                 left: left - 60, 
                                                 zIndex: 3 
                                             }} 
