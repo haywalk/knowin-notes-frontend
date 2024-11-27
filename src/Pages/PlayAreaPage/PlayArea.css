@@ -1,0 +1,29 @@
+.btn {
+    font-weight: bold;
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+.pause {
+    margin: auto;
+}
+
+.stop {
+    margin: auto;
+}
+
+.keyboard {
+    margin-top: 350px;
+}
+
+.play-lines {
+    padding: 30px 0;
+    background-color: #fff;
+    border-radius: 40px;
+    left: 0;
+    width: 1256px;
+    position: absolute;
+    z-index: 1;
+}

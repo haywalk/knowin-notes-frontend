@@ -1,0 +1,49 @@
+input {
+    width: 100%;
+    color: #fff;
+}
+  
+label {
+    border-width: 2px !important;
+    display: none;
+    width: 100%;
+    color: #fff;
+}
+
+p {
+    color: #fff;
+}
+
+.radio,
+.radio2 {
+    display: none;
+}
+
+#mode-1:checked ~ .label-1,
+#mode-2:checked ~ .label-2,
+#clef-1:checked ~ .label-3,
+#clef-2:checked ~ .label-4,
+#note-type-1:checked ~ .label-5,
+#note-type-2:checked ~ .label-6,
+#time-1:checked ~ .label-7,
+#time-2:checked ~ .label-8,
+#time-3:checked ~ .label-9,
+#time-4:checked ~ .label-10,
+#notes-1:checked ~ .label-11,
+#notes-2:checked ~ .label-12,
+#notes-3:checked ~ .label-13,
+#notes-4:checked ~ .label-14{
+    border-width: 2px !important;
+    border-color: #1e8dfc !important;
+}
+
+.container-sm {
+    width: 60% !important;
+}
+
+.selection {
+    background-color: #2d383c;
+    padding: 14px 0;
+    margin: 20px 0;
+    border-radius: 16px;
+}
