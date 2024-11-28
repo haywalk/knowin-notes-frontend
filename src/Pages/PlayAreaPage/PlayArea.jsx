@@ -213,13 +213,8 @@ function PlayArea() {
             <div className="container">
                 {/* Header with buttons and progress bar */}
                 <div className='row'>
-                    {/* Pause button */}
-                    <div className="col-md-1 my-3">
-                        <Link to="#"><button className="d-grid py-3 btn btn-primary" role="button"><FaPause className="pause"/></button></Link>
-                    </div>
-                    
                     {/* Progress bar */}
-                    <div className="col-md-10 my-3">
+                    <div className="col-md-10 offset-md-1 my-3">
                         <ProgressBar gameState={gameState}/>
                     </div>
 
