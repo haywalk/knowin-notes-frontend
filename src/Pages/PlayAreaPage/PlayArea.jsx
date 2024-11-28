@@ -316,7 +316,7 @@ function PlayArea() {
                 {/* Keyboard displayed on screen */}
                 <div className='keyboard'>
                     <p style={{paddingBottom: 10}}>[Hint: use {isTreble ? 'right' : 'left'} hand.]</p>
-                    <Keyboard/>
+                    <Keyboard notePlayed={notePlayed} isTreble={isTreble}/>
                 </div>
             </div>
         </>

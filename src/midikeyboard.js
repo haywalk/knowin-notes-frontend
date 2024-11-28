@@ -27,7 +27,7 @@ export default class MIDIKeyboard{
         this.#isLogging = false;
         this.#midi = null;
         this.#isEnabled = false;
-        this.#noteOffset = 49;
+        this.#noteOffset = 37;
         this.#audios = [];
         this.#noteOnCallbacks = [];
     }
@@ -138,8 +138,8 @@ export default class MIDIKeyboard{
     }
     
     #onNoteOn(note){
-        if(this.#isLogging) console.log("NOTE_ON! (" + (note - this.#noteOffset) + ")");
         var noteName = soundfiles[note - this.#noteOffset];
+        if(this.#isLogging) console.log("NOTE_ON! (" + noteName + ")");
         this.#audios[note] = new Audio("src/assets/audio/" + noteName + ".wav");
         this.#audios[note].play();
         
