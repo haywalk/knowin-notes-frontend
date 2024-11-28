@@ -55,6 +55,7 @@ var hasGameState = false;
 var isNoteAvailable = false;
 var sentZeroTime = false;
 var gameState;
+var keyboard;
 var _report;
 
 /**
@@ -65,8 +66,6 @@ var _report;
  * @returns {JSX.Element} - The play area page
  */
 function PlayArea() {
-
-    const keyboard = new MIDIKeyboard();
 
     /* State of the play area */
 
@@ -138,6 +137,7 @@ function PlayArea() {
     function startGame(){
         // gameState = gameState;
         console.log("Game starting!");
+        keyboard = new MIDIKeyboard();
         keyboard.tryConnect(); // Connect to MIDI keyboard
         keyboard.addNoteOnCallback(notePlayed);
         // keyboard.startLogging(); // Optional line for debugging
