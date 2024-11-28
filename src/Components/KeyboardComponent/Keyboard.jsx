@@ -49,7 +49,7 @@ const Keyboard = ({notePlayed, isTreble}) => {
                         <label className="black-note fifth btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed("as3")}
+                                notePlayed("as4")}
                             }  defaultChecked/>
                         </label>
 
