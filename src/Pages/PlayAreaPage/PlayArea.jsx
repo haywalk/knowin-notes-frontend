@@ -123,6 +123,9 @@ function PlayArea() {
     // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
 
     function notePlayed(note){
+        // Play sound
+        var tmpAudio = new Audio("src/assets/audio/" + note + ".wav");
+        tmpAudio.play();
         gameState.playedNoteTimePairs.push([note, Date.now(), 'u']);
         makeAPICall();
         console.log(`Note played: ${note}`);

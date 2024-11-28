@@ -6,7 +6,7 @@ const NOTE_ON = 0b1001;
 const NOTE_OFF = 0b1000;
 const OTHER = 0;
 
-const soundfiles = [
+const noteNames = [
     "c3", "cs3", "d3", "ds3", "e3", "f3",
     "fs3", "g3", "gs3", "a4", "as4", "b4",
     "c4", "cs4", "d4", "ds4", "e4", "f4",
@@ -20,7 +20,6 @@ export default class MIDIKeyboard{
     #midi;
     #isEnabled;
     #noteOffset;
-    #audios;
     #noteOnCallbacks;
 
     constructor(){
@@ -28,7 +27,6 @@ export default class MIDIKeyboard{
         this.#midi = null;
         this.#isEnabled = false;
         this.#noteOffset = 37;
-        this.#audios = [];
         this.#noteOnCallbacks = [];
     }
 
@@ -83,13 +81,6 @@ export default class MIDIKeyboard{
     }
 
     #onMIDISuccess(midiAccess){
-        // make space for audio instances (necessary?)
-        for(let i = 0; i < 128; i++){
-            this.#audios[i] = null; 
-        if (i >= this.#noteOffset && i < this.#noteOffset + soundfiles.length) {
-            this.#audios[i] = new Audio("src/assets/audio/" + soundfiles[i - this.#noteOffset]);
-        }
-        }
         this.#midi = midiAccess;
         this.#isEnabled = true;
         this.#startListeningForMIDIMessages();
@@ -138,10 +129,8 @@ export default class MIDIKeyboard{
     }
     
     #onNoteOn(note){
-        var noteName = soundfiles[note - this.#noteOffset];
+        var noteName = noteNames[note - this.#noteOffset];
         if(this.#isLogging) console.log("NOTE_ON! (" + noteName + ")");
-        this.#audios[note] = new Audio("src/assets/audio/" + noteName + ".wav");
-        this.#audios[note].play();
         
         for (const callback of this.#noteOnCallbacks) {
             callback(noteName);
@@ -150,9 +139,6 @@ export default class MIDIKeyboard{
     
     #onNoteOff(note){
         if(this.#isLogging) console.log("NOTE OFF!");
-        // Should maybe fade the sound of the note here somehow
-        this.#audios[note].pause();
-        this.#audios[note].currentTime = 0;
     }
 }
 
