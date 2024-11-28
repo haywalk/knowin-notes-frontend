@@ -102,6 +102,7 @@ function PlayArea() {
         keyboard = new MIDIKeyboard();
         keyboard.addNoteOnCallback(notePlayed);
         keyboard.tryConnect();
+        keyboard.setClef(gameState.clef);
         keyboard.IsPlayable = true;
         console.log(gameState);
         hasGameState = true;
