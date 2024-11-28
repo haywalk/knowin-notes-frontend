@@ -86,3 +86,7 @@
     color: #000;
     font-weight: bold;
 }
+
+.capitalized {
+    text-transform: capitalize;
+}
