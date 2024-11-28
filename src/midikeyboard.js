@@ -23,18 +23,19 @@ const BASS_OFFSET = 49;
 
 export default class MIDIKeyboard{
 
+    #isPlayable;
     #isLogging;
     #midi;
     #isEnabled;
     #noteOffset;
-    #noteOnCallbacks;
+    #noteOnCallback;
 
     constructor(){
+        this.#isPlayable = false;
         this.#isLogging = false;
         this.#midi = null;
         this.#isEnabled = false;
         this.#noteOffset = TREBLE_OFFSET;
-        this.#noteOnCallbacks = [];
     }
 
     tryConnect(){
@@ -76,7 +77,8 @@ export default class MIDIKeyboard{
     }
 
     addNoteOnCallback(callback){
-        this.#noteOnCallbacks.push(callback);
+        console.log("Adding callback!");
+        this.#noteOnCallback = callback;
     }
 
     setClef(clef){
@@ -89,6 +91,13 @@ export default class MIDIKeyboard{
         else{
             console.error("Invalid clef!");
         }
+    }
+
+    /**
+     * @param {boolean} value
+     */
+    set IsPlayable(value){
+        this.#isPlayable = value;
     }
 
     get isEnabled(){
@@ -148,12 +157,11 @@ export default class MIDIKeyboard{
     }
     
     #onNoteOn(note){
+        if(!this.#isPlayable) return;
         var noteName = noteNames[note - this.#noteOffset];
         if(this.#isLogging) console.log("NOTE_ON! (" + noteName + ")");
         
-        for (const callback of this.#noteOnCallbacks) {
-            callback(noteName);
-        }
+        this.#noteOnCallback(noteName);
     }
     
     #onNoteOff(note){

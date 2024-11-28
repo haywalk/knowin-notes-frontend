@@ -55,8 +55,8 @@ var hasGameState = false;
 var isNoteAvailable = false;
 var sentZeroTime = false;
 var gameState;
-var keyboard;
 var _report;
+var keyboard = new MIDIKeyboard();
 
 /**
  * The play area page
@@ -76,6 +76,7 @@ function PlayArea() {
         setGameIsOver(false);
         hasGameState = false;
         sentZeroTime = false;
+        keyboard.IsPlayable = false;
         navigate(`/report/${_report.id}`, { 
             state: {
                 key: _report.id,
@@ -98,6 +99,10 @@ function PlayArea() {
     const location = useLocation();
     if(!hasGameState) {
         gameState = location.state?.gameState;
+        keyboard = new MIDIKeyboard();
+        keyboard.addNoteOnCallback(notePlayed);
+        keyboard.tryConnect();
+        keyboard.IsPlayable = true;
         console.log(gameState);
         hasGameState = true;
         sentZeroTime = false;
@@ -137,9 +142,6 @@ function PlayArea() {
     function startGame(){
         // gameState = gameState;
         console.log("Game starting!");
-        keyboard = new MIDIKeyboard();
-        keyboard.tryConnect(); // Connect to MIDI keyboard
-        keyboard.addNoteOnCallback(notePlayed);
         // keyboard.startLogging(); // Optional line for debugging
         updateLoop();
     }
@@ -188,6 +190,7 @@ function PlayArea() {
 
                     hasGameState = false;
                     sentZeroTime = false;
+                    keyboard.IsPlayable = false;
                     setGameIsOver(true);
                 }
             })
@@ -234,6 +237,7 @@ function PlayArea() {
                         <Link to="/settings" onClick={() => {
                             hasGameState = false;
                             sentZeroTime = false;
+                            keyboard.IsPlayable = false;
                             }}><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
                     </div>
                 </div>
