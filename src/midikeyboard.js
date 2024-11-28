@@ -7,11 +7,11 @@ const NOTE_OFF = 0b1000;
 const OTHER = 0;
 
 const soundfiles = [
-    "c3.wav", "cs3.wav", "d3.wav", "ds3.wav", "e3.wav", "f3.wav",
-    "fs3.wav", "g3.wav", "gs3.wav", "a4.wav", "as4.wav", "b4.wav",
-    "c4.wav", "cs4.wav", "d4.wav", "ds4.wav", "e4.wav", "f4.wav",
-    "fs4.wav", "g4.wav", "gs4.wav", "a5.wav", "as5.wav", "b5.wav",
-    "c5.wav"
+    "c3", "cs3", "d3", "ds3", "e3", "f3",
+    "fs3", "g3", "gs3", "a4", "as4", "b4",
+    "c4", "cs4", "d4", "ds4", "e4", "f4",
+    "fs4", "g4", "gs4", "a5", "as5", "b5",
+    "c5"
 ];
 
 export default class MIDIKeyboard{
@@ -19,15 +19,17 @@ export default class MIDIKeyboard{
     #isLogging;
     #midi;
     #isEnabled;
-    #audios;
     #noteOffset;
+    #audios;
+    #noteOnCallbacks;
 
     constructor(){
         this.#isLogging = false;
         this.#midi = null;
         this.#isEnabled = false;
-        this.#audios = [];
         this.#noteOffset = 49;
+        this.#audios = [];
+        this.#noteOnCallbacks = [];
     }
 
     tryConnect(){
@@ -66,6 +68,10 @@ export default class MIDIKeyboard{
 
     stopLogging(){
         this.#isLogging = false;
+    }
+
+    addNoteOnCallback(callback){
+        this.#noteOnCallbacks.push(callback);
     }
 
     get isEnabled(){
@@ -133,8 +139,13 @@ export default class MIDIKeyboard{
     
     #onNoteOn(note){
         if(this.#isLogging) console.log("NOTE_ON! (" + (note - this.#noteOffset) + ")");
-        this.#audios[note] = new Audio("src/assets/audio/" + soundfiles[note - this.#noteOffset]);
+        var noteName = soundfiles[note - this.#noteOffset];
+        this.#audios[note] = new Audio("src/assets/audio/" + noteName + ".wav");
         this.#audios[note].play();
+        
+        for (const callback of this.#noteOnCallbacks) {
+            callback(noteName);
+        }
     }
     
     #onNoteOff(note){

@@ -8,11 +8,12 @@ import { FaPause, FaStop } from "react-icons/fa"; // Import icons
 import './PlayArea.css'; // Import CSS for styling
 import { updateGameState } from '../../rest.js'; // Import API call
 import axios from 'axios'; // Import axios for API calls
+import MIDIKeyboard from '../../midikeyboard.js'
 
 /* Constants */
 
 // Update every other N frames
-const updateEveryNFrames = 4; 
+const updateEveryNFrames = 3; 
 
 // Available notes for bass clef 
 // "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
@@ -64,6 +65,9 @@ var _report;
  * @returns {JSX.Element} - The play area page
  */
 function PlayArea() {
+
+    const keyboard = new MIDIKeyboard();
+
     /* State of the play area */
 
     const [gameIsOver, setGameIsOver] = useState(false);
@@ -118,10 +122,19 @@ function PlayArea() {
     // Update loop reference: 
     // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
 
+    function notePlayed(note){
+        gameState.playedNoteTimePairs.push([note, Date.now(), 'u']);
+        makeAPICall();
+        console.log(`Note played: ${note}`);
+    }
+
     function startGame(){
         // gameState = gameState;
         console.log(gameState);
         console.log("Game starting!");
+        keyboard.tryConnect(); // Connect to MIDI keyboard
+        keyboard.addNoteOnCallback(notePlayed);
+        // keyboard.startLogging(); // Optional line for debugging
         updateLoop();
     }
 
@@ -153,8 +166,8 @@ function PlayArea() {
                     gameState.currentTime = Date.now();
 
                     // Stress testing the play area
-                    let anote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
-                    gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
+                    // let anote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
+                    // gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
                 }
                 else{
                     // Assume a report is returned
