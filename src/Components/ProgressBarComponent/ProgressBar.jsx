@@ -19,7 +19,7 @@ function ProgressBar({gameState}) {
 
     useEffect(() => {
         // Calculate total duration of the game in seconds
-        const totalSeconds = gameState.gameDuration * 60;
+        const totalSeconds = parseFloat(gameState.gameDuration) * 60;
         const timeElapsedSeconds = (gameState.currentTime - gameState.gameStartTime) / 1000;
         const timeLeft = totalSeconds - timeElapsedSeconds;
         const progress = Math.min(100 - (100 * parseFloat(timeLeft) / parseFloat(totalSeconds)), 100);

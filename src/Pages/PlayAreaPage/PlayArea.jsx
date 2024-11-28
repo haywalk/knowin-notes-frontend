@@ -99,6 +99,7 @@ function PlayArea() {
     const location = useLocation();
     if(!hasGameState) {
         gameState = location.state?.gameState;
+        console.log(gameState);
         hasGameState = true;
         sentZeroTime = false;
         setGameIsOver(false);
@@ -147,7 +148,7 @@ function PlayArea() {
         if(!hasGameState && !sentZeroTime) return;
         setCurTime(Date.now());
         // Check for end of game.
-        if(gameState.currentTime - gameState.gameStartTime > gameState.duration * 60 * 1000){
+        if(gameState.currentTime - gameState.gameStartTime > parseFloat(gameState.gameDuration) * 60 * 1000){
             console.log("Game over!");
             makeAPICall();
         }
@@ -173,7 +174,6 @@ function PlayArea() {
                     let json = tmp.substring("STATE".length);
                     gameState = JSON.parse(json);
                     gameState.currentTime = Date.now();
-
                     // Stress testing the play area
                     // let anote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
                     // gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
@@ -184,7 +184,7 @@ function PlayArea() {
                     let json = tmp.substring("REPORT".length);
                     _report = JSON.parse(json);
 
-                    console.log(_report);
+                    console.log(`REPORT: ${_report}`);
 
                     hasGameState = false;
                     sentZeroTime = false;
