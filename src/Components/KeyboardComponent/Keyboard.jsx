@@ -21,70 +21,70 @@ const Keyboard = ({notePlayed, isTreble}) => {
                         <label className="black-note first btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "cs4" : "cs2")}
+                                notePlayed("cs3")}
                             } defaultChecked/>
                         </label>
 
                         <label className="black-note second btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "ds4" : "ds2")}
+                                notePlayed("ds3")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="black-note third btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "fs4" : "fs2")}
+                                notePlayed("fs3")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="black-note fourth btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "gs4" : "gs2")}
+                                notePlayed("gs3")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="black-note fifth btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "as5" : "as3")}
+                                notePlayed("as3")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="black-note sixth btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "cs5" : "cs3")}
+                                notePlayed("cs4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="black-note seventh btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "ds5" : "ds3")}
+                                notePlayed("ds4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="black-note eighth btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "fs5" : "fs3")}
+                                notePlayed("fs4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="black-note nineth  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "gs5" : "gs3")}
+                                notePlayed("gs4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="black-note tenth  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "as6" : "as4")}
+                                notePlayed("as5")}
                             }  defaultChecked/>
                         </label>
                     </div>
@@ -96,105 +96,105 @@ const Keyboard = ({notePlayed, isTreble}) => {
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "c4" : "c2")}
+                                notePlayed("c3")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "d4" : "d2")}
+                                notePlayed("d3")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "e4" : "e2")}
+                                notePlayed("e3")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "f4" : "f2")}
+                                notePlayed("f3")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "g4" : "g2")}
+                                notePlayed("g3")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "a5" : "a3")}
+                                notePlayed("a4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "b5" : "b3")}
+                                notePlayed("b4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "c5" : "c3")}
+                                notePlayed("c4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "d5" : "d3")}
+                                notePlayed("d4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "e5" : "e3")}
+                                notePlayed("e4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "f5" : "f3")}
+                                notePlayed("f4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "g5" : "g3")}
+                                notePlayed("g4")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "a6" : "a4")}
+                                notePlayed("a5")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "b6" : "b4")}
+                                notePlayed("b5")}
                             }  defaultChecked/>
                         </label>
 
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
-                                notePlayed(isTreble ? "c6" : "c4")}
+                                notePlayed("c5")}
                             }  defaultChecked/>
                         </label>
                     </div>
