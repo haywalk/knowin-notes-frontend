@@ -88,7 +88,7 @@ function Report() {
         // Calculate total seconds
         const totalSeconds = minutes * 60 + seconds
         // Calculate seconds spent per note
-        return totalSeconds / report.numNotes;
+        return Math.round(totalSeconds / report.numNotes * 100) / 100;
     }
 
     // Function to set the accuracy for notes
