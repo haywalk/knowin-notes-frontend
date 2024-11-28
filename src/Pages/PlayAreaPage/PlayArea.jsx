@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as React from "react"
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom' // Import for navigation
@@ -6,52 +6,55 @@ import { ProgressBar, Keyboard } from "../../Components/component_import.js" // 
 import {single_note, lines, treble_clef, sharp, bass_clef, single_line} from '../../assets/img/img_import.js' // Import images
 import { FaPause, FaStop } from "react-icons/fa"; // Import icons
 import './PlayArea.css'; // Import CSS for styling
+import { updateGameState } from '../../rest.js'; // Import API call
+import axios from 'axios'; // Import axios for API calls
 
 /* Constants */
 
-
-
-
-
-
 // Update every other N frames
-const updateEveryNFrames = 3; 
+const updateEveryNFrames = 4; 
 
 // Available notes for bass clef 
 // "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
 const notes_dict_bass = {
-    "c3":  ["C3",   92, 50, false, '', false],
-    "cs3": ["C#3",  92, 50, false, '', false],
-    "d3":  ["D3",  161, 50,  true, '', false],
-    "ds3": ["D#3", 161, 50,  true, '', false],
-    "e3":  ["E3",  137, 50,  true, '', false],
-    "f3":  ["F3",  113, 50,  true, '', false],
-    "fs3": ["F#3", 113, 50,  true, '', false],
-    "g3":  ["G3",   89, 50,  true, '', false],
-    "gs3": ["G#3",  89, 50,  true, '', false],
-    "a4":  ["A4",   65, 50,  true, '', false],
-    "as4": ["A#4",  65, 50,  true, '', false],
-    "b4":  ["B4",   41, 50,  true, '', false],
-    "c4":  ["C#4",  17, 50,  true, '',  true]
+    "c3":  ["C3",   92, 100, false, '', false],
+    "cs3": ["C#3",  92, 100, false, '', false],
+    "d3":  ["D3",  161, 100,  true, '', false],
+    "ds3": ["D#3", 161, 100,  true, '', false],
+    "e3":  ["E3",  137, 100,  true, '', false],
+    "f3":  ["F3",  113, 100,  true, '', false],
+    "fs3": ["F#3", 113, 100,  true, '', false],
+    "g3":  ["G3",   89, 100,  true, '', false],
+    "gs3": ["G#3",  89, 100,  true, '', false],
+    "a4":  ["A4",   65, 100,  true, '', false],
+    "as4": ["A#4",  65, 100,  true, '', false],
+    "b4":  ["B4",   41, 100,  true, '', false],
+    "c4":  ["C#4",  17, 100,  true, '',  true]
 };
 
 // Available notes for treble clef 
 // "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
 const notes_dict_treble = {
-    "c4":  ["C4",  217,  110, false, '',  true],
-    "cs4": ["C#4", 217,  240, false, '',  true],
-    "d4":  ["D4",  188, -320, false, '', false],
-    "ds4": ["D#4", 188, -190, false, '', false],
-    "e4":  ["E4",  165,  320, false, '', false],
-    "f4":  ["F4",  140, -110, false, '', false],
-    "fs4": ["F#4", 140,   20, false, '', false],
-    "g4":  ["G4",  117,  400, false, '', false],
-    "gs4": ["G#4", 117,  530, false, '', false],
-    "a5":  ["A5",  92,   100, false, '', false],
-    "as5": ["A#5", 92,   230, false, '', false],
-    "b5":  ["B5",  161,  610,  true, '', false],
-    "c5":  ["C5",  137,  310,  true, '', false]
+    "c4":  ["C4",  217, 100, false, '',  true],
+    "cs4": ["C#4", 217, 100, false, '',  true],
+    "d4":  ["D4",  188, 100, false, '', false],
+    "ds4": ["D#4", 188, 100, false, '', false],
+    "e4":  ["E4",  165, 100, false, '', false],
+    "f4":  ["F4",  140, 100, false, '', false],
+    "fs4": ["F#4", 140, 100, false, '', false],
+    "g4":  ["G4",  117, 100, false, '', false],
+    "gs4": ["G#4", 117, 100, false, '', false],
+    "a5":  ["A5",  92,  100, false, '', false],
+    "as5": ["A#5", 92,  100, false, '', false],
+    "b5":  ["B5",  161, 100,  true, '', false],
+    "c5":  ["C5",  137, 100,  true, '', false]
 };
+
+var hasGameState = false;
+var isNoteAvailable = false;
+var sentZeroTime = false;
+var gameState;
+var _report;
 
 /**
  * The play area page
@@ -62,10 +65,39 @@ const notes_dict_treble = {
  */
 function PlayArea() {
     /* State of the play area */
+
+    const [gameIsOver, setGameIsOver] = useState(false);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(!gameIsOver) return;
+        setGameIsOver(false);
+        navigate(`/report/${_report.id}`, { 
+            state: {
+                key: _report.id,
+                id: _report.id,
+                date: _report.date,
+                time: _report.time,
+                type: _report.type,
+                clef: _report.clef,
+                accuracy: _report.accuracy,
+                noteAccuracy: _report.noteAccuracy,
+                noteType: _report.noteType,
+                chronometer: _report.chronometer,
+                numNotes: _report.numNotes,
+                numMistakes: _report.numMistakes
+            }
+        });
+    }, [gameIsOver]);
+
     // Location for navigation
     const location = useLocation();
-    // Current state of the game
-    const gameState = location.state?.gameState;
+    if(!hasGameState) {
+        gameState = location.state?.gameState;
+        hasGameState = true;
+        sentZeroTime = false;
+        setGameIsOver(false);
+    }
+    
     // The playing style in session
     const single = gameState.noteType == 'single';
     // Current note string to be diplayed
@@ -74,6 +106,14 @@ function PlayArea() {
     const isTreble = (gameState.clef == "treble");
     // The appropriate note dictionary to work with
     const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
+    isNoteAvailable = gameState.targetNoteTimePairs.length != 0;
+
+     // default values
+     let currNote = "";
+     let isSharp = false;
+     let noteTop = 0;
+     let sharpTop = 0;
+     let isRotated = false;
 
     // Update loop reference: 
     // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
@@ -92,29 +132,53 @@ function PlayArea() {
         requestAnimationFrame(updateLoop);
     }
 
-    function render(){
-        // Send API request
-        // let tmp = updateGameState(gameState);
-        // // Check if the game is still going
-        // if(tmp[0] == 'S' || tmp[0] == 's'){
-        //     // Assume a state is returned and update UI
-        //     let json = tmp.substring("STATE".length);
-        //     gameState = JSON.parse(json);
-        //     //Update UI as needed
-        // }
-        // else{
-        //     // Assume a report is returned
-        //     let json = tmp.substring("REPORT".length);
-        //     // QUIT GAME, pass along the report JSON to next page
-        // }
-        console.log("rendering...");
+    function makeAPICall(){
+        if(gameIsOver || sentZeroTime) return;
+        console.log("making api call...");
+        var b64 = btoa(JSON.stringify(gameState));
+        const url = `http://localhost:8080/api/GET_STATE?old=${b64}`;
+
+        sentZeroTime = (gameState.currentTime - gameState.gaemStartTime) <= 0;
+
+        axios.get(url)
+            .then(response => {
+                // Parse out the game state if a gamestate is returned
+                // Parse out the report if a report is returned
+                let tmp = response.data;
+                // Check if the game is still going
+                if(tmp[0] == 'S' || tmp[0] == 's'){
+                    // Assume a state is returned and update UI
+                    let json = tmp.substring("STATE".length);
+                    gameState = JSON.parse(json);
+                    gameState.currentTime = Date.now();
+
+                    // Stress testing the play area
+                    let anote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
+                    gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
+                }
+                else{
+                    // Assume a report is returned
+                    // QUIT GAME, pass along the report JSON to next page
+                    let json = tmp.substring("REPORT".length);
+                    _report = JSON.parse(json);
+
+                    console.log(_report);
+
+                    hasGameState = false;
+                    sentZeroTime = false;
+                    setGameIsOver(true);
+                }
+            })
+            .catch(error => {
+                console.log(`Error: ${error}`);
+            });
     }
     
-    const [frameCount, setFrameCount] = useState(2);
+    const [frameCount, setFrameCount] = useState(updateEveryNFrames - 1);
     // Called once on initial render and once whenever setFrameCount is called
     useEffect(() => {
         if(frameCount % updateEveryNFrames != 0) return;
-        render();
+        makeAPICall();
     }, [frameCount]);
 
     // Prevents startGame being called twice (strange bug...)
@@ -145,7 +209,10 @@ function PlayArea() {
 
                     {/* Stop button */}
                     <div className="col-md-1 my-3">
-                        <Link to="/settings"><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
+                        <Link to="/settings" onClick={() => {
+                            hasGameState = false;
+                            sentZeroTime = false;
+                            }}><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
                     </div>
                 </div>
 
@@ -158,11 +225,11 @@ function PlayArea() {
                         {/* Treble clef */}
                         {isTreble && <img src={treble_clef} width='300px' alt="treble clef" style={{ position: 'absolute', top: '45px', left: '-50px', zIndex: 2 }} />}
                         {/* Bass clef */}
-                        {!isTreble && <img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '37px', left: '50px', zIndex: 2 }} />}
+                        {!isTreble && <img src={bass_clef} width='160px' alt="treble clef" style={{ position: 'absolute', top: '87px', left: '50px', zIndex: 2 }} />}
 
                         {/*  "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine] */}
                         {/* Note displayed */}
-                        <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
+                        {isNoteAvailable && <div style={{ position: 'absolute', top: '30%', left: '40%', zIndex: 3 }}>
                             {currNotes.map((noteInfo) =>
                                 <div key={noteInfo[0]}>
                                     {/* Extra line if outside music sheet */}
@@ -189,7 +256,7 @@ function PlayArea() {
                                             className={notes_dict[noteInfo[0]][4]} 
                                             style={{ 
                                                 position: 'absolute', 
-                                                top: notes_dict[noteInfo[0]][2] + (notes_dict[noteInfo[0]][3] ? -9 : 85), 
+                                                top: notes_dict[noteInfo[0]][1] + (notes_dict[noteInfo[0]][3] ? -9 : 85), 
                                                 left: notes_dict[noteInfo[0]][2] - 60, 
                                                 zIndex: 3 
                                             }} 
@@ -229,7 +296,7 @@ function PlayArea() {
                                 </div>
                                 )
                             }
-                        </div>
+                        </div>}
                     </div>
                 </div>
 
