@@ -13,14 +13,23 @@ import './ProgressBar.css'; // Import CSS for styling
  */
 function ProgressBar({gameState}) {
     // State of progress bar
+    const [progress, setProgress] = useState(0);
+    const [minutes, setMinutes] = useState(0);
+    const [seconds, setSeconds] = useState(0);
 
-    // Calculate total duration of the game in seconds
-    const totalSeconds = gameState.gameDuration * 60;
-    const timeElapsedSeconds = (gameState.currentTime - gameState.gameStartTime) / 1000;
-    const timeLeft = totalSeconds - timeElapsedSeconds;
-    const progress = 100 - (100 * parseFloat(timeLeft) / parseFloat(totalSeconds));
-    const minutes = Math.max(Math.floor((timeLeft / 60) % 60), 0);
-    const seconds = Math.max(Math.floor(timeLeft % 60), 0);
+    useEffect(() => {
+        // Calculate total duration of the game in seconds
+        const totalSeconds = gameState.gameDuration * 60;
+        const timeElapsedSeconds = (gameState.currentTime - gameState.gameStartTime) / 1000;
+        const timeLeft = totalSeconds - timeElapsedSeconds;
+        const progress = Math.min(100 - (100 * parseFloat(timeLeft) / parseFloat(totalSeconds)), 100);
+        const minutes = Math.max(Math.floor((timeLeft / 60) % 60), 0);
+        const seconds = Math.max(Math.floor(timeLeft % 60), 0);
+
+        setProgress(progress);
+        setMinutes(minutes);
+        setSeconds(seconds);
+    });
 
     // Determine the colour of the progress bar
     const getColour = () => {
