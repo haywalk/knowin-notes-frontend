@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom' // Import for navigation
 import { ProgressBar, Keyboard } from "../../Components/component_import.js" // Import components
 import {single_note, lines, treble_clef, sharp, bass_clef, single_line} from '../../assets/img/img_import.js' // Import images
-import { FaPause, FaStop } from "react-icons/fa"; // Import icons
+import { FaStop } from "react-icons/fa"; // Import icons
 import './PlayArea.css'; // Import CSS for styling
 import { updateGameState } from '../../rest.js'; // Import API call
 import axios from 'axios'; // Import axios for API calls
@@ -30,7 +30,7 @@ const notes_dict_bass = {
     "a4":  ["A4",   65, 100,  true, '', false],
     "as4": ["A#4",  65, 100,  true, '', false],
     "b4":  ["B4",   41, 100,  true, '', false],
-    "c4":  ["C#4",  17, 100,  true, '',  true]
+    "c4":  ["C4",  17, 100,  true, '',   true]
 };
 
 // Available notes for treble clef 
@@ -121,6 +121,9 @@ function PlayArea() {
     const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
     isNoteAvailable = gameState.targetNoteTimePairs.length != 0;
 
+    // Are the notes labelled
+    const isLabelled = gameState.isLabelled == "true";
+
      // default values
      let currNote = "";
      let isSharp = false;
@@ -152,7 +155,7 @@ function PlayArea() {
         setCurTime(Date.now());
         // Check for end of game.
         if(gameState.currentTime - gameState.gameStartTime > parseFloat(gameState.gameDuration) * 60 * 1000){
-            console.log("Game over!");
+            //console.log("Game over!");
             makeAPICall();
         }
         requestAnimationFrame(updateLoop);
@@ -306,7 +309,7 @@ function PlayArea() {
                                     />
 
                                     {/* Note label */}
-                                    <p 
+                                    {isLabelled && <p 
                                         className='note-name' 
                                         style={{ 
                                             position: 'absolute', 
@@ -319,7 +322,7 @@ function PlayArea() {
                                         }} 
                                     >
                                         {`${notes_dict[noteInfo[0]][0]}`}
-                                    </p>
+                                    </p>}
                                 </div>
                                 )
                             }
@@ -329,7 +332,6 @@ function PlayArea() {
 
                 {/* Keyboard displayed on screen */}
                 <div className='keyboard'>
-                    <p style={{paddingBottom: 10}}>[Hint: use {isTreble ? 'right' : 'left'} hand.]</p>
                     <Keyboard notePlayed={notePlayed} isTreble={isTreble}/>
                 </div>
             </div>

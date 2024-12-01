@@ -32,7 +32,9 @@ p {
 #notes-1:checked ~ .label-11,
 #notes-2:checked ~ .label-12,
 #notes-3:checked ~ .label-13,
-#notes-4:checked ~ .label-14{
+#notes-4:checked ~ .label-14,
+#labelled-1:checked ~ .label-15,
+#labelled-2:checked ~ .label-16{
     border-width: 2px !important;
     border-color: #1e8dfc !important;
 }

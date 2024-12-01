@@ -23,6 +23,8 @@ class GameState{
     playedNoteTimePairs = [];
 
     noteAccuracy = {}
+
+    isLabelled = null;
 }
 
 export default GameState;

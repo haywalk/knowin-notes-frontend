@@ -62,6 +62,7 @@ function Settings() {
         gameState.currentTime = Date.now(); // Get the current date
         gameState.gameStartTime = Date.now(); // Get the current date
         gameState.noteType = formData.get("note-type"); // Get the note type
+        gameState.isLabelled = formData.get("labelled"); // Get the label status
 
         // Navigate and create game state
         navigate('/play_area', { state: { gameState: gameState } });
@@ -70,7 +71,6 @@ function Settings() {
     // Display the settings page
     return (
         <>
-            <br/><br/>
             <div className="container-sm">
                 {/* Heading title */}
                 <h1 className="text-center">Settings</h1>
@@ -123,16 +123,29 @@ function Settings() {
                     </div>
 
                     {/* Note type selection */}
-                    <div className='row selection'>
+                    <input type="radio" id="note-type-1" name="note-type" value="single" className="radio" defaultChecked hidden/>
+                    {/*<div className='row selection'>
                         <div className="col-md-6">
-                            {/* Single notes */}
                             <input type="radio" id="note-type-1" name="note-type" value="single" className="radio" defaultChecked/>
                             <label className="py-3 btn btn-secondary label label-5" htmlFor="note-type-1">Single Notes</label>
                         </div>
                         <div className="col-md-6">
-                            {/* Chords */}
                             <input type="radio" id="note-type-2" name="note-type" value="chord" className="radio"/>
                             <label className="py-3 btn btn-secondary label label-6" htmlFor="note-type-2">Chords</label>
+                        </div>
+                    </div>*/}
+
+                    {/* Note labels */}
+                    <div className='row selection'>
+                        <div className="col-md-6">
+                            {/* Not labelled */}
+                            <input type="radio" id="labelled-1" name="labelled" value={false} className="radio" defaultChecked/>
+                            <label className="py-3 btn btn-secondary label label-15" htmlFor="labelled-1">Notes Not Labelled</label>
+                        </div>
+                        <div className="col-md-6">
+                            {/* labelled */}
+                            <input type="radio" id="labelled-2" name="labelled" value={true} className="radio"/>
+                            <label className="py-3 btn btn-secondary label label-16" htmlFor="labelled-2">Notes Labelled</label>
                         </div>
                     </div>
                     

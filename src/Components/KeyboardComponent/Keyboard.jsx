@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { IoHandLeftSharp } from "react-icons/io5";
+import { IoHandRightSharp } from "react-icons/io5";
 import './Keyboard.css'; // Import CSS for styling
 
 /**
@@ -17,7 +19,7 @@ const Keyboard = ({notePlayed, isTreble}) => {
             {/* Black keys */}
             <div className='row'>
                 <div style={{ position: 'relative' }}>
-                    <div className="black-notes col-md-12">
+                    <div className="black-notes offset-md-2 col-md-8">
                         <label className="black-note first btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
@@ -92,7 +94,15 @@ const Keyboard = ({notePlayed, isTreble}) => {
 
                 {/* White keys */}
                 <div className='row'>
-                    <div className="col-md-12">
+                    <div className="col-md-2">
+                            {!isTreble && 
+                                <>
+                                    <IoHandLeftSharp className='hand'/>
+                                    <p>Left Hand</p>
+                                </>
+                            }
+                    </div>
+                    <div className="col-md-8">
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
@@ -198,14 +208,22 @@ const Keyboard = ({notePlayed, isTreble}) => {
                             }  defaultChecked/>
                         </label>
                     </div>
+                    <div className="col-md-2">
+                            {isTreble &&
+                                <>
+                                <IoHandRightSharp className='hand'/>
+                                <p>Right Hand</p>
+                            </>
+                            }
+                    </div>
                 </div>
 
                 {/* Submit button */}
-                <div className='row'>
+                {/*<div className='row'>
                     <div className='col-md-4 my-3 offset-md-4'>
                         <button className="py-3 btn btn-primary" role="button">Submit</button>
                     </div>
-                </div>
+                </div>*/}
             </div>
         </>
     )

@@ -12,6 +12,10 @@
     background-color: #fff !important;
 }
 
+.card:hover {
+    background-color: #d5d5d5 !important;
+}
+
 .card p {
     color: #000;
 
@@ -60,4 +64,8 @@
 .accuracy {
     padding: 3px;
     border-radius: 5px;
+}
+
+.capitalized {
+    text-transform: capitalize;
 }
