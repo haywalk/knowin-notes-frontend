@@ -56,6 +56,7 @@ var isNoteAvailable = false;
 var sentZeroTime = false;
 var gameState;
 var _report;
+var keyboard = new MIDIKeyboard();
 
 /**
  * The play area page
@@ -66,8 +67,6 @@ var _report;
  */
 function PlayArea() {
 
-    const keyboard = new MIDIKeyboard();
-
     /* State of the play area */
 
     const [gameIsOver, setGameIsOver] = useState(false);
@@ -75,6 +74,9 @@ function PlayArea() {
     useEffect(() => {
         if(!gameIsOver) return;
         setGameIsOver(false);
+        hasGameState = false;
+        sentZeroTime = false;
+        keyboard.IsPlayable = false;
         navigate(`/report/${_report.id}`, { 
             state: {
                 key: _report.id,
@@ -97,9 +99,16 @@ function PlayArea() {
     const location = useLocation();
     if(!hasGameState) {
         gameState = location.state?.gameState;
+        keyboard = new MIDIKeyboard();
+        keyboard.addNoteOnCallback(notePlayed);
+        keyboard.tryConnect();
+        keyboard.setClef(gameState.clef);
+        keyboard.IsPlayable = true;
+        console.log(gameState);
         hasGameState = true;
         sentZeroTime = false;
         setGameIsOver(false);
+        makeAPICall();
     }
     
     // The playing style in session
@@ -136,18 +145,19 @@ function PlayArea() {
 
     function startGame(){
         // gameState = gameState;
-        console.log(gameState);
         console.log("Game starting!");
-        keyboard.tryConnect(); // Connect to MIDI keyboard
-        keyboard.addNoteOnCallback(notePlayed);
         // keyboard.startLogging(); // Optional line for debugging
         updateLoop();
     }
 
     function updateLoop() {
-        // Not updating every frame to reduce the number of API calls.
-        // Runs at 30fps.        
-        setFrameCount(frameCount => frameCount + 1);
+        if(!hasGameState && !sentZeroTime) return;
+        setCurTime(Date.now());
+        // Check for end of game.
+        if(gameState.currentTime - gameState.gameStartTime > parseFloat(gameState.gameDuration) * 60 * 1000){
+            console.log("Game over!");
+            makeAPICall();
+        }
         requestAnimationFrame(updateLoop);
     }
 
@@ -157,7 +167,7 @@ function PlayArea() {
         var b64 = btoa(JSON.stringify(gameState));
         const url = `http://localhost:8080/api/GET_STATE?old=${b64}`;
 
-        sentZeroTime = (gameState.currentTime - gameState.gaemStartTime) <= 0;
+        // sentZeroTime = (gameState.currentTime - gameState.gameStartTime) <= 0;
 
         axios.get(url)
             .then(response => {
@@ -170,7 +180,6 @@ function PlayArea() {
                     let json = tmp.substring("STATE".length);
                     gameState = JSON.parse(json);
                     gameState.currentTime = Date.now();
-
                     // Stress testing the play area
                     // let anote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
                     // gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
@@ -181,10 +190,11 @@ function PlayArea() {
                     let json = tmp.substring("REPORT".length);
                     _report = JSON.parse(json);
 
-                    console.log(_report);
+                    console.log(`REPORT: ${_report}`);
 
                     hasGameState = false;
                     sentZeroTime = false;
+                    keyboard.IsPlayable = false;
                     setGameIsOver(true);
                 }
             })
@@ -192,13 +202,18 @@ function PlayArea() {
                 console.log(`Error: ${error}`);
             });
     }
-    
-    const [frameCount, setFrameCount] = useState(updateEveryNFrames - 1);
-    // Called once on initial render and once whenever setFrameCount is called
+
+    const [curTime, setCurTime] = useState(Date.now());
     useEffect(() => {
-        if(frameCount % updateEveryNFrames != 0) return;
-        makeAPICall();
-    }, [frameCount]);
+        gameState.currentTime = Date.now();
+    }, [curTime]);
+    
+    // const [frameCount, setFrameCount] = useState(updateEveryNFrames - 1);
+    // Called once on initial render and once whenever setFrameCount is called
+    // useEffect(() => {
+    //     if(frameCount % updateEveryNFrames != 0) return;
+    //     makeAPICall();
+    // }, [frameCount]);
 
     // Prevents startGame being called twice (strange bug...)
     let hasStarted = false; 
@@ -226,6 +241,7 @@ function PlayArea() {
                         <Link to="/settings" onClick={() => {
                             hasGameState = false;
                             sentZeroTime = false;
+                            keyboard.IsPlayable = false;
                             }}><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
                     </div>
                 </div>

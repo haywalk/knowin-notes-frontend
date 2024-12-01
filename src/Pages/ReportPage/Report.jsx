@@ -94,7 +94,7 @@ function Report() {
     // Function to set the accuracy for notes
     const setNoteAccuracy = (note) => {
         // Get the accuracy of the note from the report
-        const currNoteAccuracy = report.noteAccuracy[note]
+        const currNoteAccuracy = note in report.noteAccuracy ? report.noteAccuracy[note] : [0, 0];
         // Check if it was ever played in the session
         if (currNoteAccuracy == undefined || currNoteAccuracy[1] == 0) notes_dict[note][4] = 'unplayed';
         else {

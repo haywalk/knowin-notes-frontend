@@ -7,27 +7,35 @@ const NOTE_OFF = 0b1000;
 const OTHER = 0;
 
 const noteNames = [
+    "c2", "cs2", "d2", "ds2", "e2", "f2",
+    "fs2", "g2", "gs2", "a3", "as3", "b3",
     "c3", "cs3", "d3", "ds3", "e3", "f3",
     "fs3", "g3", "gs3", "a4", "as4", "b4",
     "c4", "cs4", "d4", "ds4", "e4", "f4",
     "fs4", "g4", "gs4", "a5", "as5", "b5",
-    "c5"
+    "c5", "cs5", "d5", "ds5", "e5", "f5",
+    "fs5", "g5", "gs5", "a6", "as6", "b6",
+    "c6"
 ];
+
+const TREBLE_OFFSET = 25;
+const BASS_OFFSET = 49;
 
 export default class MIDIKeyboard{
 
+    #isPlayable;
     #isLogging;
     #midi;
     #isEnabled;
     #noteOffset;
-    #noteOnCallbacks;
+    #noteOnCallback;
 
     constructor(){
+        this.#isPlayable = false;
         this.#isLogging = false;
         this.#midi = null;
         this.#isEnabled = false;
-        this.#noteOffset = 37;
-        this.#noteOnCallbacks = [];
+        this.#noteOffset = TREBLE_OFFSET;
     }
 
     tryConnect(){
@@ -69,7 +77,27 @@ export default class MIDIKeyboard{
     }
 
     addNoteOnCallback(callback){
-        this.#noteOnCallbacks.push(callback);
+        console.log("Adding callback!");
+        this.#noteOnCallback = callback;
+    }
+
+    setClef(clef){
+        if(clef === "treble"){
+            this.#noteOffset = TREBLE_OFFSET;
+        }
+        else if(clef === "bass"){
+            this.#noteOffset = BASS_OFFSET;
+        }
+        else{
+            console.error("Invalid clef!");
+        }
+    }
+
+    /**
+     * @param {boolean} value
+     */
+    set IsPlayable(value){
+        this.#isPlayable = value;
     }
 
     get isEnabled(){
@@ -129,12 +157,11 @@ export default class MIDIKeyboard{
     }
     
     #onNoteOn(note){
+        if(!this.#isPlayable) return;
         var noteName = noteNames[note - this.#noteOffset];
         if(this.#isLogging) console.log("NOTE_ON! (" + noteName + ")");
         
-        for (const callback of this.#noteOnCallbacks) {
-            callback(noteName);
-        }
+        this.#noteOnCallback(noteName);
     }
     
     #onNoteOff(note){
