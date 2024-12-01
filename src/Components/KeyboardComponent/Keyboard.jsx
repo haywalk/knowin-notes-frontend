@@ -17,7 +17,7 @@ const Keyboard = ({notePlayed, isTreble}) => {
             {/* Black keys */}
             <div className='row'>
                 <div style={{ position: 'relative' }}>
-                    <div className="black-notes col-md-12">
+                    <div className="black-notes col-md-9">
                         <label className="black-note first btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
@@ -92,7 +92,7 @@ const Keyboard = ({notePlayed, isTreble}) => {
 
                 {/* White keys */}
                 <div className='row'>
-                    <div className="col-md-12">
+                    <div className="col-md-9">
                         <label className="white-note  btn form">
                             <input type="radio" name="options2" id="option1" autoComplete="off" onClick={() => 
                             {
@@ -201,11 +201,11 @@ const Keyboard = ({notePlayed, isTreble}) => {
                 </div>
 
                 {/* Submit button */}
-                <div className='row'>
+                {/*<div className='row'>
                     <div className='col-md-4 my-3 offset-md-4'>
                         <button className="py-3 btn btn-primary" role="button">Submit</button>
                     </div>
-                </div>
+                </div>*/}
             </div>
         </>
     )
