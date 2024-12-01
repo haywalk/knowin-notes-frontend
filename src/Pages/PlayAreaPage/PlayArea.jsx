@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom' // Import for navigation
 import { ProgressBar, Keyboard } from "../../Components/component_import.js" // Import components
 import {single_note, lines, treble_clef, sharp, bass_clef, single_line} from '../../assets/img/img_import.js' // Import images
-import { FaPause, FaStop } from "react-icons/fa"; // Import icons
+import { FaStop } from "react-icons/fa"; // Import icons
 import './PlayArea.css'; // Import CSS for styling
 import { updateGameState } from '../../rest.js'; // Import API call
 import axios from 'axios'; // Import axios for API calls
@@ -111,6 +111,9 @@ function PlayArea() {
     // The appropriate note dictionary to work with
     const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
     isNoteAvailable = gameState.targetNoteTimePairs.length != 0;
+
+    // Are the notes labelled
+    const isLabelled = gameState.isLabelled == "true";
 
      // default values
      let currNote = "";
@@ -290,7 +293,7 @@ function PlayArea() {
                                     />
 
                                     {/* Note label */}
-                                    <p 
+                                    {isLabelled && <p 
                                         className='note-name' 
                                         style={{ 
                                             position: 'absolute', 
@@ -303,7 +306,7 @@ function PlayArea() {
                                         }} 
                                     >
                                         {`${notes_dict[noteInfo[0]][0]}`}
-                                    </p>
+                                    </p>}
                                 </div>
                                 )
                             }
@@ -313,7 +316,6 @@ function PlayArea() {
 
                 {/* Keyboard displayed on screen */}
                 <div className='keyboard'>
-                    <p style={{paddingBottom: 10}}>[Hint: use {isTreble ? 'right' : 'left'} hand.]</p>
                     <Keyboard notePlayed={notePlayed} isTreble={isTreble}/>
                 </div>
             </div>

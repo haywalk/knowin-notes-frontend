@@ -62,6 +62,7 @@ function Settings() {
         gameState.currentTime = Date.now(); // Get the current date
         gameState.gameStartTime = Date.now(); // Get the current date
         gameState.noteType = formData.get("note-type"); // Get the note type
+        gameState.isLabelled = formData.get("labelled"); // Get the label status
 
         // Navigate and create game state
         navigate('/play_area', { state: { gameState: gameState } });
@@ -133,6 +134,20 @@ function Settings() {
                             {/* Chords */}
                             <input type="radio" id="note-type-2" name="note-type" value="chord" className="radio"/>
                             <label className="py-3 btn btn-secondary label label-6" htmlFor="note-type-2">Chords</label>
+                        </div>
+                    </div>
+
+                    {/* Note labels */}
+                    <div className='row selection'>
+                        <div className="col-md-6">
+                            {/* Not labelled */}
+                            <input type="radio" id="labelled-1" name="labelled" value={false} className="radio" defaultChecked/>
+                            <label className="py-3 btn btn-secondary label label-15" htmlFor="labelled-1">Notes Not Labelled</label>
+                        </div>
+                        <div className="col-md-6">
+                            {/* labelled */}
+                            <input type="radio" id="labelled-2" name="labelled" value={true} className="radio"/>
+                            <label className="py-3 btn btn-secondary label label-16" htmlFor="labelled-2">Notes Labelled</label>
                         </div>
                     </div>
                     
