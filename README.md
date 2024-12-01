@@ -5,7 +5,7 @@
 [![Package Manager](https://img.shields.io/badge/package_manager-npm-red)](https://www.npmjs.com/)
 [![Frontend Library](https://img.shields.io/badge/frontend_library-React-brightgreen)]([https://docs.oracle.com/en/java/javase/11/docs/api/index.html](https://react.dev/))
 [![OS](https://img.shields.io/badge/OS-Windows-0078D4)](https://www.microsoft.com/en-ca/windows?r=1)
-[![Last Commit](https://img.shields.io/badge/last_commit-November-green)](#)
+[![Last Commit](https://img.shields.io/badge/last_commit-December-green)](#)
 [![Release Date](https://img.shields.io/badge/release_date-December-blue)](#)
 
 # Team-4-Frontend
