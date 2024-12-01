@@ -30,7 +30,7 @@ const notes_dict_bass = {
     "a4":  ["A4",   65, 100,  true, '', false],
     "as4": ["A#4",  65, 100,  true, '', false],
     "b4":  ["B4",   41, 100,  true, '', false],
-    "c4":  ["C#4",  17, 100,  true, '',  true]
+    "c4":  ["C4",  17, 100,  true, '',   true]
 };
 
 // Available notes for treble clef 

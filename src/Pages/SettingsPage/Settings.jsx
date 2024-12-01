@@ -71,7 +71,6 @@ function Settings() {
     // Display the settings page
     return (
         <>
-            <br/><br/>
             <div className="container-sm">
                 {/* Heading title */}
                 <h1 className="text-center">Settings</h1>
@@ -124,18 +123,16 @@ function Settings() {
                     </div>
 
                     {/* Note type selection */}
-                    <div className='row selection'>
+                    {/*<div className='row selection'>
                         <div className="col-md-6">
-                            {/* Single notes */}
                             <input type="radio" id="note-type-1" name="note-type" value="single" className="radio" defaultChecked/>
                             <label className="py-3 btn btn-secondary label label-5" htmlFor="note-type-1">Single Notes</label>
                         </div>
                         <div className="col-md-6">
-                            {/* Chords */}
                             <input type="radio" id="note-type-2" name="note-type" value="chord" className="radio"/>
                             <label className="py-3 btn btn-secondary label label-6" htmlFor="note-type-2">Chords</label>
                         </div>
-                    </div>
+                    </div>*/}
 
                     {/* Note labels */}
                     <div className='row selection'>
