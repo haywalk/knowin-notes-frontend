@@ -77,8 +77,8 @@ function Report() {
         else return "#04AE37";
     }
 
-    // Calculate the time spent per note
-    const timePerNoteCalculator = () => {
+    // Calculate the average speed of notes
+    const notesPerMinuteCalculator = () => {
         // Get the time and seperate minutes from seconds
         const time = report.chronometer.split(":");
         // Get minutes
@@ -87,8 +87,8 @@ function Report() {
         const seconds = parseInt(time[1]);
         // Calculate total seconds
         const totalSeconds = minutes * 60 + seconds
-        // Calculate seconds spent per note
-        return Math.round(totalSeconds / report.numNotes * 100) / 100;
+        // Calculate speed
+        return Math.round(report.numNotes / totalSeconds * 60 * 100) / 100;
     }
 
     // Function to set the accuracy for notes
@@ -215,7 +215,7 @@ function Report() {
                     <div className='col-md-6 my-2'>
                         <div className="square report-content">
                             {/* Time spent per note */}
-                            <h2>{timePerNoteCalculator()}s/{single ? 'note' : 'chord'}</h2>
+                            <h2>{notesPerMinuteCalculator()} {single ? 'note' : 'chord'}{notesPerMinuteCalculator() >= 2 && 's'}/min</h2>
                             <h3>Speed</h3>
                         </div>
                     </div>

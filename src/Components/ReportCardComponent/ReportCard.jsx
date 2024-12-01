@@ -54,7 +54,7 @@ function ReportCard(props) {
 
                 {/* Type of practice */}
                 <div className={(props.type == "timed" || props.type == "Time") ? "timed" : "notes"}>
-                    <p className='gameMode'>{props.type}-based practice</p>
+                    <p className='gameMode'><span className='capitalized'>{props.type}-based practice</span></p>
                 </div>
 
                 {/* The accuracy of session */}
