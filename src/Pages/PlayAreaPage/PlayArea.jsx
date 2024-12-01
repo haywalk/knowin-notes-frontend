@@ -8,11 +8,12 @@ import { FaPause, FaStop } from "react-icons/fa"; // Import icons
 import './PlayArea.css'; // Import CSS for styling
 import { updateGameState } from '../../rest.js'; // Import API call
 import axios from 'axios'; // Import axios for API calls
+import MIDIKeyboard from '../../midikeyboard.js'
 
 /* Constants */
 
 // Update every other N frames
-const updateEveryNFrames = 4; 
+const updateEveryNFrames = 3; 
 
 // Available notes for bass clef 
 // "note": [label, y coordinate, x coordinate, isRotated, accuracy, hasExtraLine]
@@ -55,6 +56,7 @@ var isNoteAvailable = false;
 var sentZeroTime = false;
 var gameState;
 var _report;
+var keyboard = new MIDIKeyboard();
 
 /**
  * The play area page
@@ -64,6 +66,7 @@ var _report;
  * @returns {JSX.Element} - The play area page
  */
 function PlayArea() {
+
     /* State of the play area */
 
     const [gameIsOver, setGameIsOver] = useState(false);
@@ -71,6 +74,9 @@ function PlayArea() {
     useEffect(() => {
         if(!gameIsOver) return;
         setGameIsOver(false);
+        hasGameState = false;
+        sentZeroTime = false;
+        keyboard.IsPlayable = false;
         navigate(`/report/${_report.id}`, { 
             state: {
                 key: _report.id,
@@ -93,9 +99,16 @@ function PlayArea() {
     const location = useLocation();
     if(!hasGameState) {
         gameState = location.state?.gameState;
+        keyboard = new MIDIKeyboard();
+        keyboard.addNoteOnCallback(notePlayed);
+        keyboard.tryConnect();
+        keyboard.setClef(gameState.clef);
+        keyboard.IsPlayable = true;
+        console.log(gameState);
         hasGameState = true;
         sentZeroTime = false;
         setGameIsOver(false);
+        makeAPICall();
     }
     
     // The playing style in session
@@ -118,17 +131,30 @@ function PlayArea() {
     // Update loop reference: 
     // https://medium.com/projector-hq/writing-a-run-loop-in-javascript-react-9605f74174b
 
+    function notePlayed(note){
+        // Play sound
+        var tmpAudio = new Audio("src/assets/audio/" + note + ".wav");
+        tmpAudio.play();
+        gameState.playedNoteTimePairs.push([note, Date.now(), 'u']);
+        makeAPICall();
+        console.log(`Note played: ${note}`);
+    }
+
     function startGame(){
         // gameState = gameState;
-        console.log(gameState);
         console.log("Game starting!");
+        // keyboard.startLogging(); // Optional line for debugging
         updateLoop();
     }
 
     function updateLoop() {
-        // Not updating every frame to reduce the number of API calls.
-        // Runs at 30fps.        
-        setFrameCount(frameCount => frameCount + 1);
+        if(!hasGameState && !sentZeroTime) return;
+        setCurTime(Date.now());
+        // Check for end of game.
+        if(gameState.currentTime - gameState.gameStartTime > parseFloat(gameState.gameDuration) * 60 * 1000){
+            console.log("Game over!");
+            makeAPICall();
+        }
         requestAnimationFrame(updateLoop);
     }
 
@@ -138,7 +164,7 @@ function PlayArea() {
         var b64 = btoa(JSON.stringify(gameState));
         const url = `http://localhost:8080/api/GET_STATE?old=${b64}`;
 
-        sentZeroTime = (gameState.currentTime - gameState.gaemStartTime) <= 0;
+        // sentZeroTime = (gameState.currentTime - gameState.gameStartTime) <= 0;
 
         axios.get(url)
             .then(response => {
@@ -151,10 +177,9 @@ function PlayArea() {
                     let json = tmp.substring("STATE".length);
                     gameState = JSON.parse(json);
                     gameState.currentTime = Date.now();
-
                     // Stress testing the play area
-                    let anote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
-                    gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
+                    // let anote = gameState.targetNoteTimePairs[gameState.targetNoteTimePairs.length-1][0];
+                    // gameState.playedNoteTimePairs.push([anote, Date.now(), 'u']);
                 }
                 else{
                     // Assume a report is returned
@@ -162,10 +187,11 @@ function PlayArea() {
                     let json = tmp.substring("REPORT".length);
                     _report = JSON.parse(json);
 
-                    console.log(_report);
+                    console.log(`REPORT: ${_report}`);
 
                     hasGameState = false;
                     sentZeroTime = false;
+                    keyboard.IsPlayable = false;
                     setGameIsOver(true);
                 }
             })
@@ -173,13 +199,18 @@ function PlayArea() {
                 console.log(`Error: ${error}`);
             });
     }
-    
-    const [frameCount, setFrameCount] = useState(updateEveryNFrames - 1);
-    // Called once on initial render and once whenever setFrameCount is called
+
+    const [curTime, setCurTime] = useState(Date.now());
     useEffect(() => {
-        if(frameCount % updateEveryNFrames != 0) return;
-        makeAPICall();
-    }, [frameCount]);
+        gameState.currentTime = Date.now();
+    }, [curTime]);
+    
+    // const [frameCount, setFrameCount] = useState(updateEveryNFrames - 1);
+    // Called once on initial render and once whenever setFrameCount is called
+    // useEffect(() => {
+    //     if(frameCount % updateEveryNFrames != 0) return;
+    //     makeAPICall();
+    // }, [frameCount]);
 
     // Prevents startGame being called twice (strange bug...)
     let hasStarted = false; 
@@ -197,13 +228,8 @@ function PlayArea() {
             <div className="container">
                 {/* Header with buttons and progress bar */}
                 <div className='row'>
-                    {/* Pause button */}
-                    <div className="col-md-1 my-3">
-                        <Link to="#"><button className="d-grid py-3 btn btn-primary" role="button"><FaPause className="pause"/></button></Link>
-                    </div>
-                    
                     {/* Progress bar */}
-                    <div className="col-md-10 my-3">
+                    <div className="col-md-10 offset-md-1 my-3">
                         <ProgressBar gameState={gameState}/>
                     </div>
 
@@ -212,6 +238,7 @@ function PlayArea() {
                         <Link to="/settings" onClick={() => {
                             hasGameState = false;
                             sentZeroTime = false;
+                            keyboard.IsPlayable = false;
                             }}><button className="d-grid py-3 btn btn-primary2" role="button"><FaStop className="stop"/></button></Link>
                     </div>
                 </div>
@@ -303,7 +330,7 @@ function PlayArea() {
                 {/* Keyboard displayed on screen */}
                 <div className='keyboard'>
                     <p style={{paddingBottom: 10}}>[Hint: use {isTreble ? 'right' : 'left'} hand.]</p>
-                    <Keyboard/>
+                    <Keyboard notePlayed={notePlayed} isTreble={isTreble}/>
                 </div>
             </div>
         </>

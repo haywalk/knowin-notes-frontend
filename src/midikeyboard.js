@@ -6,28 +6,36 @@ const NOTE_ON = 0b1001;
 const NOTE_OFF = 0b1000;
 const OTHER = 0;
 
-const soundfiles = [
-    "c3.wav", "cs3.wav", "d3.wav", "ds3.wav", "e3.wav", "f3.wav",
-    "fs3.wav", "g3.wav", "gs3.wav", "a4.wav", "as4.wav", "b4.wav",
-    "c4.wav", "cs4.wav", "d4.wav", "ds4.wav", "e4.wav", "f4.wav",
-    "fs4.wav", "g4.wav", "gs4.wav", "a5.wav", "as5.wav", "b5.wav",
-    "c5.wav"
+const noteNames = [
+    "c2", "cs2", "d2", "ds2", "e2", "f2",
+    "fs2", "g2", "gs2", "a3", "as3", "b3",
+    "c3", "cs3", "d3", "ds3", "e3", "f3",
+    "fs3", "g3", "gs3", "a4", "as4", "b4",
+    "c4", "cs4", "d4", "ds4", "e4", "f4",
+    "fs4", "g4", "gs4", "a5", "as5", "b5",
+    "c5", "cs5", "d5", "ds5", "e5", "f5",
+    "fs5", "g5", "gs5", "a6", "as6", "b6",
+    "c6"
 ];
+
+const TREBLE_OFFSET = 25;
+const BASS_OFFSET = 49;
 
 export default class MIDIKeyboard{
 
+    #isPlayable;
     #isLogging;
     #midi;
     #isEnabled;
-    #audios;
     #noteOffset;
+    #noteOnCallback;
 
     constructor(){
+        this.#isPlayable = false;
         this.#isLogging = false;
         this.#midi = null;
         this.#isEnabled = false;
-        this.#audios = [];
-        this.#noteOffset = 49;
+        this.#noteOffset = TREBLE_OFFSET;
     }
 
     tryConnect(){
@@ -68,6 +76,30 @@ export default class MIDIKeyboard{
         this.#isLogging = false;
     }
 
+    addNoteOnCallback(callback){
+        console.log("Adding callback!");
+        this.#noteOnCallback = callback;
+    }
+
+    setClef(clef){
+        if(clef === "treble"){
+            this.#noteOffset = TREBLE_OFFSET;
+        }
+        else if(clef === "bass"){
+            this.#noteOffset = BASS_OFFSET;
+        }
+        else{
+            console.error("Invalid clef!");
+        }
+    }
+
+    /**
+     * @param {boolean} value
+     */
+    set IsPlayable(value){
+        this.#isPlayable = value;
+    }
+
     get isEnabled(){
         return this.#isEnabled;
     }
@@ -77,13 +109,6 @@ export default class MIDIKeyboard{
     }
 
     #onMIDISuccess(midiAccess){
-        // make space for audio instances (necessary?)
-        for(let i = 0; i < 128; i++){
-            this.#audios[i] = null; 
-        if (i >= this.#noteOffset && i < this.#noteOffset + soundfiles.length) {
-            this.#audios[i] = new Audio("src/assets/audio/" + soundfiles[i - this.#noteOffset]);
-        }
-        }
         this.#midi = midiAccess;
         this.#isEnabled = true;
         this.#startListeningForMIDIMessages();
@@ -132,16 +157,15 @@ export default class MIDIKeyboard{
     }
     
     #onNoteOn(note){
-        if(this.#isLogging) console.log("NOTE_ON! (" + (note - this.#noteOffset) + ")");
-        this.#audios[note] = new Audio("src/assets/audio/" + soundfiles[note - this.#noteOffset]);
-        this.#audios[note].play();
+        if(!this.#isPlayable) return;
+        var noteName = noteNames[note - this.#noteOffset];
+        if(this.#isLogging) console.log("NOTE_ON! (" + noteName + ")");
+        
+        this.#noteOnCallback(noteName);
     }
     
     #onNoteOff(note){
         if(this.#isLogging) console.log("NOTE OFF!");
-        // Should maybe fade the sound of the note here somehow
-        this.#audios[note].pause();
-        this.#audios[note].currentTime = 0;
     }
 }
 

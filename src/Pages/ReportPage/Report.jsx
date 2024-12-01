@@ -88,15 +88,15 @@ function Report() {
         // Calculate total seconds
         const totalSeconds = minutes * 60 + seconds
         // Calculate seconds spent per note
-        return totalSeconds / report.numNotes;
+        return Math.round(totalSeconds / report.numNotes * 100) / 100;
     }
 
     // Function to set the accuracy for notes
     const setNoteAccuracy = (note) => {
         // Get the accuracy of the note from the report
-        const currNoteAccuracy = report.noteAccuracy[note]
+        const currNoteAccuracy = note in report.noteAccuracy ? report.noteAccuracy[note] : [0, 0];
         // Check if it was ever played in the session
-        if (currNoteAccuracy[1] == 0) notes_dict[note][4] = 'unplayed';
+        if (currNoteAccuracy == undefined || currNoteAccuracy[1] == 0) notes_dict[note][4] = 'unplayed';
         else {
             // Calculate the accuracy in percentage
             let single_note_accuracy = currNoteAccuracy[0] / currNoteAccuracy[1] * 100;
@@ -167,7 +167,7 @@ function Report() {
                             </h2>
                             {/* Practice type text */}
                             <h3 className={(report.type == "timed" || report.type == "Time") ? "timed-text" : "notes-text"}>
-                                {report.type}-Based Practice
+                                <span className='capitalized'>{report.type}-Based Practice</span>
                             </h3>
                         </div>
                     </div>
