@@ -136,7 +136,7 @@ function Report() {
     const notes_dict = isTreble ? notes_dict_treble : notes_dict_bass;
 
     // The playing style in session
-    const single = report.noteType == 'single';
+    //const single = report.noteType == 'single';
 
     // Display the report
     return (
@@ -192,7 +192,7 @@ function Report() {
                         <div className="square report-content">
                             {/* Total notes in session */}
                             <h2>{report.numNotes}</h2>
-                            <h3>TOTAL {single ? 'NOTES' : 'CHORDS'}</h3>
+                            <h3>TOTAL NOTES</h3>
                         </div>
                     </div>
                     <div className='col-md-3 my-3'>
@@ -215,14 +215,14 @@ function Report() {
                     <div className='col-md-6 my-2'>
                         <div className="square report-content">
                             {/* Time spent per note */}
-                            <h2>{notesPerMinuteCalculator()} {single ? 'note' : 'chord'}{notesPerMinuteCalculator() >= 2 && 's'}/min</h2>
+                            <h2>{notesPerMinuteCalculator()} note{notesPerMinuteCalculator() >= 2 && 's'}/min</h2>
                             <h3>Speed</h3>
                         </div>
                     </div>
                     <div className='col-md-6 my-2'>
                         <div className="square report-content">
                             {/* Extra settings information */}
-                            <h2>{single ? 'Single Notes' : 'Chords'}</h2>
+                            <h2>Single Notes</h2>
                             <h3>Playing Style</h3>
                         </div>
                     </div>
