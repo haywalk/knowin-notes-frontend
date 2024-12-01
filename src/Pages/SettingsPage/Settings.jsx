@@ -123,6 +123,7 @@ function Settings() {
                     </div>
 
                     {/* Note type selection */}
+                    <input type="radio" id="note-type-1" name="note-type" value="single" className="radio" defaultChecked hidden/>
                     {/*<div className='row selection'>
                         <div className="col-md-6">
                             <input type="radio" id="note-type-1" name="note-type" value="single" className="radio" defaultChecked/>

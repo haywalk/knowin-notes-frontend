@@ -9,7 +9,6 @@ class GameState{
     notesInGame = -1;
     timePerNote = -1;
     clef = ""
-    noteType = "";
 
     // Time related variables
     gameStartTime = null;
