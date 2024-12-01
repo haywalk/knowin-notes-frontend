@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BsMusicNoteList } from "react-icons/bs"; // Import number of notes based icon
 import { PiTimerBold } from "react-icons/pi"; // Import time based icon
-import { Link, useParams } from "react-router-dom"; // Import for navigation
+import { Link, useParams, useNavigate } from "react-router-dom"; // Import for navigation
 import { bass_clef, lines, sharp, single_line, single_note, treble_clef } from '../../assets/img/img_import.js'; // Import components
 import { getReport } from "../../rest.js";
 import './Report.css'; // Import CSS for styling
+import GameState from "../../GameState.js";
 
 // Constants
 
@@ -23,7 +24,7 @@ const notes_dict_bass = {
     "a4":  ["A4",   65,  130,  true, 'unplayed', false],
     "as4": ["A#4",  65,  260,  true, 'unplayed', false],
     "b4":  ["B4",   41,  640,  true, 'unplayed', false],
-    "c4":  ["C#4",  17,  340,  true, 'unplayed',  true]
+    "c4":  ["C4",  17,  340,  true, 'unplayed',  true]
 };
 
 // Available notes for treble clef 
@@ -58,6 +59,24 @@ function Report() {
     let id = params.id;
     const [loading, setLoading] = useState(true);
     const [report, setReport] = useState(null);
+
+    const [redo, setRedo] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!redo) return;
+        // Configure game state according to the report
+        let gameState = new GameState();
+        gameState.gameMode = report.type;
+        gameState.gameDuration = report.gameDuration;
+        gameState.notesInGame = report.notesInGame;
+        gameState.clef = report.clef;
+        gameState.noteType = report.noteType;
+        gameState.currentTime = Date.now();
+        gameState.gameStartTime = Date.now();
+
+        navigate(`/play_area`, { state: { gameState: gameState } });
+    }, [redo]);
 
     // Determine colour of the accuracy
     const getColour = () => {
@@ -330,7 +349,7 @@ function Report() {
                         </div>
                         <div className='col-md-1'>
                             {/* Redo session button */}
-                            <Link to=""><button className="d-grid btn btn-secondary" role="button">Redo</button></Link>
+                            <Link to="" onClick={() => {setRedo(true);}}><button className="d-grid btn btn-secondary" role="button">Redo</button></Link>
                         </div>
                     </div>
                 </div>
