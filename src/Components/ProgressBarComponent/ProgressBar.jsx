@@ -16,19 +16,31 @@ function ProgressBar({gameState}) {
     const [progress, setProgress] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
+    const [notesLeft, setNotesLeft] = useState(0);
+
+    const isTimed = gameState.gameMode == "timed";
+    const isSingle = gameState.noteType == "single";
 
     useEffect(() => {
-        // Calculate total duration of the game in seconds
-        const totalSeconds = parseFloat(gameState.gameDuration) * 60;
-        const timeElapsedSeconds = (gameState.currentTime - gameState.gameStartTime) / 1000;
-        const timeLeft = totalSeconds - timeElapsedSeconds;
-        const progress = Math.min(100 - (100 * parseFloat(timeLeft) / parseFloat(totalSeconds)), 100);
-        const minutes = Math.max(Math.floor((timeLeft / 60) % 60), 0);
-        const seconds = Math.max(Math.floor(timeLeft % 60), 0);
+        if (isTimed) {
+            // Calculate total duration of the game in seconds
+            const totalSeconds = parseFloat(gameState.gameDuration) * 60;
+            const timeElapsedSeconds = (gameState.currentTime - gameState.gameStartTime) / 1000;
+            const timeLeft = totalSeconds - timeElapsedSeconds;
+            const progress = Math.min(100 - (100 * parseFloat(timeLeft) / parseFloat(totalSeconds)), 100);
+            const minutes = Math.max(Math.floor((timeLeft / 60) % 60), 0);
+            const seconds = Math.max(Math.floor(timeLeft % 60), 0);
 
-        setProgress(progress);
-        setMinutes(minutes);
-        setSeconds(seconds);
+            setProgress(progress);
+            setMinutes(minutes);
+            setSeconds(seconds);
+        } 
+        else {
+            // Calculate the number of notes left
+            const progress = Math.min(100 - (100 * parseFloat(gameState.notesInGame - gameState.targetNoteTimePairs.length + 1) / parseFloat(gameState.notesInGame)), 100);
+            setProgress(progress);
+            setNotesLeft(gameState.notesInGame - gameState.targetNoteTimePairs.length + 1);
+        }
     });
 
     // Determine the colour of the progress bar
@@ -53,10 +65,19 @@ function ProgressBar({gameState}) {
                             backgroundColor: getColour()
                     }}
                 >
-                    {/* Timer value label */}
+                    {/* Value label */}
                     <div className="progress-label">
-                        {/* 00:00 formated */}
-                        {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+                        
+                        {gameState.gameMode == "timed" &&
+                        <>
+                            {/* Timer label 00:00 formated */}
+                            {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+                        </>}
+                        {gameState.gameMode != "timed" &&
+                        <>
+                            {/* number of notes label */}
+                            {notesLeft} {isSingle ? 'note' : 'chord'}{notesLeft > 1 && "s"} left
+                        </>}
                     </div>
                 </div>
             </div>

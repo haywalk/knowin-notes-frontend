@@ -155,7 +155,7 @@ function PlayArea() {
         setCurTime(Date.now());
         // Check for end of game.
         if(gameState.currentTime - gameState.gameStartTime > parseFloat(gameState.gameDuration) * 60 * 1000){
-            console.log("Game over!");
+            //console.log("Game over!");
             makeAPICall();
         }
         requestAnimationFrame(updateLoop);
